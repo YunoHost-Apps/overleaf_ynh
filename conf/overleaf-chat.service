@@ -1,0 +1,18 @@
+[Unit]
+Description=__APP__ chat
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__FINALPATH__/
+EnvironmentFile=__FINALPATH__/variables.env
+ExecStart=__YNH_NODE__ __FINALPATH__/live/services/chat/app.js
+StandardOutput=append:/var/log/__APP__/chat.log
+StandardError=inherit
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
