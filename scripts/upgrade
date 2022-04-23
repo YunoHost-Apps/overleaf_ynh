@@ -169,17 +169,18 @@ then
 	pushd "$final_path/live"
 		ynh_use_nodejs
 		ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
-		ynh_exec_warn_less $ynh_node genScript install | bash
-		ynh_exec_warn_less $ynh_node genScript compile | bash
+		npm ci
 	popd
 
 	pushd "$final_path/live/services/web"
-		ynh_use_nodejs
-		ynh_exec_warn_less $ynh_npm install -g npm
+		ynh_exec_warn_less npm run webpack:production
+		ynh_exec_warn_less npm install -g npm
 		ynh_exec_warn_less npm install ldap-escape
 		ynh_exec_warn_less npm install ldapts-search
 		ynh_exec_warn_less npm install ldapts
 		ynh_exec_warn_less npm install ldap-escape
+		ynh_exec_warn_less npm cache clean --force
+		ynh_secure_remove --file="$final_path/live/services/web/node_modules/.cache"
 	popd
 
 	chmod 750 "$final_path/live"
