@@ -7,12 +7,13 @@
 #=================================================
 
 source _common.sh
+source ynh_mongo_db
 source /usr/share/yunohost/helpers
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --time --weight=1
+ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -30,40 +31,100 @@ datadir=$(ynh_app_setting_get --app=$app --key=datadir)
 #=================================================
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_exec_warn_less yunohost service status $app >/dev/null
+if ynh_exec_warn_less yunohost service status "$app-chat" >/dev/null
 then
-	ynh_script_progression --message="Removing $app service integration..." --time --weight=1
-	yunohost service remove $app
+	ynh_script_progression --message="Removing $app-chat service integration..."
+	yunohost service remove "$app-chat"
+fi
+if ynh_exec_warn_less yunohost service status "$app-clsi" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-clsi service integration..."
+	yunohost service remove "$app-clsi"
+fi
+if ynh_exec_warn_less yunohost service status "$app-contacts" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-contacts service integration..."
+	yunohost service remove "$app-contacts"
+fi
+if ynh_exec_warn_less yunohost service status "$app-docstore" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-docstore service integration..."
+	yunohost service remove "$app-docstore"
+fi
+if ynh_exec_warn_less yunohost service status "$app-document-updater" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-document-updater service integration..."
+	yunohost service remove "$app-document-updater"
+fi
+if ynh_exec_warn_less yunohost service status "$app-filestore" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-filestore service integration..."
+	yunohost service remove "$app-filestore"
+fi
+if ynh_exec_warn_less yunohost service status "$app-notifications" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-notifications service integration..."
+	yunohost service remove "$app-notifications"
+fi
+if ynh_exec_warn_less yunohost service status "$app-real-time" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-real-time service integration..."
+	yunohost service remove "$app-real-time"
+fi
+if ynh_exec_warn_less yunohost service status "$app-spelling" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-spelling service integration..."
+	yunohost service remove "$app-spelling"
+fi
+if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-track-changes service integration..."
+	yunohost service remove "$app-track-changes"
+fi
+if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-web service integration..."
+	yunohost service remove "$app-web"
 fi
 
 #=================================================
 # STOP AND REMOVE SERVICE
 #=================================================
-ynh_script_progression --message="Stopping and removing the systemd service..." --time --weight=1
+ynh_script_progression --message="Stopping and removing the systemd service..."
 
 # Remove the dedicated systemd config
-ynh_remove_systemd_config
+ynh_remove_systemd_config --service="$app-chat"
+ynh_remove_systemd_config --service="$app-clsi"
+ynh_remove_systemd_config --service="$app-contacts"
+ynh_remove_systemd_config --service="$app-docstore"
+ynh_remove_systemd_config --service="$app-document-updater"
+ynh_remove_systemd_config --service="$app-filestore"
+ynh_remove_systemd_config --service="$app-notifications"
+ynh_remove_systemd_config --service="$app-real-time"
+ynh_remove_systemd_config --service="$app-spelling"
+ynh_remove_systemd_config --service="$app-track-changes"
+ynh_remove_systemd_config --service="$app-web"
 
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing logrotate configuration..." --time --weight=1
+ynh_script_progression --message="Removing logrotate configuration..."
 
 # Remove the app-specific logrotate config
 ynh_remove_logrotate
 
 #=================================================
-# REMOVE THE MYSQL DATABASE
+# REMOVE THE MONGODB DATABASE
 #=================================================
-ynh_script_progression --message="Removing the MySQL database..." --time --weight=1
+ynh_script_progression --message="Removing the MongoDB database..."
 
 # Remove a database if it exists, along with the associated user
-ynh_mysql_remove_db --db_user=$db_user --db_name=$db_name
+ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
 
 #=================================================
 # REMOVE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Removing app main directory..." --time --weight=1
+ynh_script_progression --message="Removing app main directory..."
 
 # Remove the app directory securely
 ynh_secure_remove --file="$final_path"
@@ -75,64 +136,34 @@ ynh_secure_remove --file="$final_path"
 # Remove the data directory if --purge option is used
 if [ "${YNH_APP_PURGE:-0}" -eq 1 ]
 then
-	ynh_script_progression --message="Removing app data directory..." --time --weight=1
+	ynh_script_progression --message="Removing app data directory..."
 	ynh_secure_remove --file="$datadir"
 fi
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Removing NGINX web server configuration..." --time --weight=1
+ynh_script_progression --message="Removing NGINX web server configuration..."
 
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
 
 #=================================================
-# REMOVE PHP-FPM CONFIGURATION
-#=================================================
-ynh_script_progression --message="Removing PHP-FPM configuration..." --time --weight=1
-
-# Remove the dedicated PHP-FPM config
-ynh_remove_fpm_config
-
-#=================================================
 # REMOVE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Removing dependencies..." --time --weight=1
+ynh_script_progression --message="Removing dependencies..."
 
 # Remove metapackage and its dependencies
+ynh_remove_mongo
+ynh_remove_nodejs
 ynh_remove_app_dependencies
-
-#=================================================
-# CLOSE A PORT
-#=================================================
-
-if yunohost firewall list | grep -q "\- $port$"
-then
-	ynh_script_progression --message="Closing port $port..." --time --weight=1
-	ynh_exec_warn_less yunohost firewall disallow TCP $port
-fi
-
-#=================================================
-# REMOVE FAIL2BAN CONFIGURATION
-#=================================================
-ynh_script_progression --message="Removing Fail2Ban configuration..." --time --weight=1
-
-# Remove the dedicated Fail2Ban config
-ynh_remove_fail2ban_config
 
 #=================================================
 # SPECIFIC REMOVE
 #=================================================
 # REMOVE VARIOUS FILES
 #=================================================
-ynh_script_progression --message="Removing various files..." --time --weight=1
-
-# Remove a cron file
-ynh_secure_remove --file="/etc/cron.d/$app"
-
-# Remove a directory securely
-ynh_secure_remove --file="/etc/$app"
+ynh_script_progression --message="Removing various files..."
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
@@ -142,7 +173,7 @@ ynh_secure_remove --file="/var/log/$app"
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Removing the dedicated system user..." --time --weight=1
+ynh_script_progression --message="Removing the dedicated system user..."
 
 # Delete a system user
 ynh_system_user_delete --username=$app
@@ -151,4 +182,4 @@ ynh_system_user_delete --username=$app
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Removal of $app completed" --time --last
+ynh_script_progression --message="Removal of $app completed"
