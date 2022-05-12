@@ -21,6 +21,9 @@ Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 ![](./doc/screenshots/screenshot.png)
 
+## Avertissements / informations importantes
+
+Pour créer le compte administrateur initial : `https://yourdomain.com/launchpad`
 ## Documentations et ressources
 
 * Site officiel de l'app : https://www.overleaf.com
