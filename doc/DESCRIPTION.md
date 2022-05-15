@@ -1,1 +1,1 @@
-Overleaf is an open-source online real-time collaborative LaTeX editor. 
+Overleaf is an open-source online real-time collaborative LaTeX editor.
