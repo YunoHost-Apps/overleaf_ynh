@@ -11,7 +11,8 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-Overleaf is an open-source online real-time collaborative LaTeX editor. 
+Overleaf est un éditeur LaTeX collaboratif en ligne et en temps réel open source.
+
 
 **Version incluse :** 2022.04.23~ynh1
 
@@ -24,6 +25,7 @@ Overleaf is an open-source online real-time collaborative LaTeX editor.
 ## Avertissements / informations importantes
 
 Pour créer le compte administrateur initial : `https://yourdomain.com/launchpad`
+
 ## Documentations et ressources
 
 * Site officiel de l'app : https://www.overleaf.com
