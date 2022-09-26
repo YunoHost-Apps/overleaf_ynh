@@ -18,7 +18,8 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 Overleaf est un éditeur LaTeX collaboratif en ligne et en temps réel open source.
 
 
-**Version incluse :** 2022.04.23~ynh1
+**Version incluse :** 2022.04.23~ynh1
+
 
 ## Captures d'écran
 
