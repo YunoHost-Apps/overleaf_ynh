@@ -51,11 +51,14 @@ ram.runtime = "50M"
         sha256 = "18a3af6ee0f93aa20fa7c3f08da5264c5d052911a70a3edd4264fe929789e8f3"
         autoupdate.upstream = "https://github.com/smhaller/ldap-overleaf-sl"
         autoupdate.strategy = "latest_github_commit"
+        
         [resources.sources.main]
         url = "https://github.com/overleaf/overleaf/archive/c90fafa8ac5cc5c40a2d61b1aba413a7f9102729.tar.gz"
         sha256 = "322d906ad7bfda189cd8e6a68f6b0893f05d3085d87df9395e5af1a72964bbae"
         autoupdate.upstream = "https://github.com/overleaf/overleaf"
         autoupdate.strategy = "latest_github_commit"
+
+    [resources.ports]
 
     [resources.system_user]
 
@@ -66,6 +69,8 @@ ram.runtime = "50M"
 
     [resources.permissions]
     main.url = "/"
+    main.auth_header = false
+    admin.allowed = "admins"
 
     [resources.apt]
     packages = "texlive texlive-xetex latexmk python3-pygments"
