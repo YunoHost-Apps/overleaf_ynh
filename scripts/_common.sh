@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="texlive redis-server latexmk python3-pygments"
+#REMOVEME? pkg_dependencies="texlive redis-server latexmk python3-pygments"
 
 nodejs_version=16
 
