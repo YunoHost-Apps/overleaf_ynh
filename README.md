@@ -19,15 +19,11 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Shipped version:** 2022.04.23~ynh1
+**Shipped version:** 2023.06.03~ynh1
 
 ## Screenshots
 
 ![Screenshot of Overleaf](./doc/screenshots/screenshot.png)
-
-## Disclaimers / important information
-
-To create the initial administrator account: `https://yourdomain.com/launchpad`
 
 ## Documentation and resources
 
