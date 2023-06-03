@@ -114,17 +114,17 @@ ynh_secure_remove --file="$install_dir/build_ldap"
 pushd "$install_dir/live"
 	ynh_use_nodejs
 	ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
-	npm ci
+	ynh_exec_warn_less npm ci
 popd
 
 pushd "$install_dir/live/services/web"
-	ynh_exec_warn_less npm run webpack:production
-	ynh_exec_warn_less npm install -g npm
-	ynh_exec_warn_less npm install ldap-escape
-	ynh_exec_warn_less npm install ldapts-search
-	ynh_exec_warn_less npm install ldapts
-	ynh_exec_warn_less npm install ldap-escape
-	ynh_exec_warn_less npm cache clean --force
+	ynh_exec_warn_less $ynh_npm run webpack:production
+	ynh_exec_warn_less $ynh_npm install -g npm
+	ynh_exec_warn_less $ynh_npm install ldap-escape
+	ynh_exec_warn_less $ynh_npm install ldapts-search
+	ynh_exec_warn_less $ynh_npm install ldapts
+	ynh_exec_warn_less $ynh_npm install ldap-escape
+	ynh_exec_warn_less $ynh_npm cache clean --force
 	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
 popd
 
