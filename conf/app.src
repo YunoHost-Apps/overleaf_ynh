@@ -1,5 +1,5 @@
-SOURCE_URL=https://github.com/overleaf/overleaf/archive/f561650b6217f0dc8e5040415477361a646d970f.tar.gz
-SOURCE_SUM=b801aa19a0e5bf39eb89f15d373bfed20e0458aa961d427a66bac6f4259c2b70
+SOURCE_URL=https://github.com/overleaf/overleaf/archive/c90fafa8ac5cc5c40a2d61b1aba413a7f9102729.tar.gz
+SOURCE_SUM=322d906ad7bfda189cd8e6a68f6b0893f05d3085d87df9395e5af1a72964bbae
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
