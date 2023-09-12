@@ -5,25 +5,25 @@ It shall NOT be edited by hand.
 
 # Overleaf pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/overleaf.svg)](https://dash.yunohost.org/appci/app/overleaf) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/overleaf.svg)](https://dash.yunohost.org/appci/app/overleaf) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+
 [![Installer Overleaf avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Overleaf rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Overleaf rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 Overleaf est un éditeur LaTeX collaboratif en ligne et en temps réel open source.
 
 
-**Version incluse :** 2022.04.23~ynh1
+**Version incluse :** 2022.04.23~ynh1
 
+## Captures d’écran
 
-## Captures d'écran
-
-![Capture d'écran de Overleaf](./doc/screenshots/screenshot.png)
+![Capture d’écran de Overleaf](./doc/screenshots/screenshot.png)
 
 ## Avertissements / informations importantes
 
@@ -31,9 +31,9 @@ Pour créer le compte administrateur initial : `https://yourdomain.com/launchpad
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://www.overleaf.com>
+* Site officiel de l’app : <https://www.overleaf.com>
 * Documentation officielle utilisateur : <https://www.overleaf.com/learn>
-* Dépôt de code officiel de l'app : <https://github.com/overleaf/overleaf>
+* Dépôt de code officiel de l’app : <https://github.com/overleaf/overleaf>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_overleaf>
 * Signaler un bug : <https://github.com/YunoHost-Apps/overleaf_ynh/issues>
 
@@ -49,4 +49,4 @@ ou
 sudo yunohost app upgrade overleaf -u https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
