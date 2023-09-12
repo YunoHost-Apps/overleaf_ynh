@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="texlive texlive-xetex latexmk python3-pygments"
+pkg_dependencies="texlive texlive-xetex redis-server latexmk python3-pygments"
 
 nodejs_version=14
 
