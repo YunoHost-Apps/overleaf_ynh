@@ -7,7 +7,7 @@
 # dependencies used by the app
 pkg_dependencies="texlive texlive-xetex redis-server latexmk python3-pygments"
 
-nodejs_version=14
+nodejs_version=20
 
 #=================================================
 # PERSONAL HELPERS
