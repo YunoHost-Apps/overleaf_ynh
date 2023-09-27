@@ -76,6 +76,13 @@ ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/lo
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..."
 
+mkdir -p $datadir
+mkdir -p $datadir/user_files
+
+chmod 750 "$datadir"
+chmod -R o-rwx "$datadir"
+chown -R $app:www-data "$datadir"
+
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
