@@ -72,4 +72,4 @@ ram.runtime = "50M"
     main.default = 8095
 
     [resources.apt]
-    packages = "texlive, texlive-xetex, redis-server, latexmk, python3-pygments"
+    packages = "texlive, texlive-xetex, texlive-base, redis-server, latexmk, python3-pygments"
