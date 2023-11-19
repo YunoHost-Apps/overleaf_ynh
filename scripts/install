@@ -118,7 +118,8 @@ ynh_secure_remove --file="$install_dir/build_ldap"
 
 pushd "$install_dir/live"
 	ynh_use_nodejs
-	ynh_exec_warn_less $ynh_npm install -g sandboxed-module@latest
+	ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
+	ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
 	npm ci
 popd
 
