@@ -110,7 +110,6 @@ sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/ser
 cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
 cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
 cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
-ynh_secure_remove --file="$install_dir/live/services/web/app/views/admin/register.pug"
 ynh_secure_remove --file="$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
 touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
 
@@ -119,7 +118,7 @@ ynh_secure_remove --file="$install_dir/build_ldap"
 
 pushd "$install_dir/live"
 	ynh_use_nodejs
-	ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
+	ynh_exec_warn_less $ynh_npm install -g sandboxed-module@latest
 	npm ci
 popd
 
