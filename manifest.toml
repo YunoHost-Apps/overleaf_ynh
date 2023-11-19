@@ -19,18 +19,17 @@ cpe = "???" # FIXME: optional but recommended if relevant, this is meant to cont
 fund = "???" # FIXME: optional but recommended (or remove if irrelevant / not applicable). This is meant to be an URL where people can financially support this app, especially when its development is based on volunteers and/or financed by its community. YunoHost may later advertise it in the webadmin.
 
 [integration]
-yunohost = ">= 4.3.0"
-architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+yunohost = ">= 11.2.0"
+architectures = "all"
 multi_instance = false
-ldap = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "sso" key : the "ldap" key corresponds to wether or not a user *can* login on the app using its YunoHost credentials.
-sso = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
-disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
-ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
-ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+ldap = true
+sso = "?"
+disk = "50M"
+ram.build = "50M"
+ram.runtime = "50M"
 
 [install]
     [install.domain]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "domain"
 
     [install.init_main_permission]
@@ -40,23 +39,22 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     [install.language]
     ask.en = "Choose the application language"
     ask.fr = "Choisissez la langue de l'application"
-    type = "string"
+    type = "select"
     choices = ["fr", "en"]
     default = "fr"
 
     [install.admin]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "user"
 
 [resources]
     [resources.sources]
         [resources.sources.ldap]
-        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/a0e70e4f1f618a23503eb80a4e7cb1a93b568b40.tar.gz"
-        sha256 = "18a3af6ee0f93aa20fa7c3f08da5264c5d052911a70a3edd4264fe929789e8f3"
+        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/ba1e78f2a8032ac7c53847a6746daba6fc194ed6.zip"
+        sha256 = "3df1ed8dbfb7953fc5cd18f59131f5fdacea35d0312b0c28c1f68fbfbe20954f"
 
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/c90fafa8ac5cc5c40a2d61b1aba413a7f9102729.tar.gz"
-        sha256 = "322d906ad7bfda189cd8e6a68f6b0893f05d3085d87df9395e5af1a72964bbae"
+        url = "https://github.com/overleaf/overleaf/archive/11ce29197bf239f9645aa8df198dd042659fe99d.zip"
+        sha256 = "9bffc128d2a833090801566635ded4ced2a769b17921c9b19712ce841f17f80f"
 
 
     [resources.system_user]
@@ -67,9 +65,11 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
 
     [resources.permissions]
     main.url = "/"
+    auth_header = false
+    admin.allowed = "admins" 
 
     [resources.ports]
     main.default = 8095
 
     [resources.apt]
-    packages = "texlive, redis-server, latexmk, python3-pygments"
+    packages = "texlive, texlive-xetex, redis-server, latexmk, python3-pygments"
