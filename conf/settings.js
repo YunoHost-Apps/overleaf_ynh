@@ -42,8 +42,8 @@ const parseIntOrFail = function (value) {
   return parsedValue
 }
 
-const DATA_DIR = '__DATADIR__'
-const TMP_DIR = '__FINALPATH__/tmp'
+const DATA_DIR = '__DATA_DIR__'
+const TMP_DIR = '__INSTALL_DIR__/tmp'
 
 const settings = {
   clsi: {

@@ -14,23 +14,23 @@ source /usr/share/yunohost/helpers
 # MANAGE SCRIPT FAILURE
 #=================================================
 
-ynh_clean_setup () {
+#REMOVEME? ynh_clean_setup () {
 	ynh_clean_check_starting
 }
 # Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-domain=$YNH_APP_ARG_DOMAIN
-path_url="/"
-is_public=$YNH_APP_ARG_IS_PUBLIC
-language=$YNH_APP_ARG_LANGUAGE
-admin=$YNH_APP_ARG_ADMIN
+#REMOVEME? domain=$YNH_APP_ARG_DOMAIN
+path="/"
+#REMOVEME? is_public=$YNH_APP_ARG_IS_PUBLIC
+#REMOVEME? language=$YNH_APP_ARG_LANGUAGE
+#REMOVEME? admin=$YNH_APP_ARG_ADMIN
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
 web_api_password=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2- | rev | tr -d '\n+/')
 crypto_random=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2- | rev | tr -d '\n+/')
@@ -39,24 +39,24 @@ admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
-ynh_script_progression --message="Validating installation parameters..."
+#REMOVEME? ynh_script_progression --message="Validating installation parameters..."
 
-final_path=/var/www/$app
-test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
+#REMOVEME? install_dir=/var/www/$app
+#REMOVEME? test ! -e "$install_dir" || ynh_die --message="This path already contains a folder"
 
 # Register (book) web path
-ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
+#REMOVEME? ynh_webpath_register --app=$app --domain=$domain --path=$path
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_script_progression --message="Storing installation settings..."
+#REMOVEME? ynh_script_progression --message="Storing installation settings..."
 
-ynh_app_setting_set --app=$app --key=domain --value=$domain
-ynh_app_setting_set --app=$app --key=path --value=$path_url
+#REMOVEME? ynh_app_setting_set --app=$app --key=domain --value=$domain
+#REMOVEME? ynh_app_setting_set --app=$app --key=path --value=$path
 ynh_app_setting_set --app=$app --key=language --value=$language
-ynh_app_setting_set --app=$app --key=admin --value=$admin
-ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
+#REMOVEME? ynh_app_setting_set --app=$app --key=admin --value=$admin
+#REMOVEME? ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
 ynh_app_setting_set --app=$app --key=crypto_random --value=$crypto_random
 
 #=================================================
@@ -64,37 +64,37 @@ ynh_app_setting_set --app=$app --key=crypto_random --value=$crypto_random
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
-ynh_script_progression --message="Finding an available port..."
+#REMOVEME? ynh_script_progression --message="Finding an available port..."
 
 # Find an available port
-port=$(ynh_find_port --port=8095)
-ynh_app_setting_set --app=$app --key=port --value=$port
+#REMOVEME? port=$(ynh_find_port --port=8095)
+#REMOVEME? ynh_app_setting_set --app=$app --key=port --value=$port
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..."
+#REMOVEME? ynh_script_progression --message="Installing dependencies..."
 
-ynh_install_app_dependencies $pkg_dependencies
+#REMOVEME? ynh_install_app_dependencies $pkg_dependencies
 ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_install_mongo
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Configuring system user..."
+#REMOVEME? ynh_script_progression --message="Configuring system user..."
 
 # Create a system user
-ynh_system_user_create --username=$app --home_dir="$final_path"
+#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
 
 #=================================================
 # CREATE A MONGODB DATABASE
 #=================================================
 ynh_script_progression --message="Creating a MongoDB database..."
 
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --app=$app --key=db_name --value=$db_name
+#REMOVEME? db_name=$(ynh_sanitize_dbid --db_name=$app)
+#REMOVEME? db_user=$db_name
+#REMOVEME? ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
 
 #=================================================
@@ -102,14 +102,14 @@ ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
 #=================================================
 ynh_script_progression --message="Setting up source files..."
 
-ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+#REMOVEME? ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path/build"
-ynh_setup_source --dest_dir="$final_path/build_ldap" --source_id="ldap"
+ynh_setup_source --dest_dir="$install_dir/build"
+ynh_setup_source --dest_dir="$install_dir/build_ldap" --source_id="ldap"
 
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:www-data "$final_path"
+chmod 750 "$install_dir"
+chmod -R o-rwx "$install_dir"
+chown -R $app:www-data "$install_dir"
 
 #=================================================
 # NGINX CONFIGURATION
@@ -126,65 +126,65 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Creating a data directory..."
 
-datadir=/home/yunohost.app/$app
-ynh_app_setting_set --app=$app --key=datadir --value=$datadir
+#REMOVEME? data_dir=/home/yunohost.app/$app
+#REMOVEME? ynh_app_setting_set --app=$app --key=data_dir --value=$data_dir
 
-mkdir -p $datadir
+mkdir -p $data_dir
 
-chmod 750 "$datadir"
-chmod -R o-rwx "$datadir"
-chown -R $app:www-data "$datadir"
+chmod 750 "$data_dir"
+chmod -R o-rwx "$data_dir"
+chown -R $app:www-data "$data_dir"
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-ynh_add_config --template="../conf/variables.env" --destination="$final_path/variables.env"
-chmod 400 "$final_path/variables.env"
-chown $app:$app "$final_path/variables.env"
+ynh_add_config --template="../conf/variables.env" --destination="$install_dir/variables.env"
+chmod 400 "$install_dir/variables.env"
+chown $app:$app "$install_dir/variables.env"
 
-ynh_add_config --template="../conf/settings.js" --destination="$final_path/settings.js"
-chmod 400 "$final_path/settings.js"
-chown $app:$app "$final_path/settings.js"
+ynh_add_config --template="../conf/settings.js" --destination="$install_dir/settings.js"
+chmod 400 "$install_dir/settings.js"
+chown $app:$app "$install_dir/settings.js"
 
 #=================================================
 # BUILDING APP
 #=================================================
 ynh_script_progression --message="Building app..."
 
-mkdir -p "$final_path/live"
-cp "$final_path/build/server-ce/genScript.js" "$final_path/live/genScript.js"
-cp "$final_path/build/server-ce/services.js" "$final_path/live/services.js"
-cp "$final_path/build/package.json" "$final_path/live/package.json"
-cp "$final_path/build/package-lock.json" "$final_path/live/package-lock.json"
-cp -r "$final_path/build/libraries/" "$final_path/live/libraries/"
-cp -r "$final_path/build/services/" "$final_path/live/services/"
+mkdir -p "$install_dir/live"
+cp "$install_dir/build/server-ce/genScript.js" "$install_dir/live/genScript.js"
+cp "$install_dir/build/server-ce/services.js" "$install_dir/live/services.js"
+cp "$install_dir/build/package.json" "$install_dir/live/package.json"
+cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
+cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
+cp -r "$install_dir/build/services/" "$install_dir/live/services/"
 
-cp "$final_path/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$final_path/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
-cp "$final_path/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$final_path/live/services/web/app/src/Features/Contacts/ContactController.js"
-#sed -iE '/type=.*email.*/d' $final_path/live/services/web/app/views/user/login.pug
-#sed -iE "s/email@example.com/${login_text:-user}/g" $final_path/live/services/web/app/views/user/login.pug
-#sed -iE '/email@example.com/{n;N;N;d}' $final_path/live/services/web/app/views/user/login.pug
-sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $final_path/live/services/clsi/app/js/LatexRunner.js
-sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $final_path/live/services/clsi/app/js/LatexRunner.js
-cp "$final_path/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$final_path/live/services/web/app/views/user/settings.pug"
-cp "$final_path/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$final_path/live/services/web/app/views/layout/navbar.pug"
-cp "$final_path/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$final_path/live/services/web/app/views/admin/index.pug"
-ynh_secure_remove --file="$final_path/live/services/web/app/views/admin/register.pug"
-ynh_secure_remove --file="$final_path/live/services/web/app/views/project/editor/review-panel.pug"
-touch "$final_path/live/services/web/app/views/project/editor/review-panel.pug"
+cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
+cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
+#sed -iE '/type=.*email.*/d' $install_dir/live/services/web/app/views/user/login.pug
+#sed -iE "s/email@example.com/${login_text:-user}/g" $install_dir/live/services/web/app/views/user/login.pug
+#sed -iE '/email@example.com/{n;N;N;d}' $install_dir/live/services/web/app/views/user/login.pug
+sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
+sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
+cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
+cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
+cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
+#REMOVEME? ynh_secure_remove --file="$install_dir/live/services/web/app/views/admin/register.pug"
+#REMOVEME? ynh_secure_remove --file="$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
+touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
 
-ynh_secure_remove --file="$final_path/build"
-ynh_secure_remove --file="$final_path/build_ldap"
+#REMOVEME? ynh_secure_remove --file="$install_dir/build"
+#REMOVEME? ynh_secure_remove --file="$install_dir/build_ldap"
 
-pushd "$final_path/live"
+pushd "$install_dir/live"
 	ynh_use_nodejs
 	ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
 	npm ci
 popd
 
-pushd "$final_path/live/services/web"
+pushd "$install_dir/live/services/web"
 	ynh_exec_warn_less npm run webpack:production
 	ynh_exec_warn_less npm install -g npm
 	ynh_exec_warn_less npm install ldap-escape
@@ -192,18 +192,18 @@ pushd "$final_path/live/services/web"
 	ynh_exec_warn_less npm install ldapts
 	ynh_exec_warn_less npm install ldap-escape
 	ynh_exec_warn_less npm cache clean --force
-	ynh_secure_remove --file="$final_path/live/services/web/node_modules/.cache"
+#REMOVEME? 	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
 popd
 
-chmod 750 "$final_path/live"
-chmod -R o-rwx "$final_path/live"
-chown -R $app:www-data "$final_path/live"
+chmod 750 "$install_dir/live"
+chmod -R o-rwx "$install_dir/live"
+chown -R $app:www-data "$install_dir/live"
 
-mkdir -p "$final_path/tmp/uploads"
+mkdir -p "$install_dir/tmp/uploads"
 
-chmod 750 "$final_path/tmp"
-chmod -R o-rwx "$final_path/tmp"
-chown -R $app:www-data "$final_path/tmp"
+chmod 750 "$install_dir/tmp"
+chmod -R o-rwx "$install_dir/tmp"
+chown -R $app:www-data "$install_dir/tmp"
 
 #=================================================
 # SETUP SYSTEMD
@@ -273,26 +273,26 @@ ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/l
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring permissions..."
+#REMOVEME? ynh_script_progression --message="Configuring permissions..."
 
 # Make app public if necessary
-if [ $is_public -eq 1 ]
+#REMOVEME? if [ $is_public -eq 1 ]
 then
 	# Everyone can access the app.
 	# The "main" permission is automatically created before the install script.
-	ynh_permission_update --permission="main" --add="visitors"
+#REMOVEME? 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
 ynh_permission_url --permission="main" --auth_header=false
 
-ynh_permission_create --permission="admin" --allowed="$admin"
+#REMOVEME? ynh_permission_create --permission="admin" --allowed="$admin"
 
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..."
+#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..."
 
-ynh_systemd_action --service_name=nginx --action=reload
+#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT

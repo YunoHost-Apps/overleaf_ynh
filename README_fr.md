@@ -34,7 +34,6 @@ Pour créer le compte administrateur initial : `https://yourdomain.com/launchpad
 * Site officiel de l’app : <https://www.overleaf.com>
 * Documentation officielle utilisateur : <https://www.overleaf.com/learn>
 * Dépôt de code officiel de l’app : <https://github.com/overleaf/overleaf>
-* YunoHost Store: <https://apps.yunohost.org/app/overleaf>
 * Signaler un bug : <https://github.com/YunoHost-Apps/overleaf_ynh/issues>
 
 ## Informations pour les développeurs

@@ -1,7 +1,0 @@
-SOURCE_URL=https://github.com/smhaller/ldap-overleaf-sl/archive/489b158b5070abbfb7159f150260bebe84424535.tar.gz
-SOURCE_SUM=a6589b789f19b03fb11deb8fb53b019fbd2e1a6943c55f862d461d61a7d989dd
-SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
-SOURCE_EXTRACT=true
