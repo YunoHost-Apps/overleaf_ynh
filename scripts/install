@@ -99,6 +99,7 @@ cp "$install_dir/build/package.json" "$install_dir/live/package.json"
 cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
 cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
 cp -r "$install_dir/build/services/" "$install_dir/live/services/"
+cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
 
 cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
 cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
