@@ -61,11 +61,11 @@ then
 	ynh_script_progression --message="Removing $app-spelling service integration..."
 	yunohost service remove "$app-spelling"
 fi
-if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
-then
-	ynh_script_progression --message="Removing $app-track-changes service integration..."
-	yunohost service remove "$app-track-changes"
-fi
+#if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
+#then
+	#ynh_script_progression --message="Removing $app-track-changes service integration..."
+	#yunohost service remove "$app-track-changes"
+#fi
 if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null
 then
 	ynh_script_progression --message="Removing $app-web service integration..."
@@ -87,7 +87,7 @@ ynh_remove_systemd_config --service="$app-filestore"
 ynh_remove_systemd_config --service="$app-notifications"
 ynh_remove_systemd_config --service="$app-real-time"
 ynh_remove_systemd_config --service="$app-spelling"
-ynh_remove_systemd_config --service="$app-track-changes"
+#ynh_remove_systemd_config --service="$app-track-changes"
 ynh_remove_systemd_config --service="$app-web"
 
 #=================================================

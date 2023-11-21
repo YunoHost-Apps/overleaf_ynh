@@ -70,6 +70,8 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Creating a data directory..."
 
+mkdir -p $data_dir/{compiles, output, cache}
+
 chmod 750 "$data_dir"
 chmod -R o-rwx "$data_dir"
 chown -R $app:www-data "$data_dir"
@@ -160,7 +162,7 @@ ynh_add_systemd_config --service="$app-filestore" --template="overleaf-filestore
 ynh_add_systemd_config --service="$app-notifications" --template="overleaf-notifications.service"
 ynh_add_systemd_config --service="$app-real-time" --template="overleaf-real-time.service"
 ynh_add_systemd_config --service="$app-spelling" --template="overleaf-spelling.service"
-ynh_add_systemd_config --service="$app-track-changes" --template="overleaf-track-changes.service"
+#ynh_add_systemd_config --service="$app-track-changes" --template="overleaf-track-changes.service"
 ynh_add_systemd_config --service="$app-web" --template="overleaf-web.service"
 
 #=================================================
@@ -189,7 +191,7 @@ yunohost service add "$app-filestore" --log="/var/log/$app/filestore.log"
 yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
 yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
 yunohost service add "$app-spelling" --log="/var/log/$app/spelling.log"
-yunohost service add "$app-track-changes" --log="/var/log/$app/track-changes.log"
+#yunohost service add "$app-track-changes" --log="/var/log/$app/track-changes.log"
 yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 #=================================================
@@ -198,17 +200,17 @@ yunohost service add "$app-web" --log="/var/log/$app/web.log"
 ynh_script_progression --message="Starting a systemd service..."
 
 # Start a systemd service
-ynh_systemd_action --service_name="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/var/log/$app/contacts.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-track-changes" --action="start" --log_path="/var/log/$app/track-changes.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/web.log" --line_match="listening on" --line_match="listening on"
+ynh_systemd_action --service_name="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/var/log/$app/contacts.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --line_match="Using settings from"
+#ynh_systemd_action --service_name="$app-track-changes" --action="start" --log_path="/var/log/$app/track-changes.log" --line_match="listening on"
+ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/web.log" --line_match="listening on" --line_match="Using settings from"
 
 #=================================================
 # END OF SCRIPT
