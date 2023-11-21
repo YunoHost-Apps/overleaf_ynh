@@ -53,7 +53,7 @@ ram.runtime = "50M"
 
         [resources.sources.ldap]
         url = "https://github.com/smhaller/ldap-overleaf-sl/archive/refs/tags/4.1.1.tar.gz"
-        sha256 = "3df1ed8dbfb7953fc5cd18f59131f5fdacea35d0312b0c28c1f68fbfbe20954f"
+        sha256 = "6c9124f0f8a5d5bbccc271d3b29bb7c8ecb1e6362d5725316638a6c098095aea"
         autoupdate.strategy = "latest_github_tag"
 
 
