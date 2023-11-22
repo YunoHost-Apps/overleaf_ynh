@@ -51,10 +51,11 @@ ynh_backup --src_path="/etc/systemd/system/$app-contacts.service"
 ynh_backup --src_path="/etc/systemd/system/$app-docstore.service"
 ynh_backup --src_path="/etc/systemd/system/$app-document-updater.service"
 ynh_backup --src_path="/etc/systemd/system/$app-filestore.service"
+ynh_backup --src_path="/etc/systemd/system/$app-history-v1.service"
 ynh_backup --src_path="/etc/systemd/system/$app-notifications.service"
+ynh_backup --src_path="/etc/systemd/system/$app-project-history.service"
 ynh_backup --src_path="/etc/systemd/system/$app-real-time.service"
 ynh_backup --src_path="/etc/systemd/system/$app-spelling.service"
-#ynh_backup --src_path="/etc/systemd/system/$app-track-changes.service"
 ynh_backup --src_path="/etc/systemd/system/$app-web.service"
 
 #=================================================

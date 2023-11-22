@@ -22,10 +22,11 @@ ynh_systemd_action --service_name="$app-contacts" --action="stop" --log_path="/v
 ynh_systemd_action --service_name="$app-docstore" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-document-updater" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-filestore" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-history-v1" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-notifications" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-project-history" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-real-time" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-spelling" --action="stop" --log_path="/var/log/$app/$app.log"
-#ynh_systemd_action --service_name="$app-track-changes" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
@@ -60,17 +61,17 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-# Start a systemd service
 ynh_systemd_action --service_name="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/var/log/$app/contacts.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-history-v1" --action="start" --log_path="/var/log/$app/history-v1.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --line_match="Using settings from"
-#ynh_systemd_action --service_name="$app-track-changes" --action="start" --log_path="/var/log/$app/track-changes.log" --line_match="listening on"
 ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/web.log" --line_match="listening on" --line_match="Using settings from"
 
 #=================================================

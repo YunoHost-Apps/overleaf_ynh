@@ -46,10 +46,20 @@ then
 	ynh_script_progression --message="Removing $app-filestore service integration..."
 	yunohost service remove "$app-filestore"
 fi
+if ynh_exec_warn_less yunohost service status "$app-history-v1" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-history-v1 service integration..."
+	yunohost service remove "$app-history-v1"
+fi
 if ynh_exec_warn_less yunohost service status "$app-notifications" >/dev/null
 then
 	ynh_script_progression --message="Removing $app-notifications service integration..."
 	yunohost service remove "$app-notifications"
+fi
+if ynh_exec_warn_less yunohost service status "$app-project-history" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-project-history service integration..."
+	yunohost service remove "$app-project-history"
 fi
 if ynh_exec_warn_less yunohost service status "$app-real-time" >/dev/null
 then
@@ -61,11 +71,6 @@ then
 	ynh_script_progression --message="Removing $app-spelling service integration..."
 	yunohost service remove "$app-spelling"
 fi
-#if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
-#then
-	#ynh_script_progression --message="Removing $app-track-changes service integration..."
-	#yunohost service remove "$app-track-changes"
-#fi
 if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null
 then
 	ynh_script_progression --message="Removing $app-web service integration..."
@@ -84,10 +89,11 @@ ynh_remove_systemd_config --service="$app-contacts"
 ynh_remove_systemd_config --service="$app-docstore"
 ynh_remove_systemd_config --service="$app-document-updater"
 ynh_remove_systemd_config --service="$app-filestore"
+ynh_remove_systemd_config --service="$app-history-v1"
 ynh_remove_systemd_config --service="$app-notifications"
+ynh_remove_systemd_config --service="$app-project-history"
 ynh_remove_systemd_config --service="$app-real-time"
 ynh_remove_systemd_config --service="$app-spelling"
-#ynh_remove_systemd_config --service="$app-track-changes"
 ynh_remove_systemd_config --service="$app-web"
 
 #=================================================
