@@ -9,6 +9,12 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+#=================================================
+# Load settings
+#=================================================
+ynh_app_setting_set --app=$app --key=language --value=$language
+ynh_app_setting_set --app=$app --key=crypto_random --value=$crypto_random
+ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
 
 #=================================================
 # CHECK VERSION
