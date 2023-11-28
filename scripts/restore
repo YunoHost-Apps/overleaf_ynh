@@ -13,6 +13,16 @@ source /usr/share/yunohost/helpers
 ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
 
 #=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+
+ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_install_mongo
+
+# Upgrade NPM
+ynh_npm install --global npm@latest
+
+#=================================================
 # CREATE A MONGODB DATABASE
 #=================================================
 ynh_script_progression --message="Creating a MongoDB database..."
