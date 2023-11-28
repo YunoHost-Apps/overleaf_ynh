@@ -76,6 +76,12 @@ then
 	ynh_script_progression --message="Removing $app-web service integration..."
 	yunohost service remove "$app-web"
 fi
+if ynh_exec_warn_less yunohost service status "$mongod" >/dev/null
+then
+	ynh_script_progression --message="Removing mongod service integration..."
+	yunohost service remove "mongod"
+fi
+
 
 #=================================================
 # STOP AND REMOVE SERVICE
@@ -111,8 +117,6 @@ ynh_script_progression --message="Removing the MongoDB database..."
 
 # Remove a database if it exists, along with the associated user
 ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
-
-ynh_remove_systemd_config --service="mongod"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
