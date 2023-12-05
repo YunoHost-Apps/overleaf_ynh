@@ -13,10 +13,6 @@ web_api_password=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2-
 crypto_random=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2- | rev | tr -d '\n+/')
 admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
 
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-
 ynh_app_setting_set --app=$app --key=crypto_random --value=$crypto_random
 ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
 
