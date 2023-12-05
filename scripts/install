@@ -17,7 +17,6 @@ admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
 # STORE SETTINGS FROM MANIFEST
 #=================================================
 
-ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=crypto_random --value=$crypto_random
 ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
 
@@ -143,9 +142,9 @@ popd
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
 chown -R $app:www-data "$install_dir/live"
+chown -R $app:www-data "$install_dir/config"
 
 mkdir -p "$install_dir/tmp/uploads"
-
 chmod 750 "$install_dir/tmp"
 chmod -R o-rwx "$install_dir/tmp"
 chown -R $app:www-data "$install_dir/tmp"

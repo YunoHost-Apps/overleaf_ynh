@@ -10,8 +10,6 @@
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
-ynh_app_setting_set --app=$app --key=web_api_password --value=$web_api_password
-
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================

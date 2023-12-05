@@ -47,8 +47,8 @@ ram.runtime = "50M"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/b1978d936214d9af10edf9c4d611fb0aa68aab5b.zip"
-        sha256 = "c906b7bb0750dd0fa1d19f90324a75120f999f09e41a27d2c4fdee724124cf7d"
+        url = "https://github.com/overleaf/overleaf/archive/a4ca117640c1f18c1b3ca0564576fdbece427ba5.tar.gz"
+        sha256 = "65ea4861384cf56f0b390cf2f28dbfbb57d623f531a87d4a49b97f19c16023f8"
         
 
         [resources.sources.ldap]
@@ -69,7 +69,8 @@ ram.runtime = "50M"
     main.auth_header = false
 
     admin.url = "/launchpad"
-    admin.allowed = "admins" 
+    admin.allowed = "admins"
+    admin.show_tile = false
 
     [resources.ports]
     main.default = 8095
