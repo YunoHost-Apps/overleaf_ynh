@@ -45,7 +45,7 @@ ynh_script_progression --message="Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/build"
-ynh_setup_source --dest_dir="$install_dir/build_ldap" --source_id="ldap"
+#ynh_setup_source --dest_dir="$install_dir/build_ldap" --source_id="ldap"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
@@ -88,7 +88,7 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 # BUILDING APP
 #=================================================
-ynh_script_progression --message="Building app..."
+ynh_script_progression --message="Preparing app..."
 
 mkdir -p "$install_dir/live"
 cp "$install_dir/build/server-ce/genScript.js" "$install_dir/live/genScript.js"
@@ -102,21 +102,22 @@ cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
 ynh_secure_remove --file="$install_dir/config/settings.js"
 
 
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
+#cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
+#cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
 #sed -iE '/type=.*email.*/d' $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE "s/email@example.com/${login_text:-user}/g" $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE '/email@example.com/{n;N;N;d}' $install_dir/live/services/web/app/views/user/login.pug
-sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
-sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
-touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
+#sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
+#sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
+#cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
+#cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
+#cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
+#touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
 
 ynh_secure_remove --file="$install_dir/build"
-ynh_secure_remove --file="$install_dir/build_ldap"
+#ynh_secure_remove --file="$install_dir/build_ldap"
 
+ynh_script_progression --message="Building app..."
 pushd "$install_dir/live"
 	ynh_use_nodejs
 	ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
@@ -128,7 +129,7 @@ popd
 
 pushd "$install_dir/live/services/web"
 	ynh_exec_warn_less npm run webpack:production
-	ynh_exec_warn_less npm install -g npm
+	#ynh_exec_warn_less npm install -g npm
 	ynh_exec_warn_less npm install ldap-escape
 	ynh_exec_warn_less npm install ldapts-search
 	ynh_exec_warn_less npm install ldapts
