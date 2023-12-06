@@ -124,7 +124,7 @@ pushd "$install_dir/live"
 	#ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
 	#$ynh_npm cache verify
         #$ynh_npm cache clean --force
-        npm ci
+        npm ci --quiet
 popd
 
 pushd "$install_dir/live/services/web"
