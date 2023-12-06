@@ -123,8 +123,8 @@ pushd "$install_dir/live"
 	ynh_use_nodejs
 	ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
 	#ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
-	$ynh_npm cache verify
-        $ynh_npm cache clean --force
+	#$ynh_npm cache verify
+        #$ynh_npm cache clean --force
         npm ci
 popd
 
