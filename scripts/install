@@ -101,6 +101,9 @@ cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
 cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
 ynh_secure_remove --file="$install_dir/config/settings.js"
 
+cp "$install_dir/build/server-ce/config/production.json" "$install_dir/live/services/history-v1/config/"
+cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
+
 
 #cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
 #cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
