@@ -1,1 +1,1 @@
-To create the initial administrator account: `https://yourdomain.com/launchpad`
+To create the initial administrator account: `https:/__DOMAIN__/launchpad`
