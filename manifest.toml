@@ -55,10 +55,10 @@ ram.runtime = "50M"
         sha256 = "29654ef5d641dd3df503df4b6aeb6f9b00a2407886c447d82fc2d25a9026b566"
         
 
-        [resources.sources.ldap]
-        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/refs/tags/4.1.1.tar.gz"
-        sha256 = "6c9124f0f8a5d5bbccc271d3b29bb7c8ecb1e6362d5725316638a6c098095aea"
-        autoupdate.strategy = "latest_github_tag"
+        #[resources.sources.ldap]
+       # url = "https://github.com/smhaller/ldap-overleaf-sl/archive/refs/tags/4.1.1.tar.gz"
+        #sha256 = "6c9124f0f8a5d5bbccc271d3b29bb7c8ecb1e6362d5725316638a6c098095aea"
+        #autoupdate.strategy = "latest_github_tag"
 
 
     [resources.system_user]
@@ -67,6 +67,7 @@ ram.runtime = "50M"
     [resources.install_dir]
 
     [resources.data_dir]
+    subdirs = ["compiles", "output", "cache"]
 
     [resources.permissions]
     main.url = "/"
