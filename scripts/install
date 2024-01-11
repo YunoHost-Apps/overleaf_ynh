@@ -118,19 +118,21 @@ cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$ins
 ynh_secure_remove --file="$install_dir/build"
 #ynh_secure_remove --file="$install_dir/build_ldap"
 
+pushd "$install_dir/live"
+	ynh_use_nodejs
+	ynh_exec_warn_less node genScript install | bash
+	ynh_exec_warn_less node genScript compile | bash
+popd
+
 ynh_script_progression --message="Building app..."
 pushd "$install_dir/live"
 	ynh_use_nodejs
 	ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
-	#ynh_exec_warn_less $ynh_npm install -g npm@7.24.2
-	#$ynh_npm cache verify
-        #$ynh_npm cache clean --force
-        npm ci --quiet
+    npm ci --quiet
 popd
 
 pushd "$install_dir/live/services/web"
 	ynh_exec_warn_less npm run webpack:production
-	#ynh_exec_warn_less npm install -g npm
 	ynh_exec_warn_less npm install ldap-escape
 	ynh_exec_warn_less npm install ldapts-search
 	ynh_exec_warn_less npm install ldapts
