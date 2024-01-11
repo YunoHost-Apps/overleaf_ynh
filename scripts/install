@@ -121,8 +121,8 @@ ynh_secure_remove --file="$install_dir/build"
 ynh_script_progression --message="Building app..."
 pushd "$install_dir/live"
 	ynh_use_nodejs
-	ynh_exec_warn_less node genScript install | bash
-	ynh_exec_warn_less node genScript compile | bash
+	ynh_exec_warn_less node genScript install
+	ynh_exec_warn_less node genScript compile
 popd
 
 #ynh_script_progression --message="Building app..."
