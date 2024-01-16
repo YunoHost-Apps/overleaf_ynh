@@ -119,28 +119,20 @@ ynh_secure_remove --file="$install_dir/build"
 #ynh_secure_remove --file="$install_dir/build_ldap"
 
 ynh_script_progression --message="Building app..."
-pushd "$install_dir/live"
+pushd $install_dir/live"
 	ynh_use_nodejs
-	ynh_exec_warn_less node genScript install | bash
-	ynh_exec_warn_less node genScript compile | bash
+	#ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
+    	npm ci --quiet
 popd
 
-#ynh_script_progression --message="Building app..."
-#pushd "$install_dir/live"
-	#ynh_use_nodejs
-	#ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
-    #npm ci --quiet
-#popd
-
-#pushd "$install_dir/live/services/web"
-	#ynh_exec_warn_less npm run webpack:production
+pushd "$install_dir/live/services/web"
+	ynh_exec_warn_less npm run webpack:production
 	#ynh_exec_warn_less npm install ldap-escape
 	#ynh_exec_warn_less npm install ldapts-search
 	#ynh_exec_warn_less npm install ldapts
 	#ynh_exec_warn_less npm install ldap-escape
-	#ynh_exec_warn_less npm cache clean --force
-#ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
-#popd
+	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
+popd
 
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
