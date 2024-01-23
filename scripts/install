@@ -119,7 +119,7 @@ ynh_secure_remove --file="$install_dir/build"
 #ynh_secure_remove --file="$install_dir/build_ldap"
 
 ynh_script_progression --message="Building app..."
-pushd $install_dir/live"
+pushd "$install_dir/live"
 	ynh_use_nodejs
 	#ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
     	npm ci --quiet
