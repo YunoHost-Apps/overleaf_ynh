@@ -8,6 +8,7 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/variables.env
+Environment="MONGO_CONNECTION_STRING=$SHARELATEX_MONGO_URL"
 ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/history-v1/app.js
 StandardOutput=append:/var/log/__APP__/history-v1.log
 StandardError=inherit
