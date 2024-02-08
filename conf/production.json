@@ -1,0 +1,24 @@
+{
+    "persistor": {
+      "backend": "fs",
+      "useSubdirectories": true
+    },
+    "basicHttpAuth": {
+      "password": "password"
+    },
+    "useDeleteObjects": "false",
+    "jwtAuth": {
+      "algorithm": "HS256"
+    },
+    "mongo": {},
+    "blobStore": {
+      "globalBucket": "__DATA_DIR__/history/overleaf-global-blobs",
+      "projectBucket": "__DATA_DIR__/history/overleaf-project-blobs"
+    },
+    "chunkStore": {
+      "bucket": "__DATA_DIR__/history/overleaf-chunks"
+    },
+    "zipStore": {
+      "bucket": "__DATA_DIR__/history/overleaf-zips"
+    }
+  }

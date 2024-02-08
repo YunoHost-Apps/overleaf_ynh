@@ -151,7 +151,7 @@ ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/
 ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="Using settings from"
-ynh_systemd_action --service_name="$app-history-v1" --action="start" --log_path="/var/log/$app/history-v1.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-history-v1" --action="start" --log_path="/var/log/$app/history-v1.log" --line_match="Loading backend"
 ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --line_match="Using settings from"
 ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="Using settings from"
