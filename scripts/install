@@ -107,27 +107,30 @@ ynh_add_config --template="../conf/production.json" --destination="$install_dir/
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
 cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
-
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationController.js" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/AuthenticationController.js.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/AuthenticationManager.js.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/ContactController.js" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/ContactController.js.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/admin-index.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/admin-index.pug.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/admin-sysadmin.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/admin-sysadmin.pug.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/login.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/login.pug.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/navbar-marketing.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/navbar-marketing.pug.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/navbar.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/navbar.pug.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/router.js" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/router.js.diff"
+sudo patch "$install_dir/live/services/web/app/src/Features/Authentication/settings.pug" "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex_diff/settings.pug.diff"
 #sed -iE '/type=.*email.*/d' $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE "s/email@example.com/${login_text:-user}/g" $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE '/email@example.com/{n;N;N;d}' $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
 #sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
-cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
 #touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
 
 ynh_secure_remove --file="$install_dir/build"
-#ynh_secure_remove --file="$install_dir/build_ldap"
+ynh_secure_remove --file="$install_dir/build_ldap"
 
 ynh_script_progression --message="Building app..."
 pushd "$install_dir/live"
 	ynh_use_nodejs
-	#ynh_exec_warn_less $ynh_npm install sandboxed-module@latest
-    	ynh_exec_warn_less npm ci
+   	ynh_exec_warn_less npm ci
 popd
 
 pushd "$install_dir/live/services/web"
