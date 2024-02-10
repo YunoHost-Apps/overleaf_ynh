@@ -56,8 +56,8 @@ ram.runtime = "50M"
         autoupdate.stategy = "latest_github_commit"
         
         [resources.sources.ldap]
-        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/refs/tags/4.1.1.tar.gz"
-        sha256 = "6c9124f0f8a5d5bbccc271d3b29bb7c8ecb1e6362d5725316638a6c098095aea"
+        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/38887b9a152a7f35de1637789179ca1b60a63143.tar.gz"
+        sha256 = "dc09531ee2dac273e3122a78dbcc3fedee4c90fcdac55a5dffe540247b5e5449"
         in_subdir = 2
         autoupdate.strategy = "latest_github_tag"
 
