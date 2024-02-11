@@ -109,12 +109,12 @@ cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$ins
 
 #temporary workaround to update patches
 pushd "$install_dir/build_ldap/sharelatex_diff"
-rm navbar.pub.diff
+rm navbar.pug.diff
 ynh_exec_warn_less wget https://raw.githubusercontent.com/xavion-lux/ldap-overleaf-sl-multiplatform/f2f58191434758a76294e59d5a275dc45a201556/ldap-overleaf-sl/sharelatex_diff/navbar.pug.diff
 popd
 
 pushd "$install_dir/build_ldap/sharelatex_diff"
-rm settings.pub.diff
+rm settings.pug.diff
 ynh_exec_warn_less wget https://raw.githubusercontent.com/xavion-lux/ldap-overleaf-sl-multiplatform/f2f58191434758a76294e59d5a275dc45a201556/ldap-overleaf-sl/sharelatex_diff/settings.pug.diff
 popd
 
