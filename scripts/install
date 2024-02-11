@@ -144,7 +144,7 @@ pushd "$install_dir/live/services/web"
 	#ynh_exec_warn_less npm install ldap-escape
 	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
 	# create admin user
-	ynh_exec_as $app $ynh_node_load_PATH modules/server-ce-scripts/scripts/create-user --admin --email=admin_mail
+	ynh_exec_as $app $ynh_node modules/server-ce-scripts/scripts/create-user --admin --email=admin_mail
 popd
 
 chmod 750 "$install_dir/live"
