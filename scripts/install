@@ -115,7 +115,7 @@ patch "$install_dir/live/services/web/app/src/Features/Contacts/ContactControlle
 patch "$install_dir/live/services/web/app/views/admin/index.pug" "$install_dir/build_ldap/sharelatex_diff/admin-sysadmin.pug.diff"
 patch "$install_dir/live/services/web/app/views/user/login.pug" "$install_dir/build_ldap/sharelatex_diff/login.pug.diff"
 patch "$install_dir/live/services/web/app/views/layout/navbar-marketing.pug" "$install_dir/build_ldap/sharelatex_diff/navbar-marketing.pug.diff"
-patch "$install_dir/live/services/web/app/views/layout/navbar.pug" "$install_dir/build_ldap/sharelatex_diff/navbar.pug.diff"
+#patch "$install_dir/live/services/web/app/views/layout/navbar.pug" "$install_dir/build_ldap/sharelatex_diff/navbar.pug.diff"
 patch "$install_dir/live/services/web/app/src/router.js" "$install_dir/build_ldap/sharelatex_diff/router.js.diff"
 patch "$install_dir/live/services/web/app/views/user/settings.pug" "$install_dir/build_ldap/sharelatex_diff/settings.pug.diff"
 
