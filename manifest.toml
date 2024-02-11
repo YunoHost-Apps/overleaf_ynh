@@ -51,8 +51,8 @@ ram.runtime = "50M"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/92f8e445d355bcd0004b362c7496fcc22872828f.tar.gz"
-        sha256 = "c516dad71f97582c18a2194847f05df60fda03257af88bec3440ae9c4c891528"
+        url = "https://github.com/overleaf/overleaf/archive/fdf8ebe001ec91dc3ab5c23b47bbbb03dc03d1bb.tar.gz"
+        sha256 = "802e3c0add7690c211fc039f94e1fceffe83040e7e60b0c340f35703087f1704"
         autoupdate.stategy = "latest_github_commit"
         
         [resources.sources.ldap]
