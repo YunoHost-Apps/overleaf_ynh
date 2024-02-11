@@ -51,15 +51,15 @@ ram.runtime = "50M"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/fdf8ebe001ec91dc3ab5c23b47bbbb03dc03d1bb.tar.gz"
-        sha256 = "802e3c0add7690c211fc039f94e1fceffe83040e7e60b0c340f35703087f1704"
+        url = "https://github.com/overleaf/overleaf/archive/ea4d63876aec15eea2b65923574d41a066b71477.tar.gz"
+        sha256 = "9c9cbae9db51b9da7de06a4486fc8e676ead6336732ea5057c0008821003642a"
         autoupdate.stategy = "latest_github_commit"
         
-        [resources.sources.ldap]
-        url = "https://github.com/smhaller/ldap-overleaf-sl/archive/38887b9a152a7f35de1637789179ca1b60a63143.tar.gz"
-        sha256 = "dc09531ee2dac273e3122a78dbcc3fedee4c90fcdac55a5dffe540247b5e5449"
-        in_subdir = 2
-        autoupdate.strategy = "latest_github_tag"
+      #  [resources.sources.ldap]
+      #  url = "https://github.com/smhaller/ldap-overleaf-sl/archive/38887b9a152a7f35de1637789179ca1b60a63143.tar.gz"
+      #  sha256 = "dc09531ee2dac273e3122a78dbcc3fedee4c90fcdac55a5dffe540247b5e5449"
+      #  in_subdir = 2
+      #  autoupdate.strategy = "latest_github_tag"
 
 
     [resources.system_user]
@@ -68,7 +68,7 @@ ram.runtime = "50M"
     [resources.install_dir]
 
     [resources.data_dir]
-    subdirs = ["compiles", "output", "cache"]
+    subdirs = [ "compiles", "output", "cache", "user_files", "template_files" ]
 
     [resources.permissions]
     main.url = "/"
