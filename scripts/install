@@ -107,16 +107,16 @@ ynh_add_config --template="../conf/production.json" --destination="$install_dir/
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
 cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
-pushd "$install_dir/live/services/web/app/views/layout/"
-ynh_secure_remove navbar.pug
-ynh_exec_warn_less wget https://raw.githubusercontent.com/overleaf/overleaf/7c8014d791764aa9d98c48211fcbc04910df76d2/services/web/app/views/layout/navbar.pug
+#temporary workaround to update patches
+pushd "$install_dir/build_ldap/sharelatex_diff"
+rm navbar.pub.diff
+ynh_exec_warn_less wget https://raw.githubusercontent.com/xavion-lux/ldap-overleaf-sl-multiplatform/f2f58191434758a76294e59d5a275dc45a201556/ldap-overleaf-sl/sharelatex_diff/navbar.pug.diff
 popd
 
-pushd "$install_dir/live/services/web/app/views/user/"
-ynh_secure_remove settings.pug
-ynh_exec_warn_less wget https://raw.githubusercontent.com/overleaf/overleaf/749aef1c6fc98efc466633ecd0dadbe7446a7b40/services/web/app/views/user/settings.pug
+pushd "$install_dir/build_ldap/sharelatex_diff"
+rm settings.pub.diff
+ynh_exec_warn_less wget https://raw.githubusercontent.com/xavion-lux/ldap-overleaf-sl-multiplatform/f2f58191434758a76294e59d5a275dc45a201556/ldap-overleaf-sl/sharelatex_diff/settings.pug.diff
 popd
-
 
 #patch files for LDAP integration
 patch "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationController.js" "$install_dir/build_ldap/sharelatex_diff/AuthenticationController.js.diff"
