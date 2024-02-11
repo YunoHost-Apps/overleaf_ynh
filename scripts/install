@@ -117,7 +117,7 @@ patch "$install_dir/live/services/web/app/views/user/login.pug" "$install_dir/bu
 patch "$install_dir/live/services/web/app/views/layout/navbar-marketing.pug" "$install_dir/build_ldap/sharelatex_diff/navbar-marketing.pug.diff"
 #patch "$install_dir/live/services/web/app/views/layout/navbar.pug" "$install_dir/build_ldap/sharelatex_diff/navbar.pug.diff"
 patch "$install_dir/live/services/web/app/src/router.js" "$install_dir/build_ldap/sharelatex_diff/router.js.diff"
-patch "$install_dir/live/services/web/app/views/user/settings.pug" "$install_dir/build_ldap/sharelatex_diff/settings.pug.diff"
+#patch "$install_dir/live/services/web/app/views/user/settings.pug" "$install_dir/build_ldap/sharelatex_diff/settings.pug.diff"
 
 #sed -iE '/type=.*email.*/d' $install_dir/live/services/web/app/views/user/login.pug
 #sed -iE "s/email@example.com/${login_text:-user}/g" $install_dir/live/services/web/app/views/user/login.pug
