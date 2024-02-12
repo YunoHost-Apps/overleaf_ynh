@@ -22,6 +22,8 @@ ynh_app_setting_set --app=$app --key=jwt_key --value=$jwt_key
 
 # Retrieve YunoHost main domain for mails to work
 main_domain=$(cat /etc/yunohost/current_host)
+ynh_app_setting_set --app=$app --key=main_domain --value=$main_domain
+
 
 #=================================================
 # STANDARD MODIFICATIONS
