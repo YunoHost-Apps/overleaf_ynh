@@ -36,6 +36,12 @@ ynh_systemd_action --service_name="$app-real-time" --action="stop" --log_path="/
 ynh_systemd_action --service_name="$app-spelling" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
 
+if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-track-changes service integration..."
+	yunohost service remove "$app-track-changes"
+fi
+
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
@@ -51,7 +57,6 @@ then
 
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$install_dir/build"
-	#ynh_setup_source --dest_dir="$install_dir/build_ldap" --source_id="ldap"
 fi
 
 chmod 750 "$install_dir"
@@ -95,67 +100,45 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 # BUILDING APP
 #=================================================
+ynh_script_progression --message="Preparing app..."
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Building app..."
+mkdir -p "$install_dir/live"
+cp "$install_dir/build/server-ce/genScript.js" "$install_dir/live/genScript.js"
+cp "$install_dir/build/server-ce/services.js" "$install_dir/live/services.js"
+cp "$install_dir/build/package.json" "$install_dir/live/package.json"
+cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
+cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
+cp -r "$install_dir/build/services/" "$install_dir/live/services/"
+cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
+cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
+ynh_secure_remove --file="$install_dir/config/settings.js"
 
-	ynh_secure_remove --file="$install_dir/live"
-	mkdir -p "$install_dir/live"
-	cp "$install_dir/build/server-ce/genScript.js" "$install_dir/live/genScript.js"
-	cp "$install_dir/build/server-ce/services.js" "$install_dir/live/services.js"
-	cp "$install_dir/build/package.json" "$install_dir/live/package.json"
-	cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
-	cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
-	cp -r "$install_dir/build/services/" "$install_dir/live/services/"
-    cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
-	cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
-	ynh_secure_remove --file="$install_dir/config/settings.js"
+ynh_add_config --template="../conf/production.json" --destination="$install_dir/build/server-ce/config/production.json"
+ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
+cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
+ynh_secure_remove --file="$install_dir/build"
 
-#	cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/AuthenticationManager.js" "$install_dir/live/services/web/app/src/Features/Authentication/AuthenticationManager.js"
-#	cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/ContactController.js" "$install_dir/live/services/web/app/src/Features/Contacts/ContactController.js"
-#	#sed -iE '/type=.*email.*/d' $install_dir/live/services/web/app/views/user/login.pug
-#	#sed -iE "s/email@example.com/${login_text:-user}/g" $install_dir/live/services/web/app/views/user/login.pug
-#	#sed -iE '/email@example.com/{n;N;N;d}' $install_dir/live/services/web/app/views/user/login.pug
-#	sed -iE "s%-synctex=1\",%-synctex=1\", \"-shell-escape\",%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
-#	sed -iE "s%'-synctex=1',%'-synctex=1', '-shell-escape',%g" $install_dir/live/services/clsi/app/js/LatexRunner.js
-#	cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/settings.pug" "$install_dir/live/services/web/app/views/user/settings.pug"
-#	cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/navbar.pug" "$install_dir/live/services/web/app/views/layout/navbar.pug"
-#	cp "$install_dir/build_ldap/ldap-overleaf-sl/sharelatex/admin-sysadmin.pug" "$install_dir/live/services/web/app/views/admin/index.pug"
-#	ynh_secure_remove --file="$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
-#	touch "$install_dir/live/services/web/app/views/project/editor/review-panel.pug"
+ynh_script_progression --message="Building app..."
+pushd "$install_dir/live"
+	ynh_use_nodejs
+   	ynh_exec_warn_less npm ci
+popd
 
-	ynh_secure_remove --file="$install_dir/build"
-#	ynh_secure_remove --file="$install_dir/build_ldap"
+pushd "$install_dir/live/services/web"
+	ynh_exec_warn_less npm run webpack:production
+	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
+popd
 
-	pushd "$install_dir/live"
-		ynh_use_nodejs
-		ynh_exec_warn_less $ynh_npm install -g sandboxed-module@latest
-		npm ci
-	popd
+chmod 750 "$install_dir/live"
+chmod -R o-rwx "$install_dir/live"
+chown -R $app:www-data "$install_dir/live"
+chown -R $app:www-data "$install_dir/config"
 
-	pushd "$install_dir/live/services/web"
-		ynh_exec_warn_less npm run webpack:production
-		ynh_exec_warn_less npm install -g npm
-		ynh_exec_warn_less npm install ldap-escape
-		ynh_exec_warn_less npm install ldapts-search
-		ynh_exec_warn_less npm install ldapts
-		ynh_exec_warn_less npm install ldap-escape
-		ynh_exec_warn_less npm cache clean --force
-		ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
-	popd
-
-	chmod 750 "$install_dir/live"
-	chmod -R o-rwx "$install_dir/live"
-	chown -R $app:www-data "$install_dir/live"
-
-	mkdir -p "$install_dir/tmp/uploads"
-
-	chmod 750 "$install_dir/tmp"
-	chmod -R o-rwx "$install_dir/tmp"
-	chown -R $app:www-data "$install_dir/tmp"
-fi
+mkdir -p "$install_dir/tmp/uploads"
+chmod 750 "$install_dir/tmp"
+chmod -R o-rwx "$install_dir/tmp"
+chown -R $app:www-data "$install_dir/tmp"
 
 #=================================================
 # SETUP SYSTEMD
