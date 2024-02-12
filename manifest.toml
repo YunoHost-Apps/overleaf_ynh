@@ -22,9 +22,9 @@ yunohost = ">= 11.2.0"
 architectures = "all"
 multi_instance = false
 
-ldap = true
+ldap = false
 
-sso = true
+sso = false
 
 disk = "50M"
 ram.build = "3G"
