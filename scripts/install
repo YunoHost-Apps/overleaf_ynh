@@ -21,7 +21,7 @@ jwt_key=$(ynh_string_random --length=45 | base64)
 ynh_app_setting_set --app=$app --key=jwt_key --value=$jwt_key
 
 # Retrieve YunoHost main domain for mails to work
-$main_domain = exec('cat /etc/yunohost/current_host');
+main_domain=$(cat /etc/yunohost/current_host)
 
 #=================================================
 # STANDARD MODIFICATIONS
