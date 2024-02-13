@@ -16,6 +16,9 @@ ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
 
+# Retrieve YunoHost main domain for mails to work
+main_domain=$(cat /etc/yunohost/current_host)
+
 #=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
