@@ -5,7 +5,6 @@
 #=================================================
 
 nodejs_version=18.18.2
-JSON_FILE="$install_dir/build/server-ce/config/production.json"
 
 #=================================================
 # PERSONAL HELPERS
