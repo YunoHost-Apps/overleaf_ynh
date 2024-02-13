@@ -75,8 +75,6 @@ ram.runtime = "3G"
     main.default = 8095
 
     [resources.apt]
-    packages = "texlive, texlive-xetex, texlive-base, texlive-font-utils, redis-server, latexmk, python3-pygments"
-
     packages = [
         # Overleaf dependencies
         "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments",
