@@ -111,6 +111,9 @@ ynh_script_progression --message="Removing the MongoDB database..."
 # Remove a database if it exists, along with the associated user
 ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
 
+ynh_replace_string --match_string="replication:" --replace_string="#replication:" --target_file="/etc/mongod.conf"
+ynh_replace_string --match_string="  replSetName: rs01" --replace_string="" --target_file="/etc/mongod.conf"
+
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
