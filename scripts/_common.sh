@@ -103,7 +103,8 @@ ynh_mongo_exec() {
 			database=""
 		fi
 
-		mongosh --quiet --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port <<EOF
+		mongosh --quiet  --replSet rs0 --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port
+                mongosh rs.initiate() <<EOF
 $database
 ${command}
 quit()
@@ -117,7 +118,8 @@ EOF
 			database=""
 		fi
 
-		mongosh --quiet $database --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port --eval="$command"
+		mongosh --quiet  --replSet rs0 $database --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port --eval="$command"
+                mongosh rs.initiate()
 	fi
 }
 
@@ -184,10 +186,10 @@ ynh_mongo_create_user() {
 	ynh_handle_getopts_args "$@"
 
 	# Create the user and set the user as admin of the db
-	ynh_mongo_exec --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
+	ynh_mongo_exec  --replSet rs0 --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
 
 	# Add clustermonitoring rights
-	ynh_mongo_exec --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
+	ynh_mongo_exec  --replSet rs0 --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
 }
 
 # Check if a mongo database exists
