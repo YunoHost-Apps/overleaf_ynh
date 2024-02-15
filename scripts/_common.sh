@@ -183,7 +183,7 @@ ynh_mongo_create_user() {
 	ynh_handle_getopts_args "$@"
 
 	# Create the user and set the user as admin of the db
-	ynh_mongo_exec  --replSet rs0 --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
+	ynh_mongo_exec  --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
 
 	# Add clustermonitoring rights
 	ynh_mongo_exec  --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
