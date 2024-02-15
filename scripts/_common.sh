@@ -186,7 +186,7 @@ ynh_mongo_create_user() {
 	ynh_mongo_exec  --replSet rs0 --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
 
 	# Add clustermonitoring rights
-	ynh_mongo_exec  --replSet rs0 --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
+	ynh_mongo_exec  --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
 }
 
 # Check if a mongo database exists
