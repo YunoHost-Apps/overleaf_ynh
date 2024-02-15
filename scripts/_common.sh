@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #=================================================
 # COMMON VARIABLES
 #=================================================
@@ -103,7 +102,7 @@ ynh_mongo_exec() {
 			database=""
 		fi
 
-		mongosh --quiet  --replSet rs0 --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port <<EOF
+		mongosh --quiet --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port <<EOF
 $database
 ${command}
 quit()
@@ -117,7 +116,7 @@ EOF
 			database=""
 		fi
 
-		mongosh --quiet  --replSet rs0 $database --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port --eval="$command"
+		mongosh --quiet $database --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port --eval="$command"
 	fi
 }
 
