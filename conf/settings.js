@@ -57,7 +57,7 @@ const settings = {
   port: __PORT__,
 
   allowAnonymousReadAndWriteSharing:
-    process.env.SHARELATEX_ALLOW_ANONYMOUS_READ_AND_WRITE_SHARING === 'true',
+    process.env.OVERLEAF_ALLOW_ANONYMOUS_READ_AND_WRITE_SHARING === 'true',
 
   // Databases
   // ---------
