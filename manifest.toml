@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2023.12.17~ynh1"
+version = "2024.02.16~ynh1"
 
 maintainers = []
 
