@@ -37,6 +37,7 @@ ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
 #=================================================
 ynh_script_progression --message="Configuring MongoDB..." --weight=10
 
+ynh_replace_string --match_string="#  engine:" --replace_string="  engine: wiredTiger" --target_file="/etc/mongod.conf"
 ynh_replace_string --match_string="#replication:" --replace_string="replication:\n  replSetName: rs0" --target_file="/etc/mongod.conf"
 
 ynh_exec_warn_less systemctl enable mongod --quiet
