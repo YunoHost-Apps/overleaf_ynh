@@ -53,7 +53,7 @@ const settings = {
   brandPrefix: '',
 
   port: __PORT__,
-
+      
   allowAnonymousReadAndWriteSharing:
     process.env.SHARELATEX_ALLOW_ANONYMOUS_READ_AND_WRITE_SHARING === 'true',
 
