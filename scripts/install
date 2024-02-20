@@ -123,15 +123,13 @@ cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
 cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
 cp -r "$install_dir/build/services/" "$install_dir/live/services/"
 cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
+cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
+ynh_secure_remove --file="$install_dir/config/settings.js"
 
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/build/server-ce/config/production.json"
-cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
-cp -r "$install_dir/build/server-ce/config/" "$install_dir/live/services/history-v1/config/"
+ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
+cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
-ynh_store_file_checksum --file="$install_dir/config/production.json"
-ynh_store_file_checksum --file="$install_dir/live/services/history-v1/config/production.json"
-
-ynh_secure_remove --file="$install_dir/config/settings.js"
 ynh_secure_remove --file="$install_dir/build"
 
 ynh_script_progression --message="Building app..."
