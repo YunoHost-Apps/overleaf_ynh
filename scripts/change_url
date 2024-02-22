@@ -10,70 +10,6 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# RETRIEVE ARGUMENTS
-#=================================================
-
-old_domain=$YNH_APP_OLD_DOMAIN
-old_path=$YNH_APP_OLD_PATH
-
-new_domain=$YNH_APP_NEW_DOMAIN
-new_path="/"
-
-app=$YNH_APP_INSTANCE_NAME
-
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..."
-
-# Needed for helper "ynh_add_nginx_config"
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-
-# Add settings here as needed by your application
-language=$(ynh_app_setting_get --app=$app --key=language)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$db_name
-db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
-datadir=$(ynh_app_setting_get --app=$app --key=datadir)
-port=$(ynh_app_setting_get --app=$app --key=port)
-web_api_password=$(ynh_app_setting_get --app=$app --key=web_api_password)
-crypto_random=$(ynh_app_setting_get --app=$app --key=crypto_random)
-
-#=================================================
-# BACKUP BEFORE CHANGE URL THEN ACTIVE TRAP
-#=================================================
-ynh_script_progression --message="Backing up the app before changing its URL (may take a while)..."
-
-# Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
-	ynh_clean_check_starting
-	# Remove the new domain config file, the remove script won't do it as it doesn't know yet its location.
-	ynh_secure_remove --file="/etc/nginx/conf.d/$new_domain.d/$app.conf"
-
-	# Restore it if the upgrade fails
-	ynh_restore_upgradebackup
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# CHECK WHICH PARTS SHOULD BE CHANGED
-#=================================================
-
-change_domain=0
-if [ "$old_domain" != "$new_domain" ]
-then
-	change_domain=1
-fi
-
-change_path=0
-if [ "$old_path" != "$new_path" ]
-then
-	change_path=1
-fi
-
-#=================================================
 # STANDARD MODIFICATIONS
 #=================================================
 # STOP SYSTEMD SERVICE
@@ -86,10 +22,11 @@ ynh_systemd_action --service_name="$app-contacts" --action="stop" --log_path="/v
 ynh_systemd_action --service_name="$app-docstore" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-document-updater" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-filestore" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-history-v1" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-notifications" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-project-history" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-real-time" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-spelling" --action="stop" --log_path="/var/log/$app/$app.log"
-ynh_systemd_action --service_name="$app-track-changes" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
 
 #=================================================
@@ -97,29 +34,7 @@ ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/lo
 #=================================================
 ynh_script_progression --message="Updating NGINX web server configuration..."
 
-nginx_conf_path=/etc/nginx/conf.d/$old_domain.d/$app.conf
-
-# Change the path in the NGINX config file
-if [ $change_path -eq 1 ]
-then
-	# Make a backup of the original NGINX config file if modified
-	ynh_backup_if_checksum_is_different --file="$nginx_conf_path"
-	# Set global variables for NGINX helper
-	domain="$old_domain"
-	path_url="$new_path"
-	# Create a dedicated NGINX config
-	ynh_add_nginx_config
-fi
-
-# Change the domain for NGINX
-if [ $change_domain -eq 1 ]
-then
-	# Delete file checksum for the old conf file location
-	ynh_delete_file_checksum --file="$nginx_conf_path"
-	mv $nginx_conf_path /etc/nginx/conf.d/$new_domain.d/$app.conf
-	# Store file checksum for the new config file location
-	ynh_store_file_checksum --file="/etc/nginx/conf.d/$new_domain.d/$app.conf"
-fi
+ynh_change_url_nginx_config
 
 #=================================================
 # SPECIFIC MODIFICATIONS
@@ -129,15 +44,15 @@ fi
 ynh_script_progression --message="Updating a configuration file..."
 
 domain=$new_domain
-path_url=$new_path
+path=$new_path
 
-ynh_add_config --template="../conf/variables.env" --destination="$final_path/variables.env"
-chmod 400 "$final_path/variables.env"
-chown $app:$app "$final_path/variables.env"
+ynh_add_config --template="../conf/variables.env" --destination="$install_dir/variables.env"
+chmod 400 "$install_dir/variables.env"
+chown $app:$app "$install_dir/variables.env"
 
-ynh_add_config --template="../conf/settings.js" --destination="$final_path/settings.js"
-chmod 400 "$final_path/settings.js"
-chown $app:$app "$final_path/settings.js"
+ynh_add_config --template="../conf/settings.js" --destination="$install_dir/settings.js"
+chmod 400 "$install_dir/settings.js"
+chown $app:$app "$install_dir/settings.js"
 
 #=================================================
 # GENERIC FINALISATION
@@ -146,25 +61,18 @@ chown $app:$app "$final_path/settings.js"
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-# Start a systemd service
-ynh_systemd_action --service_name="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/var/log/$app/contacts.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-track-changes" --action="start" --log_path="/var/log/$app/track-changes.log" --line_match="listening on"
-ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/web.log" --line_match="listening on" --line_match="listening on"
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression --message="Reloading NGINX web server..."
-
-ynh_systemd_action --service_name=nginx --action=reload
+ynh_systemd_action --service_name="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-contacts" --action="start" --log_path="/var/log/$app/contacts.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-history-v1" --action="start" --log_path="/var/log/$app/history-v1.log" --line_match="Loading backend"
+ynh_systemd_action --service_name="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --line_match="Using settings from"
+ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/web.log" --line_match="listening on" --line_match="Using settings from"
 
 #=================================================
 # END OF SCRIPT

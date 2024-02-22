@@ -1,0 +1,18 @@
+[Unit]
+Description=__APP__ project-history
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__/
+EnvironmentFile=__INSTALL_DIR__/variables.env
+ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/project-history/app.js
+StandardOutput=append:/var/log/__APP__/project-history.log
+StandardError=inherit
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

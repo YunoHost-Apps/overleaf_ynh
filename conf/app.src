@@ -1,7 +1,0 @@
-SOURCE_URL=https://github.com/overleaf/overleaf/archive/c90fafa8ac5cc5c40a2d61b1aba413a7f9102729.tar.gz
-SOURCE_SUM=322d906ad7bfda189cd8e6a68f6b0893f05d3085d87df9395e5af1a72964bbae
-SOURCE_SUM_PRG=sha256sum
-SOURCE_FORMAT=tar.gz
-SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=
-SOURCE_EXTRACT=true

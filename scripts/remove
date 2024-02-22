@@ -7,28 +7,14 @@
 #=================================================
 
 source _common.sh
-source ynh_mongo_db
 source /usr/share/yunohost/helpers
-
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..."
-
-app=$YNH_APP_INSTANCE_NAME
-
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-port=$(ynh_app_setting_get --app=$app --key=port)
-db_name=$(ynh_app_setting_get --app=$app --key=db_name)
-db_user=$db_name
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-datadir=$(ynh_app_setting_get --app=$app --key=datadir)
 
 #=================================================
 # STANDARD REMOVE
 #=================================================
 # REMOVE SERVICE INTEGRATION IN YUNOHOST
 #=================================================
+ynh_script_progression --message="Stopping and removing the systemd service..."
 
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
 if ynh_exec_warn_less yunohost service status "$app-chat" >/dev/null
@@ -61,10 +47,20 @@ then
 	ynh_script_progression --message="Removing $app-filestore service integration..."
 	yunohost service remove "$app-filestore"
 fi
+if ynh_exec_warn_less yunohost service status "$app-history-v1" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-history-v1 service integration..."
+	yunohost service remove "$app-history-v1"
+fi
 if ynh_exec_warn_less yunohost service status "$app-notifications" >/dev/null
 then
 	ynh_script_progression --message="Removing $app-notifications service integration..."
 	yunohost service remove "$app-notifications"
+fi
+if ynh_exec_warn_less yunohost service status "$app-project-history" >/dev/null
+then
+	ynh_script_progression --message="Removing $app-project-history service integration..."
+	yunohost service remove "$app-project-history"
 fi
 if ynh_exec_warn_less yunohost service status "$app-real-time" >/dev/null
 then
@@ -76,11 +72,6 @@ then
 	ynh_script_progression --message="Removing $app-spelling service integration..."
 	yunohost service remove "$app-spelling"
 fi
-if ynh_exec_warn_less yunohost service status "$app-track-changes" >/dev/null
-then
-	ynh_script_progression --message="Removing $app-track-changes service integration..."
-	yunohost service remove "$app-track-changes"
-fi
 if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null
 then
 	ynh_script_progression --message="Removing $app-web service integration..."
@@ -90,8 +81,6 @@ fi
 #=================================================
 # STOP AND REMOVE SERVICE
 #=================================================
-ynh_script_progression --message="Stopping and removing the systemd service..."
-
 # Remove the dedicated systemd config
 ynh_remove_systemd_config --service="$app-chat"
 ynh_remove_systemd_config --service="$app-clsi"
@@ -99,10 +88,11 @@ ynh_remove_systemd_config --service="$app-contacts"
 ynh_remove_systemd_config --service="$app-docstore"
 ynh_remove_systemd_config --service="$app-document-updater"
 ynh_remove_systemd_config --service="$app-filestore"
+ynh_remove_systemd_config --service="$app-history-v1"
 ynh_remove_systemd_config --service="$app-notifications"
+ynh_remove_systemd_config --service="$app-project-history"
 ynh_remove_systemd_config --service="$app-real-time"
 ynh_remove_systemd_config --service="$app-spelling"
-ynh_remove_systemd_config --service="$app-track-changes"
 ynh_remove_systemd_config --service="$app-web"
 
 #=================================================
@@ -121,24 +111,8 @@ ynh_script_progression --message="Removing the MongoDB database..."
 # Remove a database if it exists, along with the associated user
 ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
 
-#=================================================
-# REMOVE APP MAIN DIR
-#=================================================
-ynh_script_progression --message="Removing app main directory..."
-
-# Remove the app directory securely
-ynh_secure_remove --file="$final_path"
-
-#=================================================
-# REMOVE DATA DIR
-#=================================================
-
-# Remove the data directory if --purge option is used
-if [ "${YNH_APP_PURGE:-0}" -eq 1 ]
-then
-	ynh_script_progression --message="Removing app data directory..."
-	ynh_secure_remove --file="$datadir"
-fi
+ynh_replace_string --match_string="replication:" --replace_string="#replication:" --target_file="/etc/mongod.conf"
+ynh_replace_string --match_string="  replSetName: rs0" --replace_string="" --target_file="/etc/mongod.conf"
 
 #=================================================
 # REMOVE NGINX CONFIGURATION
@@ -156,7 +130,6 @@ ynh_script_progression --message="Removing dependencies..."
 # Remove metapackage and its dependencies
 ynh_remove_mongo
 ynh_remove_nodejs
-ynh_remove_app_dependencies
 
 #=================================================
 # SPECIFIC REMOVE
@@ -167,16 +140,6 @@ ynh_script_progression --message="Removing various files..."
 
 # Remove the log files
 ynh_secure_remove --file="/var/log/$app"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# REMOVE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Removing the dedicated system user..."
-
-# Delete a system user
-ynh_system_user_delete --username=$app
 
 #=================================================
 # END OF SCRIPT
