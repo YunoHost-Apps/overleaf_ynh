@@ -1,0 +1,96 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "overleaf"
+name = "Overleaf"
+description.en = "Online real-time collaborative LaTeX editor"
+description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
+
+version = "2024.01.26~ynh1"
+
+maintainers = []
+
+[upstream]
+license = "AGPL-3.0-or-later"
+website = "https://www.overleaf.com"
+userdoc = "https://www.overleaf.com/learn"
+code = "https://github.com/overleaf/overleaf"
+
+[integration]
+yunohost = ">= 11.2.0"
+architectures = "all"
+multi_instance = false
+
+ldap = false
+
+sso = false
+
+disk = "50M"
+ram.build = "3G"
+ram.runtime = "3G"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+    [install.language]
+    ask.en = "Choose the application language"
+    ask.fr = "Choisissez la langue de l'application"
+    type = "select"
+    choices = ["fr", "en"]
+    default = "fr"
+
+    [install.admin]
+    type = "user"
+
+[resources]
+    [resources.sources]
+        [resources.sources.main]
+        url = "https://github.com/overleaf/overleaf/archive/fdf8ebe001ec91dc3ab5c23b47bbbb03dc03d1bb.tar.gz"
+        sha256 = "802e3c0add7690c211fc039f94e1fceffe83040e7e60b0c340f35703087f1704"
+        autoupdate.strategy = "latest_github_commit"
+
+    [resources.system_user]
+    allow_email = true
+
+    [resources.install_dir]
+
+    [resources.data_dir]
+    subdirs = [ "compiles", "output", "cache", "user_files", "template_files", "history" ]
+
+    [resources.permissions]
+    main.url = "/"
+    main.auth_header = false
+
+    admin.url = "/launchpad"
+    admin.allowed = "admins"
+    admin.show_tile = false
+
+    [resources.ports]
+    main.default = 8095
+
+    [resources.apt]
+    packages = [
+        # Overleaf dependencies
+        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments",
+        
+        # Aspell dependencies
+        "aspell-ar", "aspell-ar-large",
+  "aspell-bg", "aspell-br", "aspell-ca", "aspell-cs", "aspell-cy", "aspell-da", "aspell-de", "aspell-de-1901",
+  "aspell-el", "aspell-en", "aspell-eo", "aspell-es", "aspell-et", "aspell-eu-es", "aspell-fa",
+  "aspell-fo", "aspell-fr", "aspell-ga", "aspell-gl-minimos", "aspell-hr", "aspell-hsb",
+  "aspell-it", "aspell-kk", "aspell-ku", "aspell-lt", "aspell-lv", "aspell-nl", "aspell-no",
+  "aspell-pa", "aspell-pl", "aspell-pt-br", "aspell-pt-pt", "aspell-ro",
+  "aspell-ru", "aspell-sk", "aspell-sl", "aspell-sv", "aspell-tl",
+
+       # Filestore dependencies
+   "ghostscript", "imagemagick", "optipng", "iproute2",
+
+       # clsi dependencies
+       "poppler-utils",
+    ]

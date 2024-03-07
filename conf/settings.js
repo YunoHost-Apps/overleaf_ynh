@@ -42,8 +42,8 @@ const parseIntOrFail = function (value) {
   return parsedValue
 }
 
-const DATA_DIR = '__DATADIR__'
-const TMP_DIR = '__FINALPATH__/tmp'
+const DATA_DIR = '__DATA_DIR__'
+const TMP_DIR = '__INSTALL_DIR__/tmp'
 
 const settings = {
   clsi: {
@@ -53,7 +53,7 @@ const settings = {
   brandPrefix: '',
 
   port: __PORT__,
-
+      
   allowAnonymousReadAndWriteSharing:
     process.env.SHARELATEX_ALLOW_ANONYMOUS_READ_AND_WRITE_SHARING === 'true',
 
@@ -120,20 +120,6 @@ const settings = {
         blockingKey({ doc_id }) {
           return `Blocking:${doc_id}`
         },
-        // track-changes:lock
-        historyLock({ doc_id }) {
-          return `HistoryLock:${doc_id}`
-        },
-        historyIndexLock({ project_id }) {
-          return `HistoryIndexLock:${project_id}`
-        },
-        // track-changes:history
-        uncompressedHistoryOps({ doc_id }) {
-          return `UncompressedHistoryOps:${doc_id}`
-        },
-        docsWithHistoryOps({ project_id }) {
-          return `DocsWithHistoryOps:${project_id}`
-        },
         // realtime
         clientsInProject({ project_id }) {
           return `clients_in_project:${project_id}`
@@ -144,7 +130,7 @@ const settings = {
       },
     }),
     fairy: redisConfig,
-    // track-changes and document-updater
+    // document-updater
     realtime: redisConfig,
     documentupdater: redisConfig,
     lock: redisConfig,
@@ -153,35 +139,20 @@ const settings = {
     api: redisConfig,
     pubsub: redisConfig,
     project_history: redisConfig,
-  },
 
-  // File storage
-  // ------------
-
-  // ShareLaTeX can store binary files like images either locally or in Amazon
-  // S3. The default is locally:
-  filestore: {
-    backend: 'fs',
-    stores: {
-      user_files: Path.join(DATA_DIR, 'user_files'),
-      template_files: Path.join(DATA_DIR, 'template_files'),
+    project_history_migration: {
+      host: redisConfig.host,
+      port: redisConfig.port,
+      password: redisConfig.password,
+      maxRetriesPerRequest: parseInt(
+        process.env.REDIS_MAX_RETRIES_PER_REQUEST || '20'
+      ),
+      key_schema: {
+        projectHistoryOps({ projectId }) {
+          return `ProjectHistory:Ops:{${projectId}}` // NOTE: the extra braces are intentional
+        },
+      },
     },
-  },
-
-  // To use Amazon S3 as a storage backend, comment out the above config, and
-  // uncomment the following, filling in your key, secret, and bucket name:
-  //
-  // filestore:
-  // 	backend: "s3"
-  // 	stores:
-  // 		user_files: "BUCKET_NAME"
-  // 	s3:
-  // 		key: "AWS_KEY"
-  // 		secret: "AWS_SECRET"
-  //
-
-  trackchanges: {
-    continueOnError: true,
   },
 
   // Local disk caching
@@ -193,6 +164,8 @@ const settings = {
     dumpFolder: Path.join(TMP_DIR, 'dumpFolder'),
     // Where to write uploads before they are processed
     uploadFolder: Path.join(TMP_DIR, 'uploads'),
+    // Where to write intermediate file for full project history migration
+    projectHistories: Path.join(TMP_DIR, 'projectHistories'),
     // Where to write the project to disk before running LaTeX on it
     compilesDir: Path.join(DATA_DIR, 'compiles'),
     // Where to cache downloaded URLs for the CLSI
@@ -207,6 +180,9 @@ const settings = {
   // Where your instance of ShareLaTeX can be found publicly. This is used
   // when emails are sent out and in generated links:
   siteUrl: (siteUrl = process.env.SHARELATEX_SITE_URL || 'http://localhost'),
+
+  // Status page URL as displayed on the maintenance/500 pages.
+  statusPageUrl: process.env.SHARELATEX_STATUS_PAGE_URL,
 
   // The name this is used to describe your ShareLaTeX Installation
   appName: process.env.SHARELATEX_APP_NAME || 'ShareLaTeX (Community Edition)',
@@ -253,6 +229,18 @@ const settings = {
   // address and http/https protocol information.
 
   behindProxy: process.env.SHARELATEX_BEHIND_PROXY || false,
+  trustedProxyIps: process.env.SHARELATEX_TRUSTED_PROXY_IPS,
+
+  // The amount of time, in milliseconds, until the (rolling) cookie session expires
+  cookieSessionLength: parseInt(
+    process.env.SHARELATEX_COOKIE_SESSION_LENGTH || 5 * 24 * 60 * 60 * 1000, // default 5 days
+    10
+  ),
+
+  redisLockTTLSeconds: parseInt(
+    process.env.SHARELATEX_REDIS_LOCK_TTL_SECONDS || '60',
+    10
+  ),
 
   i18n: {
     subdomainLang: {
@@ -273,7 +261,17 @@ const settings = {
       pass: httpAuthPass,
     },
     project_history: {
-      enabled: false,
+      sendProjectStructureOps: true,
+      url: 'http://localhost:3054',
+    },
+    v1_history: {
+      url: process.env.V1_HISTORY_URL || 'http://localhost:3100/api',
+      user: 'staging',
+      pass: process.env.STAGING_PASSWORD,
+      requestTimeout: parseInt(
+        process.env.SHARELATEX_HISTORY_V1_HTTP_REQUEST_TIMEOUT || '300000', // default is 5min
+        10
+      ),
     },
   },
   references: {},
@@ -416,7 +414,7 @@ if (
     pattern: process.env.SHARELATEX_PASSWORD_VALIDATION_PATTERN || 'aA$3',
     length: {
       min: process.env.SHARELATEX_PASSWORD_VALIDATION_MIN_LENGTH || 8,
-      max: process.env.SHARELATEX_PASSWORD_VALIDATION_MAX_LENGTH || 150,
+      max: process.env.SHARELATEX_PASSWORD_VALIDATION_MAX_LENGTH || 72,
     },
   }
 }
@@ -428,244 +426,6 @@ if (
 if (parse(process.env.SHARELATEX_IS_SERVER_PRO) === true) {
   settings.bypassPercentageRollouts = true
   settings.apis.references = { url: 'http://localhost:3040' }
-}
-
-// LDAP - SERVER PRO ONLY
-// ----------
-
-if (process.env.SHARELATEX_LDAP_HOST) {
-  console.error(`\
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#
-#  WARNING: The LDAP configuration format has changed in version 0.5.1
-#  See https://github.com/sharelatex/sharelatex/wiki/Server-Pro:-LDAP-Config
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\
-`)
-}
-
-if (process.env.SHARELATEX_LDAP_URL) {
-  let _ldap_connect_timeout,
-    _ldap_group_search_attribs,
-    _ldap_search_attribs,
-    _ldap_timeout
-  settings.externalAuth = true
-  settings.ldap = {
-    emailAtt: process.env.SHARELATEX_LDAP_EMAIL_ATT,
-    nameAtt: process.env.SHARELATEX_LDAP_NAME_ATT,
-    lastNameAtt: process.env.SHARELATEX_LDAP_LAST_NAME_ATT,
-    updateUserDetailsOnLogin:
-      process.env.SHARELATEX_LDAP_UPDATE_USER_DETAILS_ON_LOGIN === 'true',
-    placeholder: process.env.SHARELATEX_LDAP_PLACEHOLDER,
-    server: {
-      url: process.env.SHARELATEX_LDAP_URL,
-      bindDn: process.env.SHARELATEX_LDAP_BIND_DN,
-      bindCredentials: process.env.SHARELATEX_LDAP_BIND_CREDENTIALS,
-      bindProperty: process.env.SHARELATEX_LDAP_BIND_PROPERTY,
-      searchBase: process.env.SHARELATEX_LDAP_SEARCH_BASE,
-      searchScope: process.env.SHARELATEX_LDAP_SEARCH_SCOPE,
-      searchFilter: process.env.SHARELATEX_LDAP_SEARCH_FILTER,
-      searchAttributes: (_ldap_search_attribs =
-        process.env.SHARELATEX_LDAP_SEARCH_ATTRIBUTES)
-        ? (() => {
-            try {
-              return JSON.parse(_ldap_search_attribs)
-            } catch (error3) {
-              e = error3
-              return console.error(
-                'could not parse SHARELATEX_LDAP_SEARCH_ATTRIBUTES'
-              )
-            }
-          })()
-        : undefined,
-      groupDnProperty: process.env.SHARELATEX_LDAP_GROUP_DN_PROPERTY,
-      groupSearchBase: process.env.SHARELATEX_LDAP_GROUP_SEARCH_BASE,
-      groupSearchScope: process.env.SHARELATEX_LDAP_GROUP_SEARCH_SCOPE,
-      groupSearchFilter: process.env.SHARELATEX_LDAP_GROUP_SEARCH_FILTER,
-      groupSearchAttributes: (_ldap_group_search_attribs =
-        process.env.SHARELATEX_LDAP_GROUP_SEARCH_ATTRIBUTES)
-        ? (() => {
-            try {
-              return JSON.parse(_ldap_group_search_attribs)
-            } catch (error4) {
-              e = error4
-              return console.error(
-                'could not parse SHARELATEX_LDAP_GROUP_SEARCH_ATTRIBUTES'
-              )
-            }
-          })()
-        : undefined,
-      cache: process.env.SHARELATEX_LDAP_CACHE === 'true',
-      timeout: (_ldap_timeout = process.env.SHARELATEX_LDAP_TIMEOUT)
-        ? (() => {
-            try {
-              return parseIntOrFail(_ldap_timeout)
-            } catch (error5) {
-              e = error5
-              return console.error('Cannot parse SHARELATEX_LDAP_TIMEOUT')
-            }
-          })()
-        : undefined,
-      connectTimeout: (_ldap_connect_timeout =
-        process.env.SHARELATEX_LDAP_CONNECT_TIMEOUT)
-        ? (() => {
-            try {
-              return parseIntOrFail(_ldap_connect_timeout)
-            } catch (error6) {
-              e = error6
-              return console.error(
-                'Cannot parse SHARELATEX_LDAP_CONNECT_TIMEOUT'
-              )
-            }
-          })()
-        : undefined,
-    },
-  }
-
-  if (process.env.SHARELATEX_LDAP_TLS_OPTS_CA_PATH) {
-    let ca, ca_paths
-    try {
-      ca = JSON.parse(process.env.SHARELATEX_LDAP_TLS_OPTS_CA_PATH)
-    } catch (error7) {
-      e = error7
-      console.error(
-        'could not parse SHARELATEX_LDAP_TLS_OPTS_CA_PATH, invalid JSON'
-      )
-    }
-
-    if (typeof ca === 'string') {
-      ca_paths = [ca]
-    } else if (
-      typeof ca === 'object' &&
-      (ca != null ? ca.length : undefined) != null
-    ) {
-      ca_paths = ca
-    } else {
-      console.error('problem parsing SHARELATEX_LDAP_TLS_OPTS_CA_PATH')
-    }
-
-    settings.ldap.server.tlsOptions = {
-      rejectUnauthorized:
-        process.env.SHARELATEX_LDAP_TLS_OPTS_REJECT_UNAUTH === 'true',
-      ca: ca_paths, // e.g.'/etc/ldap/ca_certs.pem'
-    }
-  }
-}
-
-if (process.env.SHARELATEX_SAML_ENTRYPOINT) {
-  // NOTE: see https://github.com/node-saml/passport-saml/blob/master/README.md for docs of `server` options
-  let _saml_additionalAuthorizeParams,
-    _saml_additionalLogoutParams,
-    _saml_additionalParams,
-    _saml_expiration,
-    _saml_skew
-  settings.externalAuth = true
-  settings.saml = {
-    updateUserDetailsOnLogin:
-      process.env.SHARELATEX_SAML_UPDATE_USER_DETAILS_ON_LOGIN === 'true',
-    identityServiceName: process.env.SHARELATEX_SAML_IDENTITY_SERVICE_NAME,
-    emailField:
-      process.env.SHARELATEX_SAML_EMAIL_FIELD ||
-      process.env.SHARELATEX_SAML_EMAIL_FIELD_NAME,
-    firstNameField: process.env.SHARELATEX_SAML_FIRST_NAME_FIELD,
-    lastNameField: process.env.SHARELATEX_SAML_LAST_NAME_FIELD,
-    server: {
-      // strings
-      entryPoint: process.env.SHARELATEX_SAML_ENTRYPOINT,
-      callbackUrl: process.env.SHARELATEX_SAML_CALLBACK_URL,
-      issuer: process.env.SHARELATEX_SAML_ISSUER,
-      decryptionPvk: process.env.SHARELATEX_SAML_DECRYPTION_PVK,
-      decryptionCert: process.env.SHARELATEX_SAML_DECRYPTION_CERT,
-      signingCert: process.env.SHARELATEX_SAML_SIGNING_CERT,
-      signatureAlgorithm: process.env.SHARELATEX_SAML_SIGNATURE_ALGORITHM,
-      identifierFormat: process.env.SHARELATEX_SAML_IDENTIFIER_FORMAT,
-      attributeConsumingServiceIndex:
-        process.env.SHARELATEX_SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX,
-      authnContext: process.env.SHARELATEX_SAML_AUTHN_CONTEXT,
-      authnRequestBinding: process.env.SHARELATEX_SAML_AUTHN_REQUEST_BINDING,
-      validateInResponseTo: process.env.SHARELATEX_SAML_VALIDATE_IN_RESPONSE_TO,
-      cacheProvider: process.env.SHARELATEX_SAML_CACHE_PROVIDER,
-      logoutUrl: process.env.SHARELATEX_SAML_LOGOUT_URL,
-      logoutCallbackUrl: process.env.SHARELATEX_SAML_LOGOUT_CALLBACK_URL,
-      disableRequestedAuthnContext:
-        process.env.SHARELATEX_SAML_DISABLE_REQUESTED_AUTHN_CONTEXT === 'true',
-      forceAuthn: process.env.SHARELATEX_SAML_FORCE_AUTHN === 'true',
-      skipRequestCompression:
-        process.env.SHARELATEX_SAML_SKIP_REQUEST_COMPRESSION === 'true',
-      acceptedClockSkewMs: (_saml_skew =
-        process.env.SHARELATEX_SAML_ACCEPTED_CLOCK_SKEW_MS)
-        ? (() => {
-            try {
-              return parseIntOrFail(_saml_skew)
-            } catch (error8) {
-              e = error8
-              return console.error(
-                'Cannot parse SHARELATEX_SAML_ACCEPTED_CLOCK_SKEW_MS'
-              )
-            }
-          })()
-        : undefined,
-      requestIdExpirationPeriodMs: (_saml_expiration =
-        process.env.SHARELATEX_SAML_REQUEST_ID_EXPIRATION_PERIOD_MS)
-        ? (() => {
-            try {
-              return parseIntOrFail(_saml_expiration)
-            } catch (error9) {
-              e = error9
-              return console.error(
-                'Cannot parse SHARELATEX_SAML_REQUEST_ID_EXPIRATION_PERIOD_MS'
-              )
-            }
-          })()
-        : undefined,
-      additionalParams: (_saml_additionalParams =
-        process.env.SHARELATEX_SAML_ADDITIONAL_PARAMS)
-        ? (() => {
-            try {
-              return JSON.parse(_saml_additionalParams)
-            } catch (error10) {
-              e = error10
-              return console.error(
-                'Cannot parse SHARELATEX_SAML_ADDITIONAL_PARAMS'
-              )
-            }
-          })()
-        : undefined,
-      additionalAuthorizeParams: (_saml_additionalAuthorizeParams =
-        process.env.SHARELATEX_SAML_ADDITIONAL_AUTHORIZE_PARAMS)
-        ? (() => {
-            try {
-              return JSON.parse(_saml_additionalAuthorizeParams)
-            } catch (error11) {
-              e = error11
-              return console.error(
-                'Cannot parse SHARELATEX_SAML_ADDITIONAL_AUTHORIZE_PARAMS'
-              )
-            }
-          })()
-        : undefined,
-      additionalLogoutParams: (_saml_additionalLogoutParams =
-        process.env.SHARELATEX_SAML_ADDITIONAL_LOGOUT_PARAMS)
-        ? (() => {
-            try {
-              return JSON.parse(_saml_additionalLogoutParams)
-            } catch (error12) {
-              e = error12
-              return console.error(
-                'Cannot parse SHARELATEX_SAML_ADDITIONAL_LOGOUT_PARAMS'
-              )
-            }
-          })()
-        : undefined,
-    },
-  }
-
-  // SHARELATEX_SAML_CERT cannot be empty
-  // https://github.com/node-saml/passport-saml/commit/f6b1c885c0717f1083c664345556b535f217c102
-  if (process.env.SHARELATEX_SAML_CERT) {
-    settings.saml.server.cert = process.env.SHARELATEX_SAML_CERT
-    settings.saml.server.privateKey = process.env.SHARELATEX_SAML_PRIVATE_CERT
-  }
 }
 
 // Compiler
@@ -720,10 +480,12 @@ if (process.env.SHARELATEX_TEMPLATES_USER_ID) {
 if (process.env.SHARELATEX_PROXY_LEARN != null) {
   settings.proxyLearn = parse(process.env.SHARELATEX_PROXY_LEARN)
   if (settings.proxyLearn) {
-    settings.nav.header_extras = [{
-      url: '/learn',
-      text: 'documentation',
-    }].concat(settings.nav.header_extras || [])
+    settings.nav.header_extras = [
+      {
+        url: '/learn',
+        text: 'documentation',
+      },
+    ].concat(settings.nav.header_extras || [])
   }
 }
 
@@ -733,6 +495,41 @@ if (process.env.SHARELATEX_ELASTICSEARCH_URL != null) {
   settings.references.elasticsearch = {
     host: process.env.SHARELATEX_ELASTICSEARCH_URL,
   }
+}
+
+// filestore
+switch (process.env.SHARELATEX_FILESTORE_BACKEND) {
+  case 's3':
+    settings.filestore = {
+      backend: 's3',
+      stores: {
+        user_files: process.env.SHARELATEX_FILESTORE_USER_FILES_BUCKET_NAME,
+        template_files:
+          process.env.SHARELATEX_FILESTORE_TEMPLATE_FILES_BUCKET_NAME,
+      },
+      s3: {
+        key:
+          process.env.SHARELATEX_FILESTORE_S3_ACCESS_KEY_ID ||
+          process.env.AWS_ACCESS_KEY_ID,
+        secret:
+          process.env.SHARELATEX_FILESTORE_S3_SECRET_ACCESS_KEY ||
+          process.env.AWS_SECRET_ACCESS_KEY,
+        endpoint: process.env.SHARELATEX_FILESTORE_S3_ENDPOINT,
+        pathStyle: process.env.SHARELATEX_FILESTORE_S3_PATH_STYLE === 'true',
+        region:
+          process.env.SHARELATEX_FILESTORE_S3_REGION ||
+          process.env.AWS_DEFAULT_REGION,
+      },
+    }
+    break
+  default:
+    settings.filestore = {
+      backend: 'fs',
+      stores: {
+        user_files: Path.join(DATA_DIR, 'user_files'),
+        template_files: Path.join(DATA_DIR, 'template_files'),
+      },
+    }
 }
 
 // With lots of incoming and outgoing HTTP connections to different services,
