@@ -27,11 +27,11 @@ Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 ## Documentation and resources
 
-* Official app website: <https://www.overleaf.com>
-* Official user documentation: <https://www.overleaf.com/learn>
-* Upstream app code repository: <https://github.com/overleaf/overleaf>
-* YunoHost Store: <https://apps.yunohost.org/app/overleaf>
-* Report a bug: <https://github.com/YunoHost-Apps/overleaf_ynh/issues>
+- Official app website: <https://www.overleaf.com>
+- Official user documentation: <https://www.overleaf.com/learn>
+- Upstream app code repository: <https://github.com/overleaf/overleaf>
+- YunoHost Store: <https://apps.yunohost.org/app/overleaf>
+- Report a bug: <https://github.com/YunoHost-Apps/overleaf_ynh/issues>
 
 ## Developer info
 
