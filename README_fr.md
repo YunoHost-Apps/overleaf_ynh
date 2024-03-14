@@ -18,7 +18,6 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 
 Overleaf est un éditeur LaTeX collaboratif en ligne et en temps réel open source.
 
-
 **Version incluse :** 2024.01.26~ynh1
 
 ## Captures d’écran
@@ -39,7 +38,7 @@ Merci de faire vos pull request sur la [branche testing](https://github.com/Yuno
 
 Pour essayer la branche testing, procédez comme suit.
 
-``` bash
+```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing --debug
 ou
 sudo yunohost app upgrade overleaf -u https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing --debug

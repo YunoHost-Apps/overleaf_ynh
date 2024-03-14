@@ -18,7 +18,6 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
-
 **Shipped version:** 2024.01.26~ynh1
 
 ## Screenshots
@@ -39,7 +38,7 @@ Please send your pull request to the [testing branch](https://github.com/YunoHos
 
 To try the testing branch, please proceed like that.
 
-``` bash
+```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing --debug
 or
 sudo yunohost app upgrade overleaf -u https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing --debug
