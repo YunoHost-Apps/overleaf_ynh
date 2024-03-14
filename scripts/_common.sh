@@ -329,17 +329,23 @@ ynh_install_mongo() {
 	ynh_print_info --message="Installing MongoDB Community Edition ..."
 	local mongo_debian_release=$(ynh_get_debian_release)
 
+	if [ "$mongo_debian_release" -eq bullseye ] ; then
+    ubuntu_version="focal"
+	elif [ "$mongo_debian_release" -eq bookworm ] ; then
+	ubuntu_version="jammy"
+	fi
+
 	if [[ $(cat /proc/cpuinfo) != *"avx"* && "$mongo_version" != "4.4" ]]; then
     ynh_print_warn --message="Installing Mongo 4.4 as $mongo_version is not compatible with your cpu (see https://docs.mongodb.com/manual/administration/production-notes/#x86_64)."
     mongo_version="4.4"
   fi
   if [[ "$mongo_version" == "4.4" && "$mongo_debian_release" != "buster" ]]; then
     ynh_print_warn --message="Switched to buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
-    mongo_debian_release=buster
+    mongo_debian_release=bullseye
   fi
 
 	ynh_install_extra_app_dependencies \
-		--repo="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" \
+		--repo="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
 		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
 		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
 	mongodb_servicename=mongod
