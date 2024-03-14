@@ -14,7 +14,7 @@ nodejs_version=18.18.2
 # EXPERIMENTAL HELPERS
 #=================================================
 
-readonly YNH_DEFAULT_MONGO_VERSION=5.0
+readonly YNH_DEFAULT_MONGO_VERSION=4.4
 # Declare the actual MongoDB version to use: 4.4 ; 5.0 ; 6.0
 # A packager willing to use another version of MongoDB can override the variable into its _common.sh.
 YNH_MONGO_VERSION=${YNH_MONGO_VERSION:-$YNH_DEFAULT_MONGO_VERSION}
@@ -339,11 +339,10 @@ ynh_install_mongo() {
   fi
 
 	ynh_install_extra_app_dependencies \
-		--repo="deb http://repo.mongodb.org/apt/debian $mongo_debian_release/mongodb-org/$mongo_version main" \
-		--package="mongodb-org mongodb-org-server mongodb-database-tools mongodb-mongosh" \
+		--repo="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" \
+		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
 		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
 	mongodb_servicename=mongod
-
 
 	# Make sure MongoDB is started and enabled
 	systemctl enable $mongodb_servicename --quiet
