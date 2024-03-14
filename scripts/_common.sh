@@ -341,7 +341,7 @@ ynh_install_mongo() {
   fi
   if [[ "$mongo_version" == "4.4" && "$mongo_debian_release" != "buster" ]]; then
     ynh_print_warn --message="Switched to buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
-    mongo_debian_release=bullseye
+    mongo_debian_release=buster
   fi
 
 	ynh_install_extra_app_dependencies \
