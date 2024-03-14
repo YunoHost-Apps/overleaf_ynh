@@ -339,7 +339,7 @@ ynh_install_mongo() {
   fi
 
 	ynh_install_extra_app_dependencies \
-		--repo="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" \
+		--repo="deb https://repo.mongodb.org/apt/debian $mongo_debian_release/mongodb-org/$mongo_version main" \
 		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
 		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
 	mongodb_servicename=mongod
