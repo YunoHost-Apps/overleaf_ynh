@@ -329,9 +329,9 @@ ynh_install_mongo() {
 	ynh_print_info --message="Installing MongoDB Community Edition ..."
 	local mongo_debian_release=$(ynh_get_debian_release)
 
-	if [ "$mongo_debian_release" -eq bullseye ] ; then
+	if [ "$mongo_debian_release" == bullseye ] ; then
     ubuntu_version="focal"
-	elif [ "$mongo_debian_release" -eq bookworm ] ; then
+	elif [ "$mongo_debian_release" == bookworm ] ; then
 	ubuntu_version="jammy"
 	fi
 
