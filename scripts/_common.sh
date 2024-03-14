@@ -339,10 +339,6 @@ ynh_install_mongo() {
     ynh_print_warn --message="Installing Mongo 4.4 as $mongo_version is not compatible with your cpu (see https://docs.mongodb.com/manual/administration/production-notes/#x86_64)."
     mongo_version="4.4"
   fi
-  if [[ "$mongo_version" == "4.4" && "$mongo_debian_release" != "buster" ]]; then
-    ynh_print_warn --message="Switched to buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
-    mongo_debian_release=buster
-  fi
 
 	ynh_install_extra_app_dependencies \
 		--repo="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
