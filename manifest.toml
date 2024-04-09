@@ -53,6 +53,7 @@ ram.runtime = "3G"
         [resources.sources.main]
         url = "https://github.com/overleaf/overleaf/archive/af037ddb439505e1171f51d1a3e676a67fe98c9d.tar.gz"
         sha256 = "403e9572b32addb4252de171191200510af70cdb868e90838091183e3ebec9a7"
+        autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
     allow_email = true
