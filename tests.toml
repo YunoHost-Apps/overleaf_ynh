@@ -1,3 +1,5 @@
 test_format = 1.0
 
 [default]
+
+test_upgrade_from.c5e7ec1.name = "Overleaf 4.x"
