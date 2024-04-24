@@ -19,7 +19,6 @@ Il NE doit PAS être modifié à la main.
 Overleaf est un éditeur LaTeX collaboratif en ligne et en temps réel open source.
 
 
-**Version incluse :** 2024.01.26~ynh1
 
 ## Captures d’écran
 
