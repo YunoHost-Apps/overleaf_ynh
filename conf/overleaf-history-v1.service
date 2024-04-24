@@ -8,6 +8,7 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/variables.env
+Environment="LISTEN_ADDRESS=127.0.0.1"
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
 Environment="NODE_CONFIG_DIR=__INSTALL_DIR__/live/services/history-v1/config"
 ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/history-v1/app.js
