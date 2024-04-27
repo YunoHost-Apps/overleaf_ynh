@@ -14,7 +14,7 @@ nodejs_version=18.20.1
 # EXPERIMENTAL HELPERS
 #=================================================
 
-readonly YNH_DEFAULT_MONGO_VERSION=5.0
+readonly YNH_DEFAULT_MONGO_VERSION=7.0
 # Declare the actual MongoDB version to use: 4.4 ; 5.0 ; 6.0
 # A packager willing to use another version of MongoDB can override the variable into its _common.sh.
 YNH_MONGO_VERSION=${YNH_MONGO_VERSION:-$YNH_DEFAULT_MONGO_VERSION}
@@ -349,7 +349,7 @@ ynh_install_mongo() {
 
 
 	ynh_install_extra_app_dependencies \
-		--repo="deb [ signed-by=/usr/share/keyrings/mongodb-server-$mongo_version.gpg ] https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
+		--repo="deb https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
 		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
 		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
     mongodb_servicename=mongod
