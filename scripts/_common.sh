@@ -347,12 +347,10 @@ ynh_install_mongo() {
 	ubuntu_version="jammy"
 	fi
 
-    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-$mongo_version.gpg ] https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-$mongo_version.list
-
-	#ynh_install_extra_app_dependencies \
-		#--repo="deb https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
-	#	--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
-		#--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
+	ynh_install_extra_app_dependencies \
+		--repo="deb https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
+		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
+		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
     mongodb_servicename=mongod
 
     # Make sure MongoDB is started and enabled
