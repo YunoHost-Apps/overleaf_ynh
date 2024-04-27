@@ -344,7 +344,7 @@ ynh_install_mongo() {
 	elif [ "$mongo_debian_release" == bullseye ] ; then
     ubuntu_version="focal"
 	elif [ "$mongo_debian_release" == bookworm ] ; then
-	ubuntu_version="jammy"
+	ubuntu_version="focal"
 	fi
 
 
