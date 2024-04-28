@@ -8,8 +8,6 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
-Environment="ENABLED_SERVICES="web""
-Environment="WEB_PORT="__PORT__""
 EnvironmentFile=__INSTALL_DIR__/variables.env
 ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/web/app.js
 StandardOutput=append:/var/log/__APP__/web.log
