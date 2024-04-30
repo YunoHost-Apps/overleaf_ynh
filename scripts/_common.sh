@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=18.20.1
+nodejs_version=18.20.2
 
 #=================================================
 # PERSONAL HELPERS
@@ -338,6 +338,12 @@ ynh_install_mongo() {
     ynh_print_warn --message="Switched to Buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
     mongo_debian_release=buster
   fi
+
+  if [[ "$mongo_version" >= "5.0" && "$mongo_version" <= "6.0" && "$mongo_debian_release" != "bullseye"  ]]; then
+    ynh_print_warn --message="Switched to Bullseye install as this version of Mongo is not compatible with $mongo_debian_release."
+    mongo_debian_release=bullseye
+  fi
+
 
 	if [ "$mongo_debian_release" == buster ] ; then
     ubuntu_version="bionic"
