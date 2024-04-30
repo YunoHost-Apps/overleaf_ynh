@@ -55,6 +55,10 @@ ram.runtime = "3G"
         sha256 = "403e9572b32addb4252de171191200510af70cdb868e90838091183e3ebec9a7"
         autoupdate.strategy = "latest_github_commit"
 
+        [resources.sources.libssl]
+        amd64.url = "http://ftp.de.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_amd64.deb"
+        arm64.url = "http://ftp.de.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1w-0+deb11u1_arm64.deb"
+
     [resources.system_user]
     allow_email = true
 
