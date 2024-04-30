@@ -99,7 +99,7 @@ ram.runtime = "3G"
        "poppler-utils",
     ]
     packages_from_raw_bash = """
-    if YNH_DEBIAN_VERSION == "bookworm" ]]; then
+    if [[ $YNH_DEBIAN_VERSION == "bookworm" ]]; then
         extras.libssl.repo = "http://ftp.de.debian.org/debian/pool/main/o/openssl/"
         extras.libssl.key = "http://ftp.de.debian.org/debian/dists/bullseye/Release.gpg"
         extras.libssl.packages = ["libssl1.1_1.1.1w-0+deb11u1_amd64.deb"]
