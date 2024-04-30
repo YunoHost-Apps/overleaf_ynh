@@ -337,11 +337,13 @@ ynh_install_mongo() {
   if [[ "$mongo_version" == "4.4" && "$mongo_debian_release" != "buster" ]]; then
     ynh_print_warn --message="Switched to Buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
     mongo_debian_release=buster
-  elif [[ "$mongo_version" == "5.0" || "$mongo_version" == "6.0"]] && [["$mongo_debian_release" != "bullseye"  ]]; then
-    ynh_print_warn --message="Switched to Bullseye install as this version of Mongo is not compatible with $mongo_debian_release."
-    mongo_debian_release=bullseye
   fi
-
+  
+  if [[ "$mongo_version" == "5.0" || "6.0" ] && "$mongo_debian_release" == bookworm ]; then
+    ynh_install_extra_app_dependencies \
+        --repo="http://ftp.de.debian.org/debian/pool/main/o/openssl \
+	--package="libssl1.1_1.1.1w-0+deb11u1_amd64.deb | libssl1.1_1.1.1w-0+deb11u1_arm64.deb"
+  fi
 
 	if [ "$mongo_debian_release" == buster ] ; then
     ubuntu_version="bionic"
