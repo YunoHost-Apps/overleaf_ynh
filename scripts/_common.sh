@@ -341,7 +341,7 @@ ynh_install_mongo() {
   
   if [[ "$mongo_version" == "5.0" || "6.0" ] && "$mongo_debian_release" == bookworm ]; then
     ynh_install_extra_app_dependencies \
-        --repo="http://ftp.de.debian.org/debian/pool/main/o/openssl \
+        --repo="http://ftp.de.debian.org/debian/pool/main/o/openssl" \
 	--package="libssl1.1_1.1.1w-0+deb11u1_amd64.deb | libssl1.1_1.1.1w-0+deb11u1_arm64.deb"
   fi
 
