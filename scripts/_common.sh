@@ -337,9 +337,7 @@ ynh_install_mongo() {
   if [[ "$mongo_version" == "4.4" && "$mongo_debian_release" != "buster" ]]; then
     ynh_print_warn --message="Switched to Buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
     mongo_debian_release=buster
-  fi
-
-  if [[ "$mongo_version" >= "5.0" && "$mongo_version" <= "6.0" && "$mongo_debian_release" != "bullseye"  ]]; then
+  elif [[ "$mongo_version" >= "5.0" && "$mongo_version" <= "6.0" && "$mongo_debian_release" != "bullseye"  ]]; then
     ynh_print_warn --message="Switched to Bullseye install as this version of Mongo is not compatible with $mongo_debian_release."
     mongo_debian_release=bullseye
   fi
