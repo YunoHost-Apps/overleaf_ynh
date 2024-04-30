@@ -98,3 +98,9 @@ ram.runtime = "3G"
        # clsi dependencies
        "poppler-utils",
     ]
+    packages_from_raw_bash = """
+    if YNH_DEBIAN_VERSION == "bookworm" ]]; then
+        extras.libssl.repo = "http://ftp.de.debian.org/debian/pool/main/o/openssl/"
+        extras.libssl.packages = "libssl1.1_1.1.1w-0+deb11u1_amd64.deb"
+    fi
+    """
