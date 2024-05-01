@@ -96,6 +96,5 @@ ram.runtime = "3G"
     ]
     
     [resources.apt.extras.libssl]
-    repo = "deb http://deb.debian.org/debian/ bullseye main contrib"
-    key = "https://ftp-master.debian.org/keys/release-bullseye.asc"
+    repo = "deb http://ftp.fr.debian.org/debian bullseye main "
     packages = ["libssl1.1_1.1.1w-0+deb11u1_amd64.deb"]
