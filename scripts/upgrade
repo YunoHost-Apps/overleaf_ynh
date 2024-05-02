@@ -144,6 +144,7 @@ cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
 cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
 ynh_secure_remove --file="$install_dir/config/settings.js"
 ynh_secure_remove --file="$install_dir/config/production.json"
+ynh_secure_remove --file="$install_dir/live/services/history-v1/config/production.json"
 
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/config/production.json"
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
