@@ -36,6 +36,8 @@ ynh_install_mongo
 # Upgrade NPM
 ynh_npm install --global npm@latest
 
+ynh_setup_source --dest_dir="$install_dir" --source_id="libssl"
+
 #=================================================
 # CREATE A MONGODB DATABASE
 #=================================================
@@ -69,8 +71,6 @@ ynh_script_progression --message="Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/build" --source_id="main"
-ynh_setup_source --dest_dir="$install_dir/build" --source_id="libssl"
-
 
 mkdir -p $install_dir/tmp
 mkdir -p $install_dir/tmp/{projectHistories,dumpFolder,uploads}
