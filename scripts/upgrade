@@ -87,6 +87,9 @@ then
 	ynh_setup_source --dest_dir="$install_dir/build"  --full_replace=1
 fi
 
+# full replace on live dir
+ynh_secure_remove "$install_dir/live"
+
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
@@ -157,6 +160,9 @@ pushd "$install_dir/live/services/web"
 	ynh_exec_warn_less npm run webpack:production
 	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
 popd
+
+#remove build dir
+ynh_secure_remove "$install_dir/build"
 
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
