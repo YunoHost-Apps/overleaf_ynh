@@ -84,8 +84,11 @@ then
 	ynh_script_progression --message="Upgrading source files..."
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir/build"
+	ynh_setup_source --dest_dir="$install_dir/build"  --full_replace=1
 fi
+
+# full replace on live dir
+ynh_secure_remove "$install_dir/live"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
@@ -141,6 +144,7 @@ cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
 cp -r "$install_dir/build/server-ce/config" "$install_dir/config/"
 ynh_secure_remove --file="$install_dir/config/settings.js"
 ynh_secure_remove --file="$install_dir/config/production.json"
+ynh_secure_remove --file="$install_dir/live/services/history-v1/config/production.json"
 
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/config/production.json"
 ynh_add_config --template="../conf/production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
@@ -149,6 +153,7 @@ cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$ins
 ynh_script_progression --message="Building app... This may take a LOT of time depending of your CPU" --weight=25
 pushd "$install_dir/live"
 	ynh_use_nodejs
+        ynh_exec_warn_less npm install
    	ynh_exec_warn_less npm ci
 popd
 
@@ -156,6 +161,9 @@ pushd "$install_dir/live/services/web"
 	ynh_exec_warn_less npm run webpack:production
 	ynh_secure_remove --file="$install_dir/live/services/web/node_modules/.cache"
 popd
+
+#remove build dir
+ynh_secure_remove "$install_dir/build"
 
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
