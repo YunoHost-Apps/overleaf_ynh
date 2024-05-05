@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version="14.21.3"
+nodejs_version="18.20.2"
 
 #=================================================
 # PERSONAL HELPERS
@@ -329,7 +329,7 @@ ynh_install_mongo() {
 	debian=$(lsb_release --codename --short)
 
 	ynh_print_info --message="Installing MongoDB Community Edition..."
-    local mongo_debian_release=bullseye #$(ynh_get_debian_release)
+        local mongo_debian_release=$(ynh_get_debian_release)
     
 	if [ "$mongo_debian_release" == buster ] ; then
     ubuntu_version="bionic"
