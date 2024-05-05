@@ -4,7 +4,7 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version=18.20.2
+nodejs_version="14.21.3"
 
 #=================================================
 # PERSONAL HELPERS
@@ -15,7 +15,7 @@ nodejs_version=18.20.2
 #=================================================
 
 readonly YNH_DEFAULT_MONGO_VERSION=7.0
-# Declare the actual MongoDB version to use: 7.0 ; 8.0
+# Declare the actual MongoDB version to use: 4.4; 5.0; 6.0
 # A packager willing to use another version of MongoDB can override the variable into its _common.sh.
 YNH_MONGO_VERSION=${YNH_MONGO_VERSION:-$YNH_DEFAULT_MONGO_VERSION}
 
@@ -61,7 +61,7 @@ ynh_mongo_exec() {
 	if [ -n "$user" ]
 	then
 		user="--username=$user"
-		
+
 		# If password is provided
 		if [ -n "$password" ]
 		then
@@ -116,7 +116,7 @@ EOF
 		else
 			database=""
 		fi
-		
+
 		mongosh --quiet $database --username $user --password $password --authenticationDatabase $authenticationdatabase --host $host --port $port --eval="$command"
 	fi
 }
@@ -185,7 +185,7 @@ ynh_mongo_create_user() {
 
 	# Create the user and set the user as admin of the db
 	ynh_mongo_exec --database="$db_name" --command='db.createUser( { user: "'${db_user}'", pwd: "'${db_pwd}'", roles: [ { role: "readWrite", db: "'${db_name}'" } ] } );'
-	
+
 	# Add clustermonitoring rights
 	ynh_mongo_exec --database="$db_name" --command='db.grantRolesToUser("'${db_user}'",[{ role: "clusterMonitor", db: "admin" }]);'
 }
@@ -277,12 +277,12 @@ ynh_mongo_setup_db() {
 	local new_db_pwd=$(ynh_string_random) # Generate a random password
 	# If $db_pwd is not provided, use new_db_pwd instead for db_pwd
 	db_pwd="${db_pwd:-$new_db_pwd}"
-	
+
 	# Create the user and grant access to the database
 	ynh_mongo_create_user --db_user="$db_user" --db_pwd="$db_pwd" --db_name="$db_name"
 
 	# Store the password in the app's config
-	ynh_app_setting_set --app=$app --key=db_pwd --value=$db_pwd 
+	ynh_app_setting_set --app=$app --key=db_pwd --value=$db_pwd
 }
 
 # Remove a database if it exists, and the associated user
@@ -326,20 +326,36 @@ ynh_install_mongo() {
 	ynh_handle_getopts_args "$@"
 	mongo_version="${mongo_version:-$YNH_MONGO_VERSION}"
 
+	debian=$(lsb_release --codename --short)
+
 	ynh_print_info --message="Installing MongoDB Community Edition..."
-	ynh_install_extra_app_dependencies --repo="deb http://repo.mongodb.org/apt/debian buster/mongodb-org/$mongo_version main" --package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" --key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
-	mongodb_servicename=mongod
+    local mongo_debian_release=bullseye #$(ynh_get_debian_release)
+    
+	if [ "$mongo_debian_release" == buster ] ; then
+    ubuntu_version="bionic"
+  elif [ "$mongo_debian_release" == bullseye ] ; then
+    ubuntu_version="focal"
+  elif [ "$mongo_debian_release" == bookworm ] ; then
+	ubuntu_version="jammy"
+  fi
 
-	# Make sure MongoDB is started and enabled
-	systemctl enable $mongodb_servicename --quiet
-	systemctl daemon-reload --quiet
-	ynh_systemd_action --service_name=$mongodb_servicename --action=restart --line_match="aiting for connections" --log_path="/var/log/mongodb/$mongodb_servicename.log"
+	ynh_install_extra_app_dependencies \
+		--repo="deb https://repo.mongodb.org/apt/ubuntu $ubuntu_version/mongodb-org/$mongo_version multiverse" \
+		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
+		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
+    mongodb_servicename=mongod
 
-	# Integrate MongoDB service in YunoHost
-	yunohost service add $mongodb_servicename --description="MongoDB daemon" --log="/var/log/mongodb/$mongodb_servicename.log"
+    # Make sure MongoDB is started and enabled
+    systemctl enable $mongodb_servicename --quiet
+    systemctl daemon-reload --quiet
 
-	# Store mongo_version into the config of this app
-	ynh_app_setting_set --app=$app --key=mongo_version --value=$mongo_version
+    ynh_systemd_action --service_name=$mongodb_servicename --action=restart --line_match="aiting for connections" --log_path="/var/log/mongodb/$mongodb_servicename.log"
+
+    # Integrate MongoDB service in YunoHost
+    yunohost service add $mongodb_servicename --description="MongoDB daemon" --log="/var/log/mongodb/$mongodb_servicename.log"
+
+    # Store mongo_version into the config of this app
+    ynh_app_setting_set --app=$app --key=mongo_version --value=$mongo_version
 }
 
 # Remove MongoDB
