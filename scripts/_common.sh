@@ -2,18 +2,23 @@
 #=================================================
 
 nodejs_version="18.20.2"
+YNH_DEFAULT_MONGO_VERSION=6.0
 
 #=================================================
 # PERSONAL HELPERS
-@@ -15,7 +15,7 @@ nodejs_version="18.20.2"
 #=================================================
 
-readonly YNH_DEFAULT_MONGO_VERSION=6.0
+#=================================================
+# FUTURE OFFICIAL HELPERS
+#=================================================
+
 # Declare the actual MongoDB version to use: 4.4; 5.0; 6.0
 # A packager willing to use another version of MongoDB can override the variable into its _common.sh.
 YNH_MONGO_VERSION=${YNH_MONGO_VERSION:-$YNH_DEFAULT_MONGO_VERSION}
 
-@@ -25,100 +25,100 @@ YNH_MONGO_VERSION=${YNH_MONGO_VERSION:-$YNH_DEFAULT_MONGO_VERSION}
+# Execute a mongo command
+#
+# example: ynh_mongo_exec --command='db.getMongo().getDBNames().indexOf("wekan")'
 # example: ynh_mongo_exec --command="db.getMongo().getDBNames().indexOf(\"wekan\")"
 #
 # usage: ynh_mongo_exec [--user=user] [--password=password] [--authenticationdatabase=authenticationdatabase] [--database=database] [--host=host] [--port=port] --command="command" [--eval]
@@ -114,7 +119,10 @@ EOF
 }
 
 # Drop a database
-@@ -129,220 +129,216 @@ EOF
+#
+# [internal]
+#
+# If you intend to drop the database *and* the associated user,
 # consider using ynh_mongo_remove_db instead.
 #
 # usage: ynh_mongo_drop_db --database=database
@@ -318,8 +326,6 @@ ynh_install_mongo() {
 	debian=$(lsb_release --codename --short)
 
 	ynh_print_info --message="Installing MongoDB Community Edition..."
-        local mongo_debian_release=$(ynh_get_debian_release)
-
   if [[ $(cat /proc/cpuinfo) != *"avx"* && "$mongo_version" != "4.4" ]]; then
     ynh_print_warn --message="Installing Mongo 4.4 as $mongo_version is not compatible with your CPU (see https://docs.mongodb.com/manual/administration/production-notes/#x86_64)."
     mongo_version="4.4"
@@ -328,12 +334,29 @@ ynh_install_mongo() {
     ynh_print_warn --message="Switched to Buster install as Mongo 4.4 is not compatible with $mongo_debian_release."
     mongo_debian_release=buster
   fi
+	ynh_install_extra_app_dependencies \
+		--repo="deb http://repo.mongodb.org/apt/debian $debian/mongodb-org/$mongo_version main" \
+		--package="mongodb-org mongodb-org-server mongodb-org-tools mongodb-mongosh" \
+		--key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
+	mongodb_servicename=mongod
 
-    ynh_install_extra_app_dependencies --repo="deb http://repo.mongodb.org/apt/debian $mongo_debian_release/mongodb-org/$mongo_version main" --package="mongodb-org-server mongodb-org-shell mongodb-database-tools" --key="https://www.mongodb.org/static/pgp/server-$mongo_version.asc"
-    mongodb_servicename=mongod
+	# Make sure MongoDB is started and enabled
+	systemctl enable $mongodb_servicename --quiet
+	systemctl daemon-reload --quiet
+	ynh_systemd_action --service_name=$mongodb_servicename --action=restart --line_match="aiting for connections" --log_path="/var/log/mongodb/$mongodb_servicename.log"
 
-    # Make sure MongoDB is started and enabled
-@@ -366,19 +362,18 @@ ynh_install_mongo() {
+	# Integrate MongoDB service in YunoHost
+	yunohost service add $mongodb_servicename --description="MongoDB daemon" --log="/var/log/mongodb/$mongodb_servicename.log"
+
+	# Store mongo_version into the config of this app
+	ynh_app_setting_set --app=$app --key=mongo_version --value=$mongo_version
+}
+
+# Remove MongoDB
+# Only remove the MongoDB service integration in YunoHost for now
+# if MongoDB package as been removed
+#
+# usage: ynh_remove_mongo
 #
 #
 ynh_remove_mongo() {
@@ -348,8 +371,3 @@ ynh_remove_mongo() {
 		ynh_secure_remove --file="/var/log/mongodb"
 	fi
 }
-
-
-#=================================================
-# FUTURE OFFICIAL HELPERS
-#=================================================
