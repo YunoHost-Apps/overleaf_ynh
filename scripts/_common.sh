@@ -2,7 +2,7 @@
 #=================================================
 
 nodejs_version="18.20.2"
-YNH_DEFAULT_MONGO_VERSION=6.0
+YNH_MONGO_VERSION=6.0
 
 #=================================================
 # PERSONAL HELPERS
