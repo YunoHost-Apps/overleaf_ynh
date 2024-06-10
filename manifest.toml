@@ -19,7 +19,7 @@ code = "https://github.com/overleaf/overleaf"
 
 [integration]
 yunohost = ">= 11.2.13"
-architectures = ['amd64']
+architectures = ["amd64"]
 multi_instance = false
 
 ldap = false
