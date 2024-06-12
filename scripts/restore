@@ -17,9 +17,6 @@ source /usr/share/yunohost/helpers
 ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_install_mongo
 
-# Upgrade NPM
-ynh_npm install --global npm@latest
-
 #=================================================
 # CREATE A MONGODB DATABASE
 #=================================================
