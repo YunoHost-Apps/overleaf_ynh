@@ -77,7 +77,7 @@ ram.runtime = "3G"
     [resources.apt]
     packages = [
         # Overleaf dependencies
-        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments",
+        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
         
         # Aspell dependencies
         "aspell-ar", "aspell-ar-large",
