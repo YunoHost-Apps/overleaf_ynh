@@ -110,9 +110,6 @@ ynh_script_progression --message="Upgrading dependencies..."
 ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_install_mongo
 
-# Upgrade NPM
-ynh_npm install --global npm@latest
-
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
