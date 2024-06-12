@@ -75,19 +75,6 @@ chmod -R o-rwx "$data_dir"
 chown -R $app:www-data "$data_dir"
 
 #=================================================
-# SPECIFIC RESTORATION
-#=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Reinstalling dependencies..."
-
-ynh_install_nodejs --nodejs_version=$nodejs_version
-ynh_install_mongo
-
-# Upgrade NPM
-ynh_npm install --global npm@latest
-
-#=================================================
 # RESTORE THE MONGODB DATABASE
 #=================================================
 ynh_script_progression --message="Restoring the MongoDB database..."
