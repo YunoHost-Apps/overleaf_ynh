@@ -71,8 +71,39 @@ ram.runtime = "3G"
     admin.allowed = "admins"
     admin.show_tile = false
 
-    [resources.ports]
+    [resources.ports] #Only the web service can customize its port…
     main.default = 8095
+
+    chat.default = 3010
+    chat.fixed = true
+
+    clsi.default = 3013
+    clsi.fixed = true
+
+    contacts.default = 3036
+    contacts.fixed = true
+
+    docstore.default = 3016
+    docstore.fixed = true
+
+    document-updater.default = 3003
+    document-updater.fixed = true
+
+    filestore.default = 3009
+    filstore.fixed = true
+
+    notifications.default = 3042
+    notifications.fixed = true
+
+    project-history.default = 3054
+    project-history.fixed = true
+
+    realtime.default = 3026
+    realtime.fixed = true
+
+    spelling.default = 3005
+    spelling.fixed = true
+
 
     [resources.apt]
     packages = [

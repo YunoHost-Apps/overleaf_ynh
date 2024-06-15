@@ -210,6 +210,10 @@ const settings = {
       process.env.OVERLEAF_SESSION_SECRET || process.env.CRYPTO_RANDOM,
   },
 
+  csp: {
+    enabled: process.env.OVERLEAF_CSP_ENABLED !== 'false',
+  },
+
   // These credentials are used for authenticating api requests
   // between services that may need to go over public channels
   httpAuthUsers,
@@ -402,76 +406,6 @@ if (
       min: process.env.OVERLEAF_PASSWORD_VALIDATION_MIN_LENGTH || 8,
       max: process.env.OVERLEAF_PASSWORD_VALIDATION_MAX_LENGTH || 72,
     },
-  }
-}
-
-// ######################
-// Overleaf Server Pro
-// ######################
-
-if (parse(process.env.OVERLEAF_IS_SERVER_PRO) === true) {
-  settings.bypassPercentageRollouts = true
-  settings.apis.references = { url: 'http://127.0.0.1:3040' }
-}
-
-// Compiler
-// --------
-if (process.env.SANDBOXED_COMPILES === 'true') {
-  settings.clsi = {
-    dockerRunner: true,
-    docker: {
-      image: process.env.TEX_LIVE_DOCKER_IMAGE,
-      env: {
-        HOME: '/tmp',
-        PATH:
-          process.env.COMPILER_PATH ||
-          '/usr/local/texlive/2015/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      },
-      user: 'www-data',
-    },
-  }
-
-  if (settings.path == null) {
-    settings.path = {}
-  }
-  settings.path.synctexBaseDir = () => '/compile'
-  if (process.env.SANDBOXED_COMPILES_SIBLING_CONTAINERS === 'true') {
-    console.log('Using sibling containers for sandboxed compiles')
-    if (process.env.SANDBOXED_COMPILES_HOST_DIR) {
-      settings.path.sandboxedCompilesHostDir =
-        process.env.SANDBOXED_COMPILES_HOST_DIR
-    } else {
-      console.error(
-        'Sibling containers, but SANDBOXED_COMPILES_HOST_DIR not set'
-      )
-    }
-  }
-}
-
-// Templates
-// ---------
-if (process.env.OVERLEAF_TEMPLATES_USER_ID) {
-  settings.templates = {
-    mountPointUrl: '/templates',
-    user_id: process.env.OVERLEAF_TEMPLATES_USER_ID,
-  }
-
-  settings.templateLinks = parse(
-    process.env.OVERLEAF_NEW_PROJECT_TEMPLATE_LINKS
-  )
-}
-
-// /Learn
-// -------
-if (process.env.OVERLEAF_PROXY_LEARN != null) {
-  settings.proxyLearn = parse(process.env.OVERLEAF_PROXY_LEARN)
-  if (settings.proxyLearn) {
-    settings.nav.header_extras = [
-      {
-        url: '/learn',
-        text: 'documentation',
-      },
-    ].concat(settings.nav.header_extras || [])
   }
 }
 
