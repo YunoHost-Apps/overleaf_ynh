@@ -132,15 +132,6 @@ ynh_remove_mongo
 ynh_remove_nodejs
 
 #=================================================
-# SPECIFIC REMOVE
-#=================================================
-# REMOVE VARIOUS FILES
-#=================================================
-ynh_script_progression --message="Removing various files..."
-
-# Remove the log files
-
-#=================================================
 # END OF SCRIPT
 #=================================================
 

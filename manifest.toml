@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2024.06.10~ynh1"
+version = "2024.06.20~ynh1"
 
 maintainers = []
 
@@ -51,8 +51,8 @@ ram.runtime = "3G"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/e67a2b92a8fe8573bde5ee2424e26a99100e0027.tar.gz"
-        sha256 = "51bc4aad0334207b9d7de440c365932361a90e8b5326169896e03d41668c2238"
+        url = "https://github.com/overleaf/overleaf/archive/c90d01afa250171b368cdea40484848de98573e6.tar.gz"
+        sha256 = "2e6f2661e6450b6989ab0a93dfd1ce728ba44e77551af692740d227c76fde074"
         autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
@@ -77,7 +77,7 @@ ram.runtime = "3G"
     [resources.apt]
     packages = [
         # Overleaf dependencies
-        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments",
+        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
         
         # Aspell dependencies
         "aspell-ar", "aspell-ar-large",
