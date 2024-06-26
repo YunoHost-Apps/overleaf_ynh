@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Overleaf YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/overleaf.svg)](https://dash.yunohost.org/appci/app/overleaf) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
 
 [![Instalatu Overleaf YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 
@@ -19,7 +19,7 @@ EZ editatu eskuz.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Paketatutako bertsioa:** 2024.06.10~ynh1
+**Paketatutako bertsioa:** 2024.06.25~ynh1
 
 ## Pantaila-argazkiak
 

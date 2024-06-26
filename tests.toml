@@ -2,4 +2,4 @@ test_format = 1.0
 
 [default]
 
-test_upgrade_from.405228e.name = "2024-04-09"
+test_upgrade_from.ce30971.name = "2024-06-10"

@@ -1,8 +1,8 @@
 # COMMON VARIABLES
 #=================================================
 
-nodejs_version="18.20.2"
-YNH_MONGO_VERSION=6.0
+nodejs_version="20"
+YNH_MONGO_VERSION="7.0"
 
 #=================================================
 # PERSONAL HELPERS
