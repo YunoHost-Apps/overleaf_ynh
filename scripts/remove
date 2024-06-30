@@ -76,18 +76,18 @@ fi
 # STOP AND REMOVE SERVICE
 #=================================================
 # Remove the dedicated systemd config
-ynh_config_remove_systemd"$app-chat"
-ynh_config_remove_systemd"$app-clsi"
-ynh_config_remove_systemd"$app-contacts"
-ynh_config_remove_systemd"$app-docstore"
-ynh_config_remove_systemd"$app-document-updater"
-ynh_config_remove_systemd"$app-filestore"
-ynh_config_remove_systemd"$app-history-v1"
-ynh_config_remove_systemd"$app-notifications"
-ynh_config_remove_systemd"$app-project-history"
-ynh_config_remove_systemd"$app-real-time"
-ynh_config_remove_systemd"$app-spelling"
-ynh_config_remove_systemd"$app-web"
+ynh_config_remove_systemd "$app-chat"
+ynh_config_remove_systemd "$app-clsi"
+ynh_config_remove_systemd "$app-contacts"
+ynh_config_remove_systemd "$app-docstore"
+ynh_config_remove_systemd "$app-document-updater"
+ynh_config_remove_systemd "$app-filestore"
+ynh_config_remove_systemd "$app-history-v1"
+ynh_config_remove_systemd "$app-notifications"
+ynh_config_remove_systemd "$app-project-history"
+ynh_config_remove_systemd "$app-real-time"
+ynh_config_remove_systemd "$app-spelling"
+ynh_config_remove_systemd "$app-web"
 
 #=================================================
 # REMOVE LOGROTATE CONFIGURATION
