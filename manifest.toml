@@ -18,7 +18,8 @@ userdoc = "https://www.overleaf.com/learn"
 code = "https://github.com/overleaf/overleaf"
 
 [integration]
-yunohost = ">= 11.2.13"
+yunohost = ">= 11.2.17"
+helpers_version = "2.1"
 architectures = ["amd64"]
 multi_instance = false
 
