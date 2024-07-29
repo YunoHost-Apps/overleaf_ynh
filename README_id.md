@@ -19,7 +19,7 @@ Ini TIDAK boleh diedit dengan tangan.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versi terkirim:** 2024.07.19~ynh1
+**Versi terkirim:** 2024.07.25~ynh1
 
 ## Tangkapan Layar
 
@@ -29,7 +29,7 @@ Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 - Website aplikasi resmi: <https://www.overleaf.com>
 - Dokumentasi pengguna resmi: <https://www.overleaf.com/learn>
-- Repositori kode aplikasi hulu: <https://github.com/overleaf/overleaf>
+- Depot kode aplikasi hulu: <https://github.com/overleaf/overleaf>
 - Gudang YunoHost: <https://apps.yunohost.org/app/overleaf>
 - Laporkan bug: <https://github.com/YunoHost-Apps/overleaf_ynh/issues>
 
