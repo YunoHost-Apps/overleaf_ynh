@@ -10,7 +10,7 @@ WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/variables.env
 Environment="NOTIFICATIONS_HOST=127.0.0.1"
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
-ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/notifications/app.js
+ExecStart=__NODEJS_DIR__/node __INSTALL_DIR__/live/services/notifications/app.js
 StandardOutput=append:/var/log/__APP__/notifications.log
 StandardError=inherit
 Restart=on-failure

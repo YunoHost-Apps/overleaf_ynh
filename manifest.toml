@@ -18,7 +18,8 @@ userdoc = "https://www.overleaf.com/learn"
 code = "https://github.com/overleaf/overleaf"
 
 [integration]
-yunohost = ">= 11.2.13"
+yunohost = ">= 11.2.18"
+helpers_version = "2.1"
 architectures = ["amd64"]
 multi_instance = false
 
@@ -59,6 +60,7 @@ ram.runtime = "3G"
     allow_email = true
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.data_dir]
     subdirs = [ "compiles", "output", "cache", "user_files", "template_files", "history" ]
