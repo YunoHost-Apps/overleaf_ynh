@@ -14,13 +14,6 @@
 > *Этот пакет позволяет Вам установить Overleaf быстро и просто на YunoHost-сервер.*  
 > *Если у Вас нет YunoHost, пожалуйста, посмотрите [инструкцию](https://yunohost.org/install), чтобы узнать, как установить его.*
 
-## Обзор
-
-Overleaf is an open-source online real-time collaborative LaTeX editor.
-
-
-**Поставляемая версия:** 2024.06.26~ynh1
-
 ## Снимки экрана
 
 ![Снимок экрана Overleaf](./doc/screenshots/screenshot.png)

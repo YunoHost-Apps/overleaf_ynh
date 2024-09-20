@@ -14,12 +14,6 @@ Ini TIDAK boleh diedit dengan tangan.
 > *Paket ini memperbolehkan Anda untuk memasang Overleaf secara cepat dan mudah pada server YunoHost.*  
 > *Bila Anda tidak mempunyai YunoHost, silakan berkonsultasi dengan [panduan](https://yunohost.org/install) untuk mempelajari bagaimana untuk memasangnya.*
 
-## Ringkasan
-
-Overleaf is an open-source online real-time collaborative LaTeX editor.
-
-
-**Versi terkirim:** 2024.06.26~ynh1
 
 ## Tangkapan Layar
 
