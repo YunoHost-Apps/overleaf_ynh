@@ -19,7 +19,7 @@ No se debe editar a mano.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versión actual:** 2024.08.26~ynh1
+**Versión actual:** 2024.09.13~ynh1
 
 ## Capturas
 
@@ -35,7 +35,7 @@ Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
