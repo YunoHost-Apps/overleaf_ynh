@@ -19,7 +19,7 @@ Hij mag NIET handmatig aangepast worden.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Geleverde versie:** 2024.08.26~ynh1
+**Geleverde versie:** 2024.09.13~ynh1
 
 ## Schermafdrukken
 
