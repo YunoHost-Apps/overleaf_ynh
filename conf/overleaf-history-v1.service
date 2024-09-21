@@ -11,7 +11,7 @@ EnvironmentFile=__INSTALL_DIR__/variables.env
 Environment="HISTORY_V1_HOST=127.0.0.1"
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
 Environment="NODE_CONFIG_DIR=__INSTALL_DIR__/live/services/history-v1/config"
-ExecStart=__YNH_NODE__ __INSTALL_DIR__/live/services/history-v1/app.js
+ExecStart=__NODEJS_DIR__/node __INSTALL_DIR__/live/services/history-v1/app.js
 StandardOutput=append:/var/log/__APP__/history-v1.log
 StandardError=inherit
 Restart=on-failure
