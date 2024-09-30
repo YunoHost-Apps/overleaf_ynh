@@ -19,7 +19,7 @@ No se debe editar a mano.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versión actual:** 2024.09.20~ynh1
+**Versión actual:** 2024.09.27~ynh1
 
 ## Capturas
 
