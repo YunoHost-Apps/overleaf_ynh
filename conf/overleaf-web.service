@@ -12,7 +12,7 @@ Environment="WEB_API_HOST=127.0.0.1"
 Environment="WEB_PORT=__PORT__"
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
 EnvironmentFile=__INSTALL_DIR__/variables.env
-ExecStart=__NODEJS_DIR__/node __INSTALL_DIR__/live/services/web/app.js
+ExecStart=__NODEJS_DIR__/node __INSTALL_DIR__/live/services/web/app.mjs
 StandardOutput=append:/var/log/__APP__/web.log
 StandardError=inherit
 Restart=on-failure
