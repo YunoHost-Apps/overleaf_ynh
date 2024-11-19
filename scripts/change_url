@@ -28,8 +28,6 @@ ynh_systemctl --service="$app-project-history" --action="stop"
 
 ynh_systemctl --service="$app-real-time" --action="stop"
 
-ynh_systemctl --service="$app-spelling" --action="stop"
-
 ynh_systemctl --service="$app-web" --action="stop"
 
 #=================================================
@@ -72,7 +70,6 @@ ynh_systemctl --service="$app-history-v1" --action="start" --log_path="/var/log/
 ynh_systemctl --service="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --wait_until="Using settings from"
-ynh_systemctl --service="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-web" --action="start" --log_path="/var/log/$app/web.log" --wait_until="listening on" --wait_until="Using settings from"
 
 #=================================================

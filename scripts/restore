@@ -94,8 +94,6 @@ ynh_restore "/etc/systemd/system/$app-project-history.service"
 systemctl enable $app-project-history.service --quiet
 ynh_restore "/etc/systemd/system/$app-real-time.service"
 systemctl enable $app-real-time.service --quiet
-ynh_restore "/etc/systemd/system/$app-spelling.service"
-systemctl enable $app-spelling.service --quiet
 ynh_restore "/etc/systemd/system/$app-web.service"
 systemctl enable $app-web.service --quiet
 
@@ -123,7 +121,6 @@ yunohost service add "$app-history-v1" --log="/var/log/$app/history-v1.log"
 yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
 yunohost service add "$app-project-history" --log="/var/log/$app/project-history.log"
 yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
-yunohost service add "$app-spelling" --log="/var/log/$app/spelling.log"
 yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 #=================================================
@@ -141,7 +138,6 @@ ynh_systemctl --service="$app-history-v1" --action="start" --log_path="/var/log/
 ynh_systemctl --service="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --wait_until="Using settings from"
-ynh_systemctl --service="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-web" --action="start" --log_path="/var/log/$app/web.log" --wait_until="listening on" --wait_until="Using settings from"
 
 #=================================================
