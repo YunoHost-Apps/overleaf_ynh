@@ -5,7 +5,9 @@ It shall NOT be edited by hand.
 
 # Overleaf for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![Working status](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![Integration level](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+![Working status](https://apps.yunohost.org/badge/state/overleaf)
+![Maintenance status](https://apps.yunohost.org/badge/maintained/overleaf)
 
 [![Install Overleaf with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 
@@ -19,7 +21,7 @@ It shall NOT be edited by hand.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Shipped version:** 2024.10.27~ynh1
+**Shipped version:** 2024.11.22~ynh1
 
 ## Screenshots
 

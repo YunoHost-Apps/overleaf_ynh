@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Overleaf untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+![Status kerja](https://apps.yunohost.org/badge/state/overleaf)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/overleaf)
 
 [![Pasang Overleaf dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 
@@ -19,7 +21,7 @@ Ini TIDAK boleh diedit dengan tangan.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versi terkirim:** 2024.10.27~ynh1
+**Versi terkirim:** 2024.11.22~ynh1
 
 ## Tangkapan Layar
 
