@@ -46,7 +46,6 @@ ynh_backup "/etc/systemd/system/$app-history-v1.service"
 ynh_backup "/etc/systemd/system/$app-notifications.service"
 ynh_backup "/etc/systemd/system/$app-project-history.service"
 ynh_backup "/etc/systemd/system/$app-real-time.service"
-ynh_backup "/etc/systemd/system/$app-spelling.service"
 ynh_backup "/etc/systemd/system/$app-web.service"
 
 #=================================================

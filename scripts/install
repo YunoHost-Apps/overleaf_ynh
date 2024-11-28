@@ -163,7 +163,6 @@ ynh_config_add_systemd --service="$app-history-v1" --template="overleaf-history-
 ynh_config_add_systemd --service="$app-notifications" --template="overleaf-notifications.service"
 ynh_config_add_systemd --service="$app-project-history" --template="overleaf-project-history.service"
 ynh_config_add_systemd --service="$app-real-time" --template="overleaf-real-time.service"
-ynh_config_add_systemd --service="$app-spelling" --template="overleaf-spelling.service"
 ynh_config_add_systemd --service="$app-web" --template="overleaf-web.service"
 
 #=================================================
@@ -191,7 +190,6 @@ yunohost service add "$app-history-v1" --log="/var/log/$app/history-v1.log"
 yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
 yunohost service add "$app-project-history" --log="/var/log/$app/project-history.log"
 yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
-yunohost service add "$app-spelling" --log="/var/log/$app/spelling.log"
 yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 #=================================================
@@ -206,11 +204,9 @@ ynh_systemctl --service="$app-docstore" --action="start" --log_path="/var/log/$a
 ynh_systemctl --service="$app-document-updater" --action="start" --log_path="/var/log/$app/document-updater.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-filestore" --action="start" --log_path="/var/log/$app/filestore.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-history-v1" --action="start" --log_path="/var/log/$app/history-v1.log" --wait_until="Loading backend"
-
 ynh_systemctl --service="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --wait_until="Using settings from"
-ynh_systemctl --service="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-web" --action="start" --log_path="/var/log/$app/web.log" --wait_until="listening on" --wait_until="Using settings from"
 
 #=================================================
