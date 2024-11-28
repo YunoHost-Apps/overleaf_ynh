@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # Overleaf para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/overleaf)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/overleaf)
 
 [![Instalar Overleaf con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 

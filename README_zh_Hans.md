@@ -5,7 +5,9 @@
 
 # YunoHost 上的 Overleaf
 
-[![集成程度](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![集成程度](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+![工作状态](https://apps.yunohost.org/badge/state/overleaf)
+![维护状态](https://apps.yunohost.org/badge/maintained/overleaf)
 
 [![使用 YunoHost 安装 Overleaf](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 

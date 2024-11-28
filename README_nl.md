@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # Overleaf voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/overleaf.svg)](https://ci-apps.yunohost.org/ci/apps/overleaf/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/overleaf.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/overleaf.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/overleaf)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/overleaf)
 
 [![Overleaf met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=overleaf)
 
