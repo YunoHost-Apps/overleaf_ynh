@@ -123,19 +123,19 @@ ynh_safe_rm "$install_dir/build"
 
 ynh_script_progression "Building app... This may take a LOT of time depending of your CPU"
 pushd "$install_dir/live"
-
+	export CYPRESS_INSTALL_BINARY=0
+	ynh_hide_warnings npm install --ommit=dev
+   	# ynh_hide_warnings npm ci
 	ynh_hide_warnings npm cache clean --force
-	ynh_hide_warnings npm install
-   	ynh_hide_warnings npm ci
 popd
 
 pushd "$install_dir/live/services/web"
+	export CYPRESS_INSTALL_BINARY=0
+	ynh_hide_warnings npm install --include=dev
 	ynh_hide_warnings npm run webpack:production
-	ynh_safe_rm "$install_dir/live/services/web/node_modules/.cache"
+	ynh_hide_warnings npm install --omit=dev
+	ynh_hide_warnings npm run precompile-pug
 popd
-
-# remove build dir
-ynh_safe_rm "$install_dir/build"
 
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
