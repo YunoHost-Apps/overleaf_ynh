@@ -125,7 +125,6 @@ ynh_script_progression "Building app... This may take a LOT of time depending of
 pushd "$install_dir/live"
 	export CYPRESS_INSTALL_BINARY=0
 	ynh_hide_warnings npm install --ommit=dev
-   	# ynh_hide_warnings npm ci
 	ynh_hide_warnings npm cache clean --force
 popd
 
