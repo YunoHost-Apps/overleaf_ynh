@@ -19,7 +19,7 @@ ynh_app_setting_set_default --key=jwt_key --value=$(ynh_string_random --length=4
 #=================================================
 ynh_script_progression "Ensuring downward compatibility..."
 
-if ynh_app_upgrading_from_version_before 1.118.2~ynh1
+if ynh_app_upgrading_from_version_before 2024.09.30~ynh1
 then
     if ynh_hide_warnings yunohost service status "$app-spelling" >/dev/null; then
        yunohost service remove "$app-spelling"
