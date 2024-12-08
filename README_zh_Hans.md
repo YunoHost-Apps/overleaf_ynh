@@ -21,7 +21,7 @@
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**分发版本：** 2024.11.15~ynh1
+**分发版本：** 2024.12.06~ynh1
 
 ## 截图
 
