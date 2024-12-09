@@ -21,7 +21,7 @@ Ini TIDAK boleh diedit dengan tangan.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versi terkirim:** 2024.11.15~ynh1
+**Versi terkirim:** 2024.11.28~ynh1
 
 ## Tangkapan Layar
 
