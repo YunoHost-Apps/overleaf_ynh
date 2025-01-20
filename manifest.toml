@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2024.09.30~ynh1"
+version = "2025.01.17~ynh1"
 
 maintainers = []
 
@@ -52,8 +52,8 @@ ram.runtime = "3G"
 [resources]
     [resources.sources]
         [resources.sources.main]
-        url = "https://github.com/overleaf/overleaf/archive/af811ec1ed5d45fc156ac08ae632549685bca4f4.tar.gz"
-        sha256 = "28bb8437ffefa50dc3234c9949391b75c0a8e7cc8e26ea4562f0e7bef897da8a"
+        url = "https://github.com/overleaf/overleaf/archive/7bef003c5673b5bf8f0bc400d8d7e372779c716d.tar.gz"
+        sha256 = "f75949c5bea6e52f73cca46c0ecb84485b3d6c65198aba5a817a458f19597057"
         autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
@@ -80,15 +80,6 @@ ram.runtime = "3G"
         # Overleaf dependencies
         "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
         
-        # Aspell dependencies
-        "aspell-ar", "aspell-ar-large",
-  "aspell-bg", "aspell-br", "aspell-ca", "aspell-cs", "aspell-cy", "aspell-da", "aspell-de", "aspell-de-1901",
-  "aspell-el", "aspell-en", "aspell-eo", "aspell-es", "aspell-et", "aspell-eu-es", "aspell-fa",
-  "aspell-fo", "aspell-fr", "aspell-ga", "aspell-gl-minimos", "aspell-hr", "aspell-hsb",
-  "aspell-it", "aspell-kk", "aspell-ku", "aspell-lt", "aspell-lv", "aspell-nl", "aspell-no",
-  "aspell-pa", "aspell-pl", "aspell-pt-br", "aspell-pt-pt", "aspell-ro",
-  "aspell-ru", "aspell-sk", "aspell-sl", "aspell-sv", "aspell-tl",
-
        # Filestore dependencies
    "ghostscript", "imagemagick", "optipng", "iproute2",
 

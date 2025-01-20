@@ -15,6 +15,20 @@ main_domain=$(cat /etc/yunohost/current_host)
 ynh_app_setting_set_default --key=jwt_key --value=$(ynh_string_random --length=45 | base64)
 
 #=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+ynh_script_progression "Ensuring downward compatibility..."
+
+if ynh_app_upgrading_from_version_before 2024.11.28~ynh1
+then
+    if ynh_hide_warnings yunohost service status "$app-spelling" >/dev/null; then
+       yunohost service remove "$app-spelling"
+    fi
+    ynh_config_remove_systemd "$app-spelling"
+    find "/var/log/$app/" -name "spelling.log*" -delete
+fi
+
+#=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping $app's systemd service..."
@@ -39,15 +53,7 @@ ynh_systemctl --service="$app-project-history" --action="stop"
 
 ynh_systemctl --service="$app-real-time" --action="stop"
 
-ynh_systemctl --service="$app-spelling" --action="stop"
-
 ynh_systemctl --service="$app-web" --action="stop"
-
-if ynh_hide_warnings yunohost service status "$app-track-changes" >/dev/null
-then
-	ynh_script_progression "Removing $app-track-changes service integration..."
-	yunohost service remove "$app-track-changes"
-fi
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
@@ -140,21 +146,23 @@ ynh_config_add --template="production.json" --destination="$install_dir/config/p
 ynh_config_add --template="production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
 cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
+#remove build dir
+ynh_safe_rm "$install_dir/build"
+
 ynh_script_progression "Building app... This may take a LOT of time depending of your CPU"
 pushd "$install_dir/live"
-
+	export CYPRESS_INSTALL_BINARY=0
+	ynh_hide_warnings npm install --ommit=dev
 	ynh_hide_warnings npm cache clean --force
-    ynh_hide_warnings npm install
-   	ynh_hide_warnings npm ci
 popd
 
 pushd "$install_dir/live/services/web"
+	export CYPRESS_INSTALL_BINARY=0
+	ynh_hide_warnings npm install --include=dev
 	ynh_hide_warnings npm run webpack:production
-	ynh_safe_rm "$install_dir/live/services/web/node_modules/.cache"
+	ynh_hide_warnings npm install --omit=dev
+	ynh_hide_warnings npm run precompile-pug
 popd
-
-#remove build dir
-ynh_safe_rm "$install_dir/build"
 
 chmod 750 "$install_dir/live"
 chmod -R o-rwx "$install_dir/live"
@@ -182,7 +190,6 @@ ynh_config_add_systemd --service="$app-history-v1" --template="overleaf-history-
 ynh_config_add_systemd --service="$app-notifications" --template="overleaf-notifications.service"
 ynh_config_add_systemd --service="$app-project-history" --template="overleaf-project-history.service"
 ynh_config_add_systemd --service="$app-real-time" --template="overleaf-real-time.service"
-ynh_config_add_systemd --service="$app-spelling" --template="overleaf-spelling.service"
 ynh_config_add_systemd --service="$app-web" --template="overleaf-web.service"
 
 #=================================================
@@ -210,7 +217,6 @@ yunohost service add "$app-history-v1" --log="/var/log/$app/history-v1.log"
 yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
 yunohost service add "$app-project-history" --log="/var/log/$app/project-history.log"
 yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
-yunohost service add "$app-spelling" --log="/var/log/$app/spelling.log"
 yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 #=================================================
@@ -228,7 +234,6 @@ ynh_systemctl --service="$app-history-v1" --action="start" --log_path="/var/log/
 ynh_systemctl --service="$app-notifications" --action="start" --log_path="/var/log/$app/notifications.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --wait_until="Using settings from"
-ynh_systemctl --service="$app-spelling" --action="start" --log_path="/var/log/$app/spelling.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-web" --action="start" --log_path="/var/log/$app/web.log" --wait_until="listening on" --wait_until="Using settings from"
 
 #=================================================
