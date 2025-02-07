@@ -84,7 +84,8 @@ systemctl enable "$app-real-time.service" --quiet
 yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
 
 ynh_restore "/etc/systemd/system/$app-web.service"
-systemctl enable "$app-web.service" --quietyunohost service add "$app-web" --log="/var/log/$app/web.log"
+systemctl enable "$app-web.service" --quiet
+yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 mkdir -p "/var/log/$app"
 chown -R $app:$app "/var/log/$app"
