@@ -104,6 +104,7 @@ ynh_exec_as_app cp -r "$install_dir/build/libraries/" "$install_dir/live/librari
 ynh_exec_as_app cp -r "$install_dir/build/services/" "$install_dir/live/services/"
 ynh_exec_as_app cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
 ynh_exec_as_app cp -r "$install_dir/build/server-ce/config/" "$install_dir/config/"
+
 chown -R $app:www-data "$install_dir/config"
 
 ynh_safe_rm "$install_dir/config/settings.js"
@@ -126,14 +127,15 @@ ynh_safe_rm "$install_dir/build"
 ynh_script_progression "Building app... This may take a LOT of time depending of your CPU"
 pushd "$install_dir/live"
 	export CYPRESS_INSTALL_BINARY=0
-	ynh_hide_warnings ynh_exec_as_app npm install
+	ynh_hide_warnings ynh_exec_as_app npm install --ommit=dev
 	ynh_hide_warnings ynh_exec_as_app npm cache clean --force
 popd
 
 pushd "$install_dir/live/services/web"
 	export CYPRESS_INSTALL_BINARY=0
-	ynh_hide_warnings ynh_exec_as_app npm install
+	ynh_hide_warnings ynh_exec_as_app npm install --include=dev
 	ynh_hide_warnings ynh_exec_as_app NODE_OPTIONS="--max-old-space-size=3000" npm run webpack:production
+	ynh_hide_warnings ynh_exec_as_app npm install --omit=dev
 	ynh_hide_warnings ynh_exec_as_app npm run precompile-pug
 popd
 
@@ -146,6 +148,7 @@ chown -R $app:www-data "$install_dir"
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
 
+# Create a dedicated NGINX config using the conf/nginx.conf template
 ynh_config_add_nginx
 
 # Create a dedicated systemd config
