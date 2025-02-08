@@ -43,13 +43,12 @@ db_user=$db_name
 ynh_app_setting_set --key=db_name --value=$db_name
 ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
 
-ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
-
-ynh_replace --match="#replication:" --replace="replication:\n  replSetName: $app" --file="/etc/mongod.conf"
-
-ynh_systemctl --service=mongod --action=start --wait_until="aiting for connections" --log_path="/var/log/mongodb/mongod.log"
-
-ynh_mongo_exec --command="rs.initiate()"
+if ynh_hide_warnings ynh_mongo_exec --command="printjson(rs.status())" | grep -q "not running with --replSet"; then
+	ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
+	ynh_replace --match="#replication:" --replace="replication:\n  replSetName: $app" --file="/etc/mongod.conf"
+	ynh_systemctl --service=mongod --action=start --wait_until="aiting for connections" --log_path="/var/log/mongodb/mongod.log"
+	ynh_mongo_exec --command="rs.initiate()"
+fi
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
