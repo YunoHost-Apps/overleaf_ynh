@@ -63,6 +63,14 @@ ynh_script_progression "Upgrading dependencies..."
 ynh_nodejs_install
 ynh_install_mongo
 
+ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
+
+ynh_replace --match="#replication:" --replace="replication:\n  replSetName: $app" --file="/etc/mongod.conf"
+
+ynh_systemctl --service=mongod --action=start --wait_until="aiting for connections" --log_path="/var/log/mongodb/mongod.log"
+
+ynh_mongo_exec --command="rs.initiate()"
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
