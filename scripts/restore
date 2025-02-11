@@ -1,50 +1,12 @@
 #!/bin/bash
 
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
 # Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
-
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-
-ynh_nodejs_install
-ynh_install_mongo
-
-#=================================================
-# CREATE A MONGODB DATABASE
-#=================================================
-ynh_script_progression "Creating a MongoDB database..."
-
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --key=db_name --value=$db_name
-ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name
-
-#=================================================
-# SPECIFIC SETUP
-#=================================================
-# CONFIGURE MONGOD
-#=================================================
-ynh_script_progression "Configuring MongoDB..."
-
-ynh_replace --match="#replication:" --replace="replication:\n  replSetName: rs0" --file="/etc/mongod.conf"
-
-ynh_hide_warnings systemctl enable mongod --quiet
-ynh_systemctl --service=mongod --action=restart --log_path=/var/log/mongodb/mongod.log --wait_until="Waiting for connections"
-
-if ynh_hide_warnings ynh_mongo_exec --command="printjson(rs.status())" | grep -q "no replset config has been received"; then
-	ynh_hide_warnings ynh_mongo_exec --command="printjson(rs.initiate())"
-fi
-
-#=================================================
-# STANDARD RESTORATION STEPS
-#=================================================
-# RESTORE THE NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Restoring the NGINX web server configuration..."
-
-ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
 # RESTORE THE APP MAIN DIR
@@ -61,72 +23,85 @@ ynh_script_progression "Restoring the data directory..."
 ynh_restore "$data_dir"
 
 #=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+
+ynh_nodejs_install
+ynh_install_mongo
+
+#=================================================
 # RESTORE THE MONGODB DATABASE
 #=================================================
 ynh_script_progression "Restoring the MongoDB database..."
 
-db_pwd=$(ynh_app_setting_get --key=db_pwd)
-ynh_mongo_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
 ynh_mongo_restore_db --database=$app < ./dump.bson
 
+if ynh_hide_warnings ynh_mongo_exec --command="printjson(rs.status())" | grep -q "not running with --replSet"; then
+	ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
+	ynh_replace --match="#replication:" --replace="replication:\n  replSetName: $app" --file="/etc/mongod.conf"
+	ynh_systemctl --service=mongod --action=start --wait_until="aiting for connections" --log_path="/var/log/mongodb/mongod.log"
+	ynh_mongo_exec --command="rs.initiate()"
+fi
+
 #=================================================
-# RESTORE SYSTEMD
+# RESTORE SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression "Restoring $app's systemd service..."
+ynh_script_progression "Restoring system configurations related to $app..."
+
+ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 ynh_restore "/etc/systemd/system/$app-chat.service"
-systemctl enable $app-chat.service --quiet
-ynh_restore "/etc/systemd/system/$app-clsi.service"
-systemctl enable $app-clsi.service --quiet
-ynh_restore "/etc/systemd/system/$app-contacts.service"
-systemctl enable $app-contacts.service --quiet
-ynh_restore "/etc/systemd/system/$app-docstore.service"
-systemctl enable $app-docstore.service --quiet
-ynh_restore "/etc/systemd/system/$app-document-updater.service"
-systemctl enable $app-document-updater.service --quiet
-ynh_restore "/etc/systemd/system/$app-filestore.service"
-systemctl enable $app-filestore.service --quiet
-ynh_restore "/etc/systemd/system/$app-history-v1.service"
-systemctl enable $app-history-v1.service --quiet
-ynh_restore "/etc/systemd/system/$app-notifications.service"
-systemctl enable $app-notifications.service --quiet
-ynh_restore "/etc/systemd/system/$app-project-history.service"
-systemctl enable $app-project-history.service --quiet
-ynh_restore "/etc/systemd/system/$app-real-time.service"
-systemctl enable $app-real-time.service --quiet
-ynh_restore "/etc/systemd/system/$app-web.service"
-systemctl enable $app-web.service --quiet
+systemctl enable "$app-chat.service" --quiet
+yunohost service add "$app-chat" --log="/var/log/$app/chat.log"
 
-#=================================================
-# RESTORE THE LOGROTATE CONFIGURATION
-#=================================================
-ynh_script_progression "Restoring the logrotate configuration..."
+ynh_restore "/etc/systemd/system/$app-clsi.service"
+systemctl enable "$app-clsi.service" --quiet
+yunohost service add "$app-clsi" --log="/var/log/$app/clsi.log"
+
+ynh_restore "/etc/systemd/system/$app-contacts.service"
+systemctl enable "$app-contacts.service" --quiet
+yunohost service add "$app-contacts" --log="/var/log/$app/contacts.log"
+
+ynh_restore "/etc/systemd/system/$app-docstore.service"
+systemctl enable "$app-docstore.service" --quiet
+yunohost service add "$app-docstore" --log="/var/log/$app/docstore.log"
+
+ynh_restore "/etc/systemd/system/$app-document-updater.service"
+systemctl enable "$app-document-updater.service" --quiet
+yunohost service add "$app-document-updater" --log="/var/log/$app/document-updater.log"
+
+ynh_restore "/etc/systemd/system/$app-filestore.service"
+systemctl enable "$app-filestore.service" --quiet
+yunohost service add "$app-filestore" --log="/var/log/$app/filestore.log"
+
+ynh_restore "/etc/systemd/system/$app-history-v1.service"
+systemctl enable "$app-history-v1.service" --quiet
+yunohost service add "$app-history-v1" --log="/var/log/$app/history-v1.log"
+
+ynh_restore "/etc/systemd/system/$app-notifications.service"
+systemctl enable "$app-notifications.service" --quiet
+yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
+
+ynh_restore "/etc/systemd/system/$app-project-history.service"
+systemctl enable "$app-project-history.service" --quiet
+yunohost service add "$app-project-history" --log="/var/log/$app/project-history.log"
+
+ynh_restore "/etc/systemd/system/$app-real-time.service"
+systemctl enable "$app-real-time.service" --quiet
+yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
+
+ynh_restore "/etc/systemd/system/$app-web.service"
+systemctl enable "$app-web.service" --quiet
+yunohost service add "$app-web" --log="/var/log/$app/web.log"
 
 mkdir -p "/var/log/$app"
 chown -R $app:$app "/var/log/$app"
 ynh_restore "/etc/logrotate.d/$app"
 
 #=================================================
-# INTEGRATE SERVICE IN YUNOHOST
+# RELOAD NGINX AND PHP-FPM OR THE APP SERVICE
 #=================================================
-ynh_script_progression "Integrating service in YunoHost..."
-
-yunohost service add "$app-chat" --log="/var/log/$app/chat.log"
-yunohost service add "$app-clsi" --log="/var/log/$app/clsi.log"
-yunohost service add "$app-contacts" --log="/var/log/$app/contacts.log"
-yunohost service add "$app-docstore" --log="/var/log/$app/docstore.log"
-yunohost service add "$app-document-updater" --log="/var/log/$app/document-updater.log"
-yunohost service add "$app-filestore" --log="/var/log/$app/filestore.log"
-yunohost service add "$app-history-v1" --log="/var/log/$app/history-v1.log"
-yunohost service add "$app-notifications" --log="/var/log/$app/notifications.log"
-yunohost service add "$app-project-history" --log="/var/log/$app/project-history.log"
-yunohost service add "$app-real-time" --log="/var/log/$app/real-time.log"
-yunohost service add "$app-web" --log="/var/log/$app/web.log"
-
-#=================================================
-# START SYSTEMD SERVICE
-#=================================================
-ynh_script_progression "Starting $app's systemd service..."
+ynh_script_progression "Reloading NGINX web server and $app's service..."
 
 ynh_systemctl --service="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --wait_until="Using settings from"
@@ -139,11 +114,6 @@ ynh_systemctl --service="$app-notifications" --action="start" --log_path="/var/l
 ynh_systemctl --service="$app-project-history" --action="start" --log_path="/var/log/$app/project-history.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-real-time" --action="start" --log_path="/var/log/$app/real-time.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-web" --action="start" --log_path="/var/log/$app/web.log" --wait_until="listening on" --wait_until="Using settings from"
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression "Reloading NGINX web server..."
 
 ynh_systemctl --service=nginx --action=reload
 
