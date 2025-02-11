@@ -1,127 +1,85 @@
 #!/bin/bash
 
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
 source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# STANDARD REMOVE
+# REMOVE SYSTEM CONFIGURATIONS
 #=================================================
-# REMOVE SERVICE INTEGRATION IN YUNOHOST
-#=================================================
-ynh_script_progression "Stopping and removing the systemd service..."
+ynh_script_progression "Removing system configurations related to $app..."
 
-# Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
-if ynh_hide_warnings yunohost service status "$app-chat" >/dev/null
-then
-	ynh_script_progression "Removing $app-chat service integration..."
-	yunohost service remove "$app-chat"
-fi
-if ynh_hide_warnings yunohost service status "$app-clsi" >/dev/null
-then
-	ynh_script_progression "Removing $app-clsi service integration..."
-	yunohost service remove "$app-clsi"
-fi
-if ynh_hide_warnings yunohost service status "$app-contacts" >/dev/null
-then
-	ynh_script_progression "Removing $app-contacts service integration..."
-	yunohost service remove "$app-contacts"
-fi
-if ynh_hide_warnings yunohost service status "$app-docstore" >/dev/null
-then
-	ynh_script_progression "Removing $app-docstore service integration..."
-	yunohost service remove "$app-docstore"
-fi
-if ynh_hide_warnings yunohost service status "$app-document-updater" >/dev/null
-then
-	ynh_script_progression "Removing $app-document-updater service integration..."
-	yunohost service remove "$app-document-updater"
-fi
-if ynh_hide_warnings yunohost service status "$app-filestore" >/dev/null
-then
-	ynh_script_progression "Removing $app-filestore service integration..."
-	yunohost service remove "$app-filestore"
-fi
-if ynh_hide_warnings yunohost service status "$app-history-v1" >/dev/null
-then
-	ynh_script_progression "Removing $app-history-v1 service integration..."
-	yunohost service remove "$app-history-v1"
-fi
-if ynh_hide_warnings yunohost service status "$app-notifications" >/dev/null
-then
-	ynh_script_progression "Removing $app-notifications service integration..."
-	yunohost service remove "$app-notifications"
-fi
-if ynh_hide_warnings yunohost service status "$app-project-history" >/dev/null
-then
-	ynh_script_progression "Removing $app-project-history service integration..."
-	yunohost service remove "$app-project-history"
-fi
-if ynh_hide_warnings yunohost service status "$app-real-time" >/dev/null
-then
-	ynh_script_progression "Removing $app-real-time service integration..."
-	yunohost service remove "$app-real-time"
-fi
-if ynh_hide_warnings yunohost service status "$app-web" >/dev/null
-then
-	ynh_script_progression "Removing $app-web service integration..."
-	yunohost service remove "$app-web"
-fi
-
-#=================================================
-# STOP AND REMOVE SERVICE
-#=================================================
-# Remove the dedicated systemd config
-ynh_config_remove_systemd "$app-chat"
-ynh_config_remove_systemd "$app-clsi"
-ynh_config_remove_systemd "$app-contacts"
-ynh_config_remove_systemd "$app-docstore"
-ynh_config_remove_systemd "$app-document-updater"
-ynh_config_remove_systemd "$app-filestore"
-ynh_config_remove_systemd "$app-history-v1"
-ynh_config_remove_systemd "$app-notifications"
-ynh_config_remove_systemd "$app-project-history"
-ynh_config_remove_systemd "$app-real-time"
-ynh_config_remove_systemd "$app-web"
-
-#=================================================
-# REMOVE LOGROTATE CONFIGURATION
-#=================================================
-ynh_script_progression "Removing logrotate configuration..."
-
-# Remove the app-specific logrotate config
 ynh_config_remove_logrotate
 
-#=================================================
-# REMOVE THE MONGODB DATABASE
-#=================================================
-ynh_script_progression "Removing the MongoDB database..."
+# Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
+if ynh_hide_warnings yunohost service status "$app-chat" >/dev/null; then
+    yunohost service remove "$app-chat"
+fi
+ynh_config_remove_systemd "$app-chat"
 
-ynh_replace --match="replication:" --replace="#replication:" --file="/etc/mongod.conf"
-ynh_replace --match="  replSetName: rs01" --replace="" --file="/etc/mongod.conf"
+if ynh_hide_warnings yunohost service status "$app-clsi" >/dev/null; then
+    yunohost service remove "$app-clsi"
+fi
+ynh_config_remove_systemd "$app-clsi"
 
-ynh_systemctl --service=mongod --action=restart --log_path=/var/log/mongodb/mongod.log --wait_until="Waiting for connections"
+if ynh_hide_warnings yunohost service status "$app-contacts" >/dev/null; then
+    yunohost service remove "$app-contacts"
+fi
+ynh_config_remove_systemd "$app-contacts"
 
-ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
+if ynh_hide_warnings yunohost service status "$app-docstore" >/dev/null; then
+    yunohost service remove "$app-docstore"
+fi
+ynh_config_remove_systemd "$app-docstore"
 
-yunohost service remove mongod
+if ynh_hide_warnings yunohost service status "$app-document-updater" >/dev/null; then
+    yunohost service remove "$app-document-updater"
+fi
+ynh_config_remove_systemd "$app-document-updater"
 
-ynh_safe_rm "/var/lib/mongodb"
+if ynh_hide_warnings yunohost service status "$app-filestore" >/dev/null; then
+    yunohost service remove "$app-filestore"
+fi
+ynh_config_remove_systemd "$app-filestore"
 
-#=================================================
-# REMOVE NGINX CONFIGURATION
-#=================================================
-ynh_script_progression "Removing NGINX web server configuration..."
+if ynh_hide_warnings yunohost service status "$app-history-v1" >/dev/null; then
+    yunohost service remove "$app-history-v1"
+fi
+ynh_config_remove_systemd "$app-history-v1"
 
-# Remove the dedicated NGINX config
+if ynh_hide_warnings yunohost service status "$app-notifications" >/dev/null; then
+    yunohost service remove "$app-notifications"
+fi
+ynh_config_remove_systemd "$app-notifications"
+
+if ynh_hide_warnings yunohost service status "$app-project-history" >/dev/null; then
+    yunohost service remove "$app-project-history"
+fi
+ynh_config_remove_systemd "$app-project-history"
+
+if ynh_hide_warnings yunohost service status "$app-real-time" >/dev/null; then
+    yunohost service remove "$app-real-time"
+fi
+ynh_config_remove_systemd "$app-real-time"
+
+if ynh_hide_warnings yunohost service status "$app-web" >/dev/null; then
+    yunohost service remove "$app-web"
+fi
+ynh_config_remove_systemd "$app-web"
+
 ynh_config_remove_nginx
 
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-ynh_script_progression "Removing dependencies..."
+ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
+ynh_replace --match="replication:" --replace="#replication:" --file="/etc/mongod.conf"
+ynh_replace --match=" replSetName: $app" --replace="" --file="/etc/mongod.conf"
+ynh_systemctl --service=mongod --action=start --wait_until="aiting for connections" --log_path="/var/log/mongodb/mongod.log"
 
-# Remove metapackage and its dependencies
+ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
 ynh_remove_mongo
+
 ynh_nodejs_remove
 
 #=================================================
