@@ -3,7 +3,7 @@ Este archivo README esta generado automaticamente<https://github.com/YunoHost/ap
 No se debe editar a mano.
 -->
 
-# Overleaf para Yunohost
+# Overleaf para YunoHost
 
 [![Nivel de integración](https://apps.yunohost.org/badge/integration/overleaf)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
 ![Estado funcional](https://apps.yunohost.org/badge/state/overleaf)
@@ -21,7 +21,7 @@ No se debe editar a mano.
 Overleaf is an open-source online real-time collaborative LaTeX editor.
 
 
-**Versión actual:** 2025.03.17~ynh1
+**Versión actual:** 2025.03.27~ynh1
 
 ## Capturas
 
