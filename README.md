@@ -4,14 +4,14 @@ It shall NOT be edited by hand.
 -->
 
 <h1>
-  <img src="https://raw.githubusercontent.com/YunoHost/apps/master/logos/overleaf.png" width="32px" alt="Logo of Overleaf">
+  <img src="https://raw.githubusercontent.com/YunoHost/apps/main/logos/overleaf.png" width="32px" alt="Logo of Overleaf">
   Overleaf, packaged for YunoHost
 </h1>
 
 Online real-time collaborative LaTeX editor
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.overleaf.com)
-![Version: 2025.04.03~ynh1](https://img.shields.io/badge/Version-2025.04.03~ynh1-rgba(0,150,0,1)?style=for-the-badge)
+[![Version: 2025.04.17~ynh1](https://img.shields.io/badge/Version-2025.04.17~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/overleaf"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
