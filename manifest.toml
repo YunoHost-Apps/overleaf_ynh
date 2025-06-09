@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2025.05.30~ynh1"
+version = "2025.06.06~ynh1"
 
 maintainers = []
 
@@ -52,8 +52,8 @@ ram.runtime = "3G"
 [resources]
     [resources.sources]
     [resources.sources.main]
-    url = "https://github.com/overleaf/overleaf/archive/efa20c26c9690ff1eefffd303b71a1c695bfcd56.tar.gz"
-    sha256 = "30200fe5bb0e37a56d62236caee8ae851192661a16760fdbaa1d3516467d2e8f"
+    url = "https://github.com/overleaf/overleaf/archive/9e9ad3c00531ee780b9ba48c3b5825970c6b085a.tar.gz"
+    sha256 = "6336e3256246ce2b97a0b0b2e9d91d74a5619359a5ff4b248fa83a9a32d3637b"
     autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
