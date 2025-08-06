@@ -136,7 +136,6 @@ chown -R $app:www-data "$install_dir"
 ynh_safe_rm "$install_dir"/.cache
 ynh_safe_rm "$install_dir"/tmp
 ynh_safe_rm "$install_dir"/.npm
-ynh_safe_rm "$install_dir"/live/node_modules
 
 #=================================================
 # SYSTEM CONFIGURATION
