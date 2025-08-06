@@ -133,6 +133,7 @@ chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 
 du -h --max-depth=1 "$install_dir"
+du -h --max-depth=1 "$install_dir"/live
 ynh_die
 
 #=================================================
