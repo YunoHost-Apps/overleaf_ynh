@@ -30,7 +30,6 @@ ynh_app_setting_set --key=main_domain --value=$main_domain
 # INSTALL DEPENDENCIES
 #=================================================
 
-ynh_nodejs_install
 ynh_install_mongo
 
 #=================================================
