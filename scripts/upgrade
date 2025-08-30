@@ -60,7 +60,6 @@ fi
 #=================================================
 ynh_script_progression "Upgrading dependencies..."
 
-ynh_nodejs_install
 ynh_install_mongo
 
 if ynh_hide_warnings ynh_mongo_exec --command="printjson(rs.status())" | grep -q "not running with --replSet"; then

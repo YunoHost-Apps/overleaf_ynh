@@ -80,8 +80,6 @@ ynh_systemctl --service=mongod --action=start --wait_until="aiting for connectio
 ynh_mongo_remove_db --db_user=$db_user --db_name=$db_name
 ynh_remove_mongo
 
-ynh_nodejs_remove
-
 #=================================================
 # END OF SCRIPT
 #=================================================
