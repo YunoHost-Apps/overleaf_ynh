@@ -33,10 +33,10 @@ Pull request are welcome and should target the [`testing` branch](https://github
 The `testing` branch can be tested using:
 ```
 # fresh install:
-sudo yunohost app install https://github.com/otm33GH/overleaf_ynh/tree/oleaf_1
+sudo yunohost app install https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing
 
 # upgrade an existing install:
-sudo yunohost app upgrade overleaf -u https://github.com/otm33GH/overleaf_ynh/tree/oleaf_1
+sudo yunohost app upgrade overleaf -u https://github.com/YunoHost-Apps/overleaf_ynh/tree/testing
 ```
 
 ### 📚 App packaging documentation
