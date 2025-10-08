@@ -287,7 +287,8 @@ const settings = {
     },
     v1_history: {
       url: process.env.V1_HISTORY_URL || 'http://127.0.0.1:3100/api',
-      jwtSecret: process.env.OT_JWT_AUTH_KEY,
+      user: 'staging',
+      pass: process.env.STAGING_PASSWORD,
       requestTimeout: parseInt(
         process.env.OVERLEAF_HISTORY_V1_HTTP_REQUEST_TIMEOUT || '300000', // default is 5min
         10
