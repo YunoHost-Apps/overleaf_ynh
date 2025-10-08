@@ -473,7 +473,7 @@ switch (process.env.OVERLEAF_FILESTORE_BACKEND) {
         // YunoHost, adapt it as we adapt it in production.json
         project_blobs:
           process.env.OVERLEAF_HISTORY_PROJECT_BLOBS_BUCKET ||
-          '__DATA_DIR__/history/overleaf-global-blobs',
+          '__DATA_DIR__/history/overleaf-project-blobs',
         global_blobs:
           process.env.OVERLEAF_HISTORY_BLOBS_BUCKET ||
           '__DATA_DIR__/history/overleaf-global-blobs',

@@ -67,7 +67,6 @@ ram.runtime = "3G"
     [resources.permissions]
     main.url = "/"
     main.auth_header = false
-
     admin.url = "/launchpad"
     admin.allowed = "admins"
     admin.show_tile = false
