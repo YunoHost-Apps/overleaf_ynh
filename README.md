@@ -11,7 +11,7 @@ It shall NOT be edited by hand.
 Online real-time collaborative LaTeX editor
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://www.overleaf.com)
-[![Version: 2025.09.19~ynh1](https://img.shields.io/badge/Version-2025.09.19~ynh1-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
+[![Version: 2025.09.19~ynh2](https://img.shields.io/badge/Version-2025.09.19~ynh2-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/overleaf/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/overleaf"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
