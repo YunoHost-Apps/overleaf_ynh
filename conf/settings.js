@@ -81,6 +81,7 @@ const settings = {
       host: process.env.OVERLEAF_REDIS_HOST || 'dockerhost',
       port: process.env.OVERLEAF_REDIS_PORT || '6379',
       password: process.env.OVERLEAF_REDIS_PASS || undefined,
+      tls: process.env.OVERLEAF_REDIS_TLS === 'true' ? {} : undefined,
       key_schema: {
         // document-updater
         blockingKey({ doc_id }) {
@@ -141,6 +142,7 @@ const settings = {
     api: redisConfig,
     pubsub: redisConfig,
     project_history: redisConfig,
+    references: redisConfig,
 
     project_history_migration: {
       host: redisConfig.host,
@@ -184,7 +186,15 @@ const settings = {
   siteUrl: (siteUrl = process.env.OVERLEAF_SITE_URL || 'http://localhost'),
 
   // Status page URL as displayed on the maintenance/500 pages.
-  statusPageUrl: process.env.OVERLEAF_STATUS_PAGE_URL,
+  statusPageUrl: process.env.OVERLEAF_STATUS_PAGE_URL
+    ? // Add https:// protocol prefix if not set (Allow plain-text http:// for Server Pro/CE).
+      process.env.OVERLEAF_STATUS_PAGE_URL.startsWith('http://') ||
+      process.env.OVERLEAF_STATUS_PAGE_URL.startsWith('https://')
+      ? process.env.OVERLEAF_STATUS_PAGE_URL
+      : `https://${process.env.OVERLEAF_STATUS_PAGE_URL}`
+    : undefined,
+  maintenanceMessage: process.env.OVERLEAF_MAINTENANCE_MESSAGE,
+  maintenanceMessageHTML: process.env.OVERLEAF_MAINTENANCE_MESSAGE_HTML,
 
   // The name this is used to describe your Overleaf Community Edition Installation
   appName: process.env.OVERLEAF_APP_NAME || 'Overleaf Community Edition',
@@ -239,8 +249,8 @@ const settings = {
   // then set this to true to allow it to correctly detect the forwarded IP
   // address and http/https protocol information.
 
-  behindProxy: process.env.OVERLEAF_BEHIND_PROXY || false,
-  trustedProxyIps: process.env.OVERLEAF_TRUSTED_PROXY_IPS,
+  behindProxy: true,
+  trustedProxyIps: process.env.OVERLEAF_TRUSTED_PROXY_IPS || 'loopback',
 
   // The amount of time, in milliseconds, until the (rolling) cookie session expires
   cookieSessionLength: parseInt(
@@ -337,6 +347,10 @@ if (process.env.OVERLEAF_LOGIN_SUPPORT_TEXT != null) {
   settings.nav.login_support_text = process.env.OVERLEAF_LOGIN_SUPPORT_TEXT
 }
 
+if (process.env.OVERLEAF_LOGIN_SUPPORT_TITLE != null) {
+  settings.nav.login_support_title = process.env.OVERLEAF_LOGIN_SUPPORT_TITLE
+}
+
 // Sending Email
 // -------------
 //
@@ -355,6 +369,7 @@ if (process.env.OVERLEAF_EMAIL_FROM_ADDRESS != null) {
       // AWS Creds
       AWSAccessKeyID: process.env.OVERLEAF_EMAIL_AWS_SES_ACCESS_KEY_ID,
       AWSSecretKey: process.env.OVERLEAF_EMAIL_AWS_SES_SECRET_KEY,
+      region: process.env.OVERLEAF_EMAIL_AWS_SES_REGION || 'us-east-1',
 
       // SMTP Creds
       host: process.env.OVERLEAF_EMAIL_SMTP_HOST,
@@ -369,10 +384,6 @@ if (process.env.OVERLEAF_EMAIL_FROM_ADDRESS != null) {
     template: {
       customFooter: process.env.OVERLEAF_CUSTOM_EMAIL_FOOTER,
     },
-  }
-
-  if (process.env.OVERLEAF_EMAIL_AWS_SES_REGION != null) {
-    settings.email.parameters.region = process.env.OVERLEAF_EMAIL_AWS_SES_REGION
   }
 
   if (
@@ -431,9 +442,10 @@ switch (process.env.OVERLEAF_FILESTORE_BACKEND) {
     settings.filestore = {
       backend: 's3',
       stores: {
-        user_files: process.env.OVERLEAF_FILESTORE_USER_FILES_BUCKET_NAME,
         template_files:
           process.env.OVERLEAF_FILESTORE_TEMPLATE_FILES_BUCKET_NAME,
+        project_blobs: process.env.OVERLEAF_HISTORY_PROJECT_BLOBS_BUCKET,
+        global_blobs: process.env.OVERLEAF_HISTORY_BLOBS_BUCKET,
       },
       s3: {
         key:
@@ -454,10 +466,29 @@ switch (process.env.OVERLEAF_FILESTORE_BACKEND) {
     settings.filestore = {
       backend: 'fs',
       stores: {
-        user_files: Path.join(DATA_DIR, 'user_files'),
         template_files: Path.join(DATA_DIR, 'template_files'),
+
+        // NOTE: The below paths are hard-coded in server-ce/config/production.json, so hard code them here as well.
+        // We can use DATA_DIR after switching history-v1 from 'config' to '@overleaf/settings'.
+        // YunoHost, adapt it as we adapt it in production.json
+        project_blobs:
+          process.env.OVERLEAF_HISTORY_PROJECT_BLOBS_BUCKET ||
+          '__DATA_DIR__/history/overleaf-project-blobs',
+        global_blobs:
+          process.env.OVERLEAF_HISTORY_BLOBS_BUCKET ||
+          '__DATA_DIR__/history/overleaf-global-blobs',
       },
     }
+}
+
+if (
+  !settings.trustedProxyIps.includes('loopback') &&
+  !settings.trustedProxyIps.includes('localhost') &&
+  !settings.trustedProxyIps.includes('127.0.0.1')
+) {
+  throw new Error(
+    'OVERLEAF_TRUSTED_PROXY_IPS must include one of "loopback", "localhost" or "127.0.0.1", which trusts the nginx instance running inside the container'
+  )
 }
 
 // With lots of incoming and outgoing HTTP connections to different services,

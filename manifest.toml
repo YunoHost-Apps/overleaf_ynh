@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2025.09.19~ynh1"
+version = "2025.09.19~ynh2"
 
 maintainers = []
 
@@ -67,7 +67,6 @@ ram.runtime = "3G"
     [resources.permissions]
     main.url = "/"
     main.auth_header = false
-
     admin.url = "/launchpad"
     admin.allowed = "admins"
     admin.show_tile = false
