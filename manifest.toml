@@ -87,4 +87,4 @@ ram.runtime = "3G"
     ]
 
     [resources.nodejs]
-    version = "20"
+    version = "22"
