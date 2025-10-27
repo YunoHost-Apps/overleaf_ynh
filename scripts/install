@@ -120,7 +120,7 @@ popd
 
 pushd "$install_dir/live/services/web"
 	export CYPRESS_INSTALL_BINARY=0
-    ynh_hide_warnings ynh_exec_as_app npm install -g npm@$npm_version
+    ynh_hide_warnings ynh_exec_as_app npm install -g npm@11.4.2
     ynh_hide_warnings ynh_exec_as_app NODE_ENV=production npm ci --quiet
 	ynh_hide_warnings ynh_exec_as_app npm install
     ynh_hide_warnings ynh_exec_as_app npm run 'lezer-latex:generate'
