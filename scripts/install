@@ -123,7 +123,7 @@ pushd "$install_dir/live/services/web"
 	export CYPRESS_INSTALL_BINARY=0
 	ynh_hide_warnings ynh_exec_as_app npm install --include=dev
 	ynh_hide_warnings ynh_exec_as_app NODE_OPTIONS="--max-old-space-size=3000" npm run webpack:production
-	ynh_hide_warnings ynh_exec_as_app npm install --omit=dev
+	# ynh_hide_warnings ynh_exec_as_app npm install --omit=dev
 	ynh_hide_warnings ynh_exec_as_app npm run precompile-pug
 popd
 
