@@ -116,17 +116,17 @@ ynh_script_progression "Building app... This may take a LOT of time depending of
 pushd "$install_dir/live"
 	export CYPRESS_INSTALL_BINARY=0
 	ynh_hide_warnings ynh_exec_as_app npm install --ommit=dev
-	ynh_hide_warnings ynh_exec_as_app npm cache clean --force
 popd
 
 pushd "$install_dir/live/services/web"
 	export CYPRESS_INSTALL_BINARY=0
     ynh_hide_warnings ynh_exec_as_app NODE_ENV=production npm ci --quiet
-	ynh_hide_warnings ynh_exec_as_app npm install --include=dev
+	ynh_hide_warnings ynh_exec_as_app npm install
     ynh_hide_warnings ynh_exec_as_app npm run 'lezer-latex:generate'
 	ynh_hide_warnings ynh_exec_as_app NODE_OPTIONS="--max-old-space-size=3000" npm run webpack:production
 	# ynh_hide_warnings ynh_exec_as_app npm prune
 	ynh_hide_warnings ynh_exec_as_app npm run precompile-pug
+    ynh_hide_warnings ynh_exec_as_app npm cache clean --force
 popd
 
 chmod 750 "$install_dir"
