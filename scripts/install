@@ -72,12 +72,8 @@ chown -R $app:www-data "$install_dir"
 ynh_script_progression "Adding $app's configuration files..."
 
 ynh_config_add --template="variables.env" --destination="$install_dir/variables.env"
-chmod 400 "$install_dir/variables.env"
-chown $app:$app "$install_dir/variables.env"
 
 ynh_config_add --template="settings.js" --destination="$install_dir/settings.js"
-chmod 400 "$install_dir/settings.js"
-chown $app:$app "$install_dir/settings.js"
 
 #=================================================
 # BUILDING APP
@@ -99,13 +95,9 @@ ynh_safe_rm "$install_dir/config/settings.js"
 
 ynh_safe_rm "$install_dir/config/production.json"
 ynh_config_add --template="production.json" --destination="$install_dir/config/production.json"
-chmod 400 "$install_dir/config/production.json"
-chown $app:$app "$install_dir/config/production.json"
 
 ynh_safe_rm "$install_dir/live/services/history-v1/config/production.json"
 ynh_config_add --template="production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
-chmod 400 "$install_dir/live/services/history-v1/config/production.json"
-chown $app:$app "$install_dir/live/services/history-v1/config/production.json"
 
 ynh_exec_as_app cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
 
