@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2025.12.17~ynh1"
+version = "2025.12.17~ynh2"
 
 maintainers = []
 
@@ -18,7 +18,7 @@ userdoc = "https://www.overleaf.com/learn"
 code = "https://github.com/overleaf/overleaf"
 
 [integration]
-yunohost = ">= 12.1.15"
+yunohost = ">= 12.1.38"
 helpers_version = "2.1"
 architectures = ["amd64"]
 multi_instance = false
