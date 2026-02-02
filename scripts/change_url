@@ -13,25 +13,15 @@ source /usr/share/yunohost/helpers
 ynh_script_progression "Stopping $app's systemd service..."
 
 ynh_systemctl --service="$app-chat" --action="stop"
-
 ynh_systemctl --service="$app-clsi" --action="stop"
-
 ynh_systemctl --service="$app-contacts" --action="stop"
-
 ynh_systemctl --service="$app-docstore" --action="stop"
-
 ynh_systemctl --service="$app-document-updater" --action="stop"
-
 ynh_systemctl --service="$app-filestore" --action="stop"
-
 ynh_systemctl --service="$app-history-v1" --action="stop"
-
 ynh_systemctl --service="$app-notifications" --action="stop"
-
 ynh_systemctl --service="$app-project-history" --action="stop"
-
 ynh_systemctl --service="$app-real-time" --action="stop"
-
 ynh_systemctl --service="$app-web" --action="stop"
 
 #=================================================
