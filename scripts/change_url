@@ -13,25 +13,15 @@ source /usr/share/yunohost/helpers
 ynh_script_progression "Stopping $app's systemd service..."
 
 ynh_systemctl --service="$app-chat" --action="stop"
-
 ynh_systemctl --service="$app-clsi" --action="stop"
-
 ynh_systemctl --service="$app-contacts" --action="stop"
-
 ynh_systemctl --service="$app-docstore" --action="stop"
-
 ynh_systemctl --service="$app-document-updater" --action="stop"
-
 ynh_systemctl --service="$app-filestore" --action="stop"
-
 ynh_systemctl --service="$app-history-v1" --action="stop"
-
 ynh_systemctl --service="$app-notifications" --action="stop"
-
 ynh_systemctl --service="$app-project-history" --action="stop"
-
 ynh_systemctl --service="$app-real-time" --action="stop"
-
 ynh_systemctl --service="$app-web" --action="stop"
 
 #=================================================
@@ -43,22 +33,13 @@ ynh_script_progression "Updating NGINX web server configuration..."
 ynh_config_change_url_nginx
 
 #=================================================
-# SPECIFIC MODIFICATIONS
-#=================================================
 # UPDATE A CONFIG FILE
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-domain=$new_domain
-path=$new_path
-
 ynh_config_add --template="variables.env" --destination="$install_dir/variables.env"
-chmod 400 "$install_dir/variables.env"
-chown $app:$app "$install_dir/variables.env"
 
 ynh_config_add --template="settings.js" --destination="$install_dir/settings.js"
-chmod 400 "$install_dir/settings.js"
-chown $app:$app "$install_dir/settings.js"
 
 #=================================================
 # START SYSTEMD SERVICE
