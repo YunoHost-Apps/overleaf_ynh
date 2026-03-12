@@ -141,7 +141,6 @@ ynh_safe_rm "$install_dir"/.npm
 ynh_script_progression "Adding system configurations related to $app..."
 
 # Create a dedicated NGINX config using the conf/nginx.conf template
-ynh_config_add --template="clsi_nginx.conf" --destination="/etc/nginx/conf.d/$domain.d/clsi_nginx.conf"
 ynh_config_add_nginx
 
 # Create a dedicated systemd config
