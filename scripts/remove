@@ -71,6 +71,7 @@ fi
 ynh_config_remove_systemd "$app-web"
 
 ynh_config_remove_nginx
+ynh_secure_remove --file="/etc/nginx/conf.d/$domain.d/clsi_nginx.conf"
 
 ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"
 ynh_replace --match="replication:" --replace="#replication:" --file="/etc/mongod.conf"

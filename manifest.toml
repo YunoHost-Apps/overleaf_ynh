@@ -79,7 +79,7 @@ ram.runtime = "3G"
         "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
         
        # Filestore dependencies
-       "ghostscript", "imagemagick", "optipng", "iproute2",
+       "ghostscript", "poppler-utils", "optipng", "iproute2",
 
        # clsi dependencies
        "poppler-utils",

@@ -47,7 +47,7 @@ fi
 #=================================================
 ynh_script_progression "Restoring system configurations related to $app..."
 
-ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_restore "/etc/nginx/conf.d/$domain.d/"
 
 ynh_restore "/etc/systemd/system/$app-chat.service"
 systemctl enable "$app-chat.service" --quiet
