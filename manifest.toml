@@ -72,6 +72,11 @@ ram.runtime = "3G"
 
     [resources.ports]
     main.default = 8095
+    clsi_download.default = 8080
+    filestore.default = 3009
+    v1_history.default = 3100
+    clsi_perf.default = 3043
+    project_history.default = 3054
 
     [resources.apt]
     packages = [
@@ -79,7 +84,7 @@ ram.runtime = "3G"
         "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
         
        # Filestore dependencies
-       "ghostscript", "imagemagick", "optipng", "iproute2",
+       "ghostscript", "poppler-utils", "optipng", "iproute2",
 
        # clsi dependencies
        "poppler-utils",

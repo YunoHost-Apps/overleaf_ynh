@@ -14,7 +14,7 @@
  */
 let redisConfig, siteUrl
 let e
-const Path = require('path')
+const Path = require('node:path')
 
 // These credentials are used for authenticating api requests
 // between services that may need to go over public channels
@@ -55,7 +55,7 @@ const settings = {
   brandPrefix: '',
 
   port: __PORT__,
-      
+
   allowAnonymousReadAndWriteSharing:
     process.env.OVERLEAF_ALLOW_ANONYMOUS_READ_AND_WRITE_SHARING === 'true',
 
@@ -142,7 +142,6 @@ const settings = {
     api: redisConfig,
     pubsub: redisConfig,
     project_history: redisConfig,
-    references: redisConfig,
 
     project_history_migration: {
       host: redisConfig.host,
@@ -295,7 +294,6 @@ const settings = {
       ),
     },
   },
-  references: {},
   notifications: undefined,
 
   defaultFeatures: {
@@ -428,14 +426,6 @@ if (
   }
 }
 
-// /References
-// -----------
-if (process.env.OVERLEAF_ELASTICSEARCH_URL != null) {
-  settings.references.elasticsearch = {
-    host: process.env.OVERLEAF_ELASTICSEARCH_URL,
-  }
-}
-
 // filestore
 switch (process.env.OVERLEAF_FILESTORE_BACKEND) {
   case 's3':
@@ -481,6 +471,8 @@ switch (process.env.OVERLEAF_FILESTORE_BACKEND) {
     }
 }
 
+settings.converter = process.env.CONVERTER || 'pdftocairo'
+
 if (
   !settings.trustedProxyIps.includes('loopback') &&
   !settings.trustedProxyIps.includes('localhost') &&
@@ -494,9 +486,9 @@ if (
 // With lots of incoming and outgoing HTTP connections to different services,
 // sometimes long running, it is a good idea to increase the default number
 // of sockets that Node will hold open.
-const http = require('http')
+const http = require('node:http')
 http.globalAgent.maxSockets = 300
-const https = require('https')
+const https = require('node:https')
 https.globalAgent.maxSockets = 300
 
 module.exports = settings
