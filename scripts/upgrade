@@ -14,8 +14,6 @@ ynh_script_progression "Stopping $app's systemd service..."
 
 ynh_systemctl --service="$app-chat" --action="stop"
 
-ynh_systemctl --service="$app-clsi" --action="stop"
-
 ynh_systemctl --service="$app-contacts" --action="stop"
 
 ynh_systemctl --service="$app-docstore" --action="stop"
@@ -148,6 +146,7 @@ popd
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
+chown -R $app:www-data "$data_dir"
 
 #Remove unneeded files
 ynh_safe_rm "$install_dir"/.cache
