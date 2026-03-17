@@ -52,7 +52,7 @@ ram.runtime = "3G"
     [resources.sources]
     [resources.sources.main]
     url = "https://github.com/Thovi98/overleaf/archive/refs/heads/environment-variables.tar.gz"
-    sha256 = "43dbd295e1b9e2a29e61762351763095f18af2b5005756362be097f7f5179ade"
+    sha256 = "f6ea2c0fa26109432528260da2cc7718f7d8b5b4adb5ddfc9764348f6a813736"
     autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
