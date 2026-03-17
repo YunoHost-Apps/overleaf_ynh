@@ -51,8 +51,8 @@ ram.runtime = "3G"
 [resources]
     [resources.sources]
     [resources.sources.main]
-    url = "https://github.com/overleaf/overleaf/archive/bb5d90a33211d9a2338d74a7e53f269fc0357d44.tar.gz"
-    sha256 = "7c0d849b18b4546a8ae37d0725ca4974d1921faf8aff9bcc9c5844eb73b54424"
+    url = "https://github.com/Thovi98/overleaf/archive/refs/heads/environment-variables.tar.gz"
+    sha256 = "e14a5f4e27ef7515fc43c25024061ea4e6cf84cb9e81485a2fe6623465540210"
     autoupdate.strategy = "latest_github_commit"
 
     [resources.system_user]
@@ -72,9 +72,17 @@ ram.runtime = "3G"
 
     [resources.ports]
     main.default = 8095
+    chat.default = 3010
+    clsi.default = 3013
+    contacts.default = 3036
+    docstore.default = 3016
+    docupdater.default = 3003
     filestore.default = 3009
     v1_history.default = 3100
+    notifications.default = 3042
     project_history.default = 3054
+    realtime.default = 3026
+    download.default = 8080
 
     [resources.apt]
     packages = [
