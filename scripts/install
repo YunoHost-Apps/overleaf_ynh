@@ -55,12 +55,7 @@ fi
 ynh_script_progression "Setting up source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$install_dir/build"
-
-mkdir -p "$install_dir/tmp"
-mkdir -p $install_dir/tmp/{projectHistories,dumpFolder,uploads}
-mkdir -p "$install_dir/config"
-mkdir -p "$install_dir/live"
+ynh_setup_source --dest_dir="$install_dir/"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
@@ -84,59 +79,17 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 ynh_script_progression "Preparing app..."
 
-ynh_exec_as_app cp "$install_dir/build/server-ce/genScript.js" "$install_dir/live/genScript.js"
-ynh_exec_as_app cp "$install_dir/build/server-ce/services.js" "$install_dir/live/services.js"
-ynh_exec_as_app cp "$install_dir/build/package.json" "$install_dir/live/package.json"
-ynh_exec_as_app cp "$install_dir/build/package-lock.json" "$install_dir/live/package-lock.json"
-ynh_exec_as_app cp -r "$install_dir/build/libraries/" "$install_dir/live/libraries/"
-ynh_exec_as_app cp -r "$install_dir/build/services/" "$install_dir/live/services/"
-ynh_exec_as_app cp -r "$install_dir/build/patches/" "$install_dir/live/patches/"
-ynh_exec_as_app cp -r "$install_dir/build/server-ce/config/" "$install_dir/config/"
+ynh_safe_rm "$install_dir/services/history-v1/config/production.json"
+ynh_config_add --template="production.json" --destination="$install_dir/services/history-v1/config/production.json"
+chmod 400 "$install_dir/services/history-v1/config/production.json"
+chown $app:$app "$install_dir/services/history-v1/config/production.json"
 
-chown -R $app:www-data "$install_dir/config"
-
-ynh_safe_rm "$install_dir/config/settings.js"
-
-ynh_safe_rm "$install_dir/config/production.json"
-ynh_config_add --template="production.json" --destination="$install_dir/config/production.json"
-chmod 400 "$install_dir/config/production.json"
-chown $app:$app "$install_dir/config/production.json"
-
-ynh_safe_rm "$install_dir/live/services/history-v1/config/production.json"
-ynh_config_add --template="production.json" --destination="$install_dir/live/services/history-v1/config/production.json"
-chmod 400 "$install_dir/live/services/history-v1/config/production.json"
-chown $app:$app "$install_dir/live/services/history-v1/config/production.json"
-
-ynh_exec_as_app cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/live/services/history-v1/config/"
-
-#remove build dir
-ynh_safe_rm "$install_dir/build"
-
-ynh_script_progression "Building app... This may take a LOT of time depending of your CPU and RAM"
-pushd "$install_dir/live"
-	ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm install npm@latest
-	ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm install --omit=dev
-popd
-
-pushd "$install_dir/live/services/web"
-	ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm run precompile-pug
-	ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm install --include=dev
-	ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 NODE_OPTIONS="--max-old-space-size=3000" npm run webpack:production
-	# ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm prune --omit=dev
-    ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm run 'lezer-latex:generate'
-    ynh_hide_warnings ynh_exec_as_app CYPRESS_INSTALL_BINARY=0 npm cache clean --force
-popd
+# ynh_exec_as_app cp "$install_dir/build/server-ce/config/custom-environment-variables.json" "$install_dir/services/history-v1/config/"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
-
-
-#Remove unneeded files
-ynh_safe_rm "$install_dir"/.cache
-ynh_safe_rm "$install_dir"/tmp
-ynh_safe_rm "$install_dir"/.npm
 
 #=================================================
 # SYSTEM CONFIGURATION
