@@ -70,7 +70,7 @@ if ynh_hide_warnings yunohost service status "$app-web" >/dev/null; then
 fi
 ynh_config_remove_systemd "$app-web"
 
-ynh_safe_rm "/etc/nginx/conf.d/$domain.d/clsi-nginx.conf"
+ynh_safe_rm "/etc/nginx/conf.d/$domain.clsi-nginx.conf"
 ynh_config_remove_nginx
 
 ynh_systemctl --service=mongod --action=stop --wait_until="Shutting down" --log_path="/var/log/mongodb/mongod.log"

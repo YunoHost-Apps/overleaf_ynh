@@ -160,7 +160,8 @@ ynh_safe_rm "$install_dir"/.npm
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
 
-ynh_config_add --template="nginx-clsi.conf" --destination="/etc/nginx/conf.d/$domain.d/clsi-nginx.conf"
+ynh_config_add --template="nginx-clsi.conf" --destination="/etc/nginx/conf.d/$domain.clsi-nginx.conf"
+chown www-data:www-data /etc/nginx/conf.d/$domain.clsi-nginx.conf
 ynh_config_add_nginx
 
 # Create a dedicated systemd config
