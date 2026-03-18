@@ -72,16 +72,16 @@ ram.runtime = "3G"
 
     [resources.ports]
     main.default = 8095
-    chat.default = 3010
-    clsi.default = 3013
-    contacts.default = 3036
-    docstore.default = 3016
-    docupdater.default = 3003
-    filestore.default = 3009
-    v1_history.default = 3100
-    notifications.default = 3042
-    project_history.default = 3054
-    realtime.default = 3026
+    #chat.default = 3010
+    #clsi.default = 3013
+    #contacts.default = 3036
+    #docstore.default = 3016
+    #docupdater.default = 3003
+    #filestore.default = 3009
+    #v1_history.default = 3100
+    #notifications.default = 3042
+    #project_history.default = 3054
+    #realtime.default = 3026
     download.default = 8080
 
     [resources.apt]
