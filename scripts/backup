@@ -27,7 +27,8 @@ ynh_backup "$data_dir"
 #=================================================
 
 # Backup the NGINX configuration
-ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_backup "/etc/nginx/conf.d/$domain.d/"
+ynh_backup "/etc/nginx/conf.d/$domain.clsi-nginx.conf"
 
 # Backup the systemd service unit
 ynh_backup "/etc/systemd/system/$app-chat.service"
