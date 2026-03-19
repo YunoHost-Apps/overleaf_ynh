@@ -99,6 +99,7 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 ynh_script_progression "Preparing app..."
 
+ynh_safe_rm "$install_dir/server-ce/config/settings.js"
 ynh_safe_rm "$install_dir/server-ce/config/production.json"
 ynh_safe_rm "$install_dir/services/history-v1/config/production.json"
 
