@@ -99,7 +99,14 @@ chown -R $app:www-data "$data_dir"
 #=================================================
 ynh_script_progression "Configuring Texlive..."
 
-"$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
+if ! ynh_in_ci_tests; then
+
+	"$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
+
+	# Needed for the example project to work
+	ynh_exec_as_app tlmgr install latexmk
+
+fi
 
 chown -R $app:$app "$data_dir"/texlive
 
