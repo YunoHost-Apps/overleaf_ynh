@@ -57,6 +57,10 @@ ram.runtime = "1G"
     autoupdate.upstream = "https://github.com/Thovi98/overleaf-builds"
     autoupdate.strategy = "latest_github_release"
 
+    [resources.sources.texlive]
+    url = "https://texlive.info/historic/systems/texlive/2026/install-tl-unx.tar.gz"
+    sha256 = "5cc0703d6fe49f00a2932c4e3bcee37a11cc0a969ae9fcbf9cad6f0d984d6363"
+
     [resources.system_user]
     allow_email = true
 
