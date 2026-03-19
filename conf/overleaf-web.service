@@ -7,6 +7,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
+Environment="PATH=__PATH_WITH_TEXLIVE__"
 Environment="WEB_HOST=127.0.0.1"
 Environment="WEB_API_HOST=127.0.0.1"
 Environment="WEB_PORT=__PORT__"
