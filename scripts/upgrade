@@ -143,24 +143,6 @@ fi
 chown -R $app:$app "$data_dir"/texlive
 
 #=================================================
-# CONFIGURE TEXLIVE
-#=================================================
-
-if ! ynh_in_ci_tests; then
-    if [ ! -d "$data_dir/texlive/2026" ]; then
-
-        ynh_script_progression "Configuring Texlive..."
-
-	    "$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
-
-        # Needed for the example project to work
-        ynh_exec_as_app tlmgr install latexmk
-    fi
-fi
-
-chown -R $app:$app "$data_dir"/texlive
-
-#=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
