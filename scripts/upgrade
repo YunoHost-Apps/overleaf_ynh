@@ -106,7 +106,7 @@ chown -R $app:www-data "$install_dir"
 
 ynh_exec_as_app cp "$install_dir/server-ce/config/custom-environment-variables.json" "$install_dir/services/history-v1/config/"
 
-ynh_replace --match=":8080" --replace=":${process.env.DOWNLOAD_PORT || \$port_download}" --file="$install_dir/services/web/config/settings.defaults.js"
+ynh_replace --match=":8080" --replace=":\${process.env.DOWNLOAD_PORT || \$port_download}" --file="$install_dir/services/web/config/settings.defaults.js"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
