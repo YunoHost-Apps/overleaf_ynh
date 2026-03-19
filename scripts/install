@@ -74,7 +74,7 @@ chown $app:$app "$install_dir/settings.js"
 #=================================================
 # BUILDING APP
 #=================================================
-ynh_script_progression "Preparing app..."
+ynh_script_progression "Configuring $app..."
 
 ynh_safe_rm "$install_dir/server-ce/config/settings.js"
 ynh_safe_rm "$install_dir/server-ce/config/production.json"
