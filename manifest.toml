@@ -92,11 +92,8 @@ ram.runtime = "1G"
 
     [resources.apt]
     packages = [
-        # Overleaf dependencies
-        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
-        
        # Filestore dependencies
-       "ghostscript", "poppler-utils", "optipng", "iproute2",
+       "ghostscript", "optipng", "iproute2",
 
        # clsi dependencies
        "poppler-utils",
