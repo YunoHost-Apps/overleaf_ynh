@@ -99,9 +99,9 @@ chown -R $app:www-data "$data_dir"
 #=================================================
 ynh_script_progression "Configuring Texlive..."
 
-mkdir -p "$data_dir/texlive"
+"$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
 
-ynh_exec_as_app "$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
+chown -R $app:$app "$data_dir"/texlive
 
 #=================================================
 # SYSTEM CONFIGURATION
