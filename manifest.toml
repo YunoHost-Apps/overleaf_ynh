@@ -58,6 +58,7 @@ ram.runtime = "1G"
     autoupdate.strategy = "latest_github_release"
 
     [resources.sources.texlive]
+    # New versions come every year during March. When we update this, we have to update the year in all the code (and warn users to manually delete their old TexLive) 
     url = "https://texlive.info/historic/systems/texlive/2026/install-tl-unx.tar.gz"
     sha256 = "5cc0703d6fe49f00a2932c4e3bcee37a11cc0a969ae9fcbf9cad6f0d984d6363"
 

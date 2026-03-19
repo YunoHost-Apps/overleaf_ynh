@@ -114,6 +114,16 @@ chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
 chown -R $app:www-data "$data_dir"
 
+if ynh_app_upgrading_from_version_before 2026.03.19~ynh1
+then
+    # Migrate files created before Overleaf 6.0 to the new location
+    pushd $install_dir/services/history-v1/
+    OVERLEAF_FILESTORE_MIGRATION_LEVEL=1 OVERLEAF_MONGO_URL="mongodb://127.0.0.1:27017/__DB_NAME__" $nodejs_dir/node storage/scripts/back_fill_file_hash.mjs --report
+    OVERLEAF_FILESTORE_MIGRATION_LEVEL=1 OVERLEAF_MONGO_URL="mongodb://127.0.0.1:27017/__DB_NAME__" $nodejs_dir/node storage/scripts/back_fill_file_hash.mjs --all
+    mv $data_dir/user_files $data_dir/old_user_files
+fi
+
+
 #=================================================
 # CONFIGURE TEXLIVE
 #=================================================
