@@ -77,10 +77,6 @@ ynh_script_progression "Upgrading source files..."
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir/" --full_replace
 
-chmod 750 "$install_dir"
-chmod -R o-rwx "$install_dir"
-chown -R $app:www-data "$install_dir"
-
 #=================================================
 # APP INITIAL CONFIGURATION
 #=================================================
@@ -111,6 +107,7 @@ ynh_exec_as_app cp "$install_dir/server-ce/config/custom-environment-variables.j
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
+chown -R $app:www-data "$data_dir"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
