@@ -92,6 +92,9 @@ ram.runtime = "1G"
 
     [resources.apt]
     packages = [
+        # Overleaf dependencies
+       "redis-server", "python3-pygments",
+        
        # Filestore dependencies
        "ghostscript", "optipng", "iproute2",
 
