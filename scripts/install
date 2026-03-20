@@ -26,6 +26,9 @@ ynh_app_setting_set --key=jwt_key --value=$jwt_key
 main_domain=$(cat /etc/yunohost/current_host)
 ynh_app_setting_set --key=main_domain --value=$main_domain
 
+# Set `service` settings to support `yunohost app shell` command (so it inherit the $path_with_texlive for example)
+ynh_app_setting_set --key=service --value="$app-web.service"
+
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================

@@ -12,7 +12,6 @@ To use the tlmgr command, you can:
 
 ```
 yunohost app shell __APP__
-export `PATH=__PATH_WITH_TEXLIVE__
 tlmgr --version
 ```
 
