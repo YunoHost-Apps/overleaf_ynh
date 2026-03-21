@@ -7,7 +7,7 @@ name = "Overleaf"
 description.en = "Online real-time collaborative LaTeX editor"
 description.fr = "Éditeur LaTeX collaboratif en ligne et en temps réel"
 
-version = "2026.03.12~ynh1"
+version = "2026.03.20~ynh1"
 
 maintainers = []
 
@@ -26,9 +26,9 @@ multi_instance = false
 ldap = false
 sso = false
 
-disk = "50M"
-ram.build = "3G"
-ram.runtime = "3G"
+disk = "3G"
+ram.build = "1G"
+ram.runtime = "1G"
 
 [install]
     [install.domain]
@@ -51,9 +51,15 @@ ram.runtime = "3G"
 [resources]
     [resources.sources]
     [resources.sources.main]
-    url = "https://github.com/overleaf/overleaf/archive/e60ac573bc32744e8aeb6b114553ce74344a7f3d.tar.gz"
-    sha256 = "c90d9da438b14bc79c222e62ecd6d078a88391ca048657cec877ff0422c9365a"
-    autoupdate.strategy = "latest_github_commit"
+    url = "https://github.com/Thovi98/overleaf-builds/releases/download/20260320-a598c55/overleaf_20260320-a598c55.tar.gz"
+    sha256 = "505136b126c771912d5e2ec7a3e6da042197d2ea9b54c2418157ecd14e9ea8ad"
+    
+    autoupdate.upstream = "https://github.com/Thovi98/overleaf-builds"
+    autoupdate.strategy = "latest_github_release"
+
+    [resources.sources.texlive]
+    url = "https://texlive.info/historic/systems/texlive/2026/install-tl-unx.tar.gz"
+    sha256 = "5cc0703d6fe49f00a2932c4e3bcee37a11cc0a969ae9fcbf9cad6f0d984d6363"
 
     [resources.system_user]
     allow_email = true
@@ -72,14 +78,25 @@ ram.runtime = "3G"
 
     [resources.ports]
     main.default = 8095
+    #chat.default = 3010
+    #clsi.default = 3013
+    #contacts.default = 3036
+    #docstore.default = 3016
+    #docupdater.default = 3003
+    #filestore.default = 3009
+    #v1_history.default = 3100
+    #notifications.default = 3042
+    #project_history.default = 3054
+    #realtime.default = 3026
+    download.default = 8080
 
     [resources.apt]
     packages = [
         # Overleaf dependencies
-        "texlive", "texlive-xetex", "texlive-base", "texlive-font-utils", "redis-server", "latexmk", "python3-pygments", "build-essential",
+       "redis-server", "python3-pygments",
         
        # Filestore dependencies
-       "ghostscript", "imagemagick", "optipng", "iproute2",
+       "ghostscript", "optipng", "iproute2",
 
        # clsi dependencies
        "poppler-utils",
