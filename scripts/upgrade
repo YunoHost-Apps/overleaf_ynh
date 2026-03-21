@@ -39,6 +39,9 @@ ynh_script_progression "Checking version..."
 # Retrieve YunoHost main domain for mails to work
 main_domain=$(cat /etc/yunohost/current_host)
 
+# Set `service` settings to support `yunohost app shell` command (so it inherit the $path_with_texlive for example)
+ynh_app_setting_set --key=service --value="$app-web"
+
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
