@@ -139,7 +139,7 @@ if ! ynh_in_ci_tests; then
 	    "$data_dir/texlive/install-tl" -texdir $data_dir/texlive/2026 -scheme scheme-small --no-interaction
 
         # Needed for the example project to work
-        ynh_exec_as_app $path_with_texlive tlmgr install latexmk
+        ynh_exec_as_app PATH=$path_with_texlive tlmgr install latexmk
     fi
 fi
 
