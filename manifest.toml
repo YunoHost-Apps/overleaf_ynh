@@ -55,7 +55,7 @@ ram.runtime = "1G"
     sha256 = "78d0efe1ac96eb43c41a70ea0748aa04d851dc9d066d37a2900868046771cccb"
     
     autoupdate.upstream = "https://github.com/Thovi98/overleaf-builds"
-    autoupdate.strategy = "latest_github_release"
+    autoupdate.strategy = "latest_github_tag"
     autoupdate.version_regex = "([0-9]{2})([0-9]{2})([0-9]{2})"
     autoupdate.asset = ".*.tar.gz"
 
