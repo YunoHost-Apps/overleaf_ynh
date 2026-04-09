@@ -1,0 +1,1 @@
+You can now create the initial administrator account by visiting `https:/__DOMAIN__/launchpad`
