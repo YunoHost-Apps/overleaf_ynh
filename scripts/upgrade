@@ -125,6 +125,11 @@ then
     mv $data_dir/user_files $data_dir/old_user_files
 fi
 
+# add analyticsId field in db - versions <2026.06.26
+if ynh_app_upgrading_from_version_before 2026.06.26~ynh2
+then
+ 	ynh_mongo_exec --database="$db_name" --command='db.users.updateMany({ analyticsId: { $exists: false } }, [{ $set: { analyticsId: { $toString: "$_id" } } }, ])'
+fi
 
 #=================================================
 # CONFIGURE TEXLIVE
