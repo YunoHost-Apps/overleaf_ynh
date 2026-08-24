@@ -69,7 +69,7 @@ ram.runtime = "1G"
     [resources.install_dir]
 
     [resources.data_dir]
-    subdirs = [ "compiles", "output", "cache", "user_files", "template_files", "history", "textlive" ]
+    subdirs = [ "compiles", "output", "cache", "user_files", "template_files", "history", "texlive" ]
 
     [resources.permissions]
     main.url = "/"
