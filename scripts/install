@@ -11,7 +11,7 @@ source /usr/share/yunohost/helpers
 # INITIALIZE AND STORE SETTINGS
 #=================================================
 ynh_script_progression "Is $data_dir/ssh_keys empty ?"
-ls -l "$data_dir/textlive"
+ls -l "$data_dir/texlive"
 
 web_api_password=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2- | rev | tr -d '\n+/')
 crypto_random=$(ynh_string_random --length=32 | base64 -w 0 | rev | cut -b 2- | rev | tr -d '\n+/')
