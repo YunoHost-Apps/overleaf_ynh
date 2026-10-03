@@ -48,6 +48,11 @@ fi
 #=================================================
 ynh_script_progression "Restoring system configurations related to $app..."
 
+pushd "$install_dir"
+    corepack enable
+	ynh_hide_warnings corepack install
+popd
+
 ynh_restore "/etc/nginx/conf.d/$domain.d/"
 ynh_restore "/etc/nginx/conf.d/$domain.clsi-nginx.conf"
 
