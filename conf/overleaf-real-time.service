@@ -6,12 +6,13 @@ After=network.target
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=__INSTALL_DIR__/
+WorkingDirectory=__INSTALL_DIR__/services/real-time
 Environment="PATH=__PATH_WITH_TEXLIVE__"
 Environment="REALTIME_HOST=127.0.0.1"
 Environment="MONGO_CONNECTION_STRING=mongodb://127.0.0.1:27017/__DB_NAME__"
+Environment="PATH=__PATH_WITH_NODEJS__"
 EnvironmentFile=__INSTALL_DIR__/variables.env
-ExecStart=__NODEJS_DIR__/node __INSTALL_DIR__/services/real-time/app.js
+ExecStart=__NODEJS_DIR__/corepack yarn start
 StandardOutput=append:/var/log/__APP__/real-time.log
 StandardError=inherit
 Restart=on-failure

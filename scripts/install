@@ -63,6 +63,13 @@ ynh_script_progression "Setting up source files..."
 ynh_setup_source --dest_dir="$install_dir/"
 ynh_setup_source --dest_dir="$data_dir/texlive" --source_id="texlive"
 
+
+pushd "$install_dir"
+    corepack enable
+	ynh_hide_warnings corepack install
+popd
+
+
 #=================================================
 # APP INITIAL CONFIGURATION
 #=================================================
