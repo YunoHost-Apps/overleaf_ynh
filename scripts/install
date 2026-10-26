@@ -172,6 +172,9 @@ ynh_config_add_logrotate
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
+
+cat /etc/systemd/system/"$app-chat".service
+
 ynh_systemctl --service="$app-chat" --action="start" --log_path="/var/log/$app/chat.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-clsi" --action="start" --log_path="/var/log/$app/clsi.log" --wait_until="Using settings from"
 ynh_systemctl --service="$app-docstore" --action="start" --log_path="/var/log/$app/docstore.log" --wait_until="Using settings from"
